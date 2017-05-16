@@ -11,13 +11,13 @@ import Html
 initialModel =
     { recipe =
         Nothing
-    , currentPage = RecipePage "123"
+    , currentPage = Home
     }
 
 
 main =
     Html.program
-        { init = update GetInitialModel initialModel
+        { init = (initialModel, Cmd.none)
         , update = update
         , subscriptions = \_ -> Sub.none
         , view = view

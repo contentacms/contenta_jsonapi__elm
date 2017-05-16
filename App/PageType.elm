@@ -6,5 +6,6 @@ type alias RecipeId =
 
 
 type Page
-    = RecipeList
+    = Home
+    | RecipeList
     | RecipePage RecipeId

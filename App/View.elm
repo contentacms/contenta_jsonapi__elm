@@ -13,6 +13,9 @@ view model =
     div []
         [ (viewHeader model)
         , (case model.currentPage of
+            Home ->
+                viewHome model
+
             RecipeList ->
                 viewRecipes model
 
@@ -25,9 +28,15 @@ view model =
 viewHeader : Model -> Html Msg
 viewHeader model =
     ul []
-        [ li [] [ a [ href "#", onClick (SetActivePage RecipeList) ] [ text "Recipes" ] ]
+        [ li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
+        , li [] [ a [ href "#", onClick (SetActivePage RecipeList) ] [ text "Recipes" ] ]
         , li [] [ a [ href "#", onClick (SetActivePage (RecipePage "123")) ] [ text "Recipe 123" ] ]
         ]
+
+
+viewHome : Model -> Html Msg
+viewHome model =
+    text "Home page"
 
 
 viewRecipes : Model -> Html Msg

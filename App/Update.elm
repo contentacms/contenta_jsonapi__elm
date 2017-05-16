@@ -1,6 +1,7 @@
 module App.Update exposing (..)
 
 import App.Model exposing (..)
+import App.PageType exposing (..)
 import App.ModelHttp exposing (..)
 import JsonApi.Resources
 import Result.Extra
@@ -25,4 +26,10 @@ update msg model =
             ( model, Cmd.none )
 
         SetActivePage page ->
-            ( { model | currentPage = page }, Cmd.none )
+            case page of
+                RecipeList ->
+                    { model | currentPage = page }
+                        |> update GetInitialModel
+
+                _ ->
+                    ( { model | currentPage = page }, Cmd.none )
