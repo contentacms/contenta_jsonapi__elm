@@ -16,6 +16,9 @@ view model =
             Home ->
                 viewHome model
 
+            AboutUs ->
+                viewAboutUs model
+
             RecipeList ->
                 viewRecipes model
 
@@ -31,12 +34,17 @@ viewHeader model =
         [ li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
         , li [] [ a [ href "#", onClick (SetActivePage RecipeList) ] [ text "Recipes" ] ]
         , li [] [ a [ href "#", onClick (SetActivePage (RecipePage "123")) ] [ text "Recipe 123" ] ]
+        , li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
         ]
 
 
 viewHome : Model -> Html Msg
 viewHome model =
     text "Home page"
+
+viewAboutUs : Model -> Html Msg
+viewAboutUs model =
+    text "About us ... not implemented yet"
 
 
 viewRecipes : Model -> Html Msg

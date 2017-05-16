@@ -12,6 +12,8 @@ delta2url previous current =
     case current.activePage of
         Home ->
             Just <| UrlChange NewEntry "/"
+        AboutUs ->
+            Just <| UrlChange NewEntry "/about-us"
 
         RecipeList ->
             Just <| UrlChange NewEntry "/recipes"
@@ -34,6 +36,7 @@ parseUrl : Parser (Msg -> c) c
 parseUrl =
     oneOf
         [ map (SetActivePage Home) (s "")
+        , map (SetActivePage AboutUs) (s "about-us")
         , map (SetActivePage RecipeList) (s "recipes")
         , map (\recipeId -> SetActivePage <| Recipe (toString recipeId)) (s "recipes" </> string)
         ]
