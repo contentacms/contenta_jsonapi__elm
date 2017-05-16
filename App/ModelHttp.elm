@@ -6,6 +6,7 @@ import JsonApi
 import JsonApi.Http
 import Http
 
+
 recipeDecoder : Decoder Recipe
 recipeDecoder =
     map6 Recipe
@@ -21,8 +22,15 @@ getRecipe : Cmd Msg
 getRecipe =
     let
         request =
-            JsonApi.Http.getPrimaryResourceCollection "http://localhost:8890/node/recipe"
+            JsonApi.Http.getPrimaryResourceCollection
+                ("http://localhost:8890/node/recipe?include=field_image&fields[file--file]=url,uri&fields[node--recipe]="
+                    ++ "title,"
+                    ++ "field_difficulty,"
+                    ++ "field_ingredients,"
+                    ++ "field_total_time,"
+                    ++ "field_preparation_time,"
+                    ++ "field_recipe_instruction,"
+                    ++ "field_image"
+                )
     in
         Http.send RecipesLoaded request
-
-
