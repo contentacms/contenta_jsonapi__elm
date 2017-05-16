@@ -19,6 +19,6 @@ getRecipe =
         request =
             JsonApi.Http.getPrimaryResourceCollection "http://localhost:8890/node/recipe"
     in
-        Http.send RecipeLoaded request
+        Http.send RecipesLoaded request
 
 

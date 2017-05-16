@@ -12,7 +12,7 @@ update msg model =
         GetInitialModel ->
             ( model, getRecipe )
 
-        RecipeLoaded (Ok resource) ->
+        RecipesLoaded (Ok resource) ->
             { model
                 | recipe =
                     List.map (JsonApi.Resources.attributes recipeDecoder) resource
@@ -21,5 +21,8 @@ update msg model =
             }
                 ! []
 
-        RecipeLoaded (Err _) ->
+        RecipesLoaded (Err _) ->
             ( model, Cmd.none )
+
+        SetActivePage page ->
+            ( { model | currentPage = page }, Cmd.none )

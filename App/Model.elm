@@ -1,11 +1,15 @@
 module App.Model exposing (..)
 
+import App.PageType exposing (..)
 import Http
 import JsonApi
 
+
 type Msg
-    = RecipeLoaded (Result Http.Error (List JsonApi.Resource))
+    = RecipesLoaded (Result Http.Error (List JsonApi.Resource))
     | GetInitialModel
+    | SetActivePage Page
+
 
 type alias Recipe =
     { title : String
@@ -14,5 +18,6 @@ type alias Recipe =
 
 
 type alias Model =
-    { recipe : Maybe (List Recipe) }
-
+    { recipe : Maybe (List Recipe)
+    , currentPage : Page
+    }

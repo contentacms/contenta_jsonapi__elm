@@ -1,12 +1,37 @@
 module App.View exposing (view)
 
 import App.Model exposing (..)
+import App.PageType exposing (..)
 import Html exposing (..)
+import Html.Events exposing (onClick)
+import Html.Attributes exposing (..)
 import List
 
 
 view : Model -> Html Msg
 view model =
+    div []
+        [ (viewHeader model)
+        , (case model.currentPage of
+            RecipeList ->
+                viewRecipes model
+
+            RecipePage string ->
+                text string
+          )
+        ]
+
+
+viewHeader : Model -> Html Msg
+viewHeader model =
+    ul []
+        [ li [] [ a [ href "#", onClick (SetActivePage RecipeList) ] [ text "Recipes" ] ]
+        , li [] [ a [ href "#", onClick (SetActivePage (RecipePage "123")) ] [ text "Recipe 123" ] ]
+        ]
+
+
+viewRecipes : Model -> Html Msg
+viewRecipes model =
     case model.recipe of
         Nothing ->
             text "No content loaded yet"
