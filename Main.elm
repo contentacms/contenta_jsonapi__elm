@@ -1,14 +1,16 @@
 module Main exposing (..)
 
-import JsonApi.Resources
 import JsonApi.Http
 import Json.Decode exposing (..)
 import Task
 import JsonApi
+import JsonApi.Decode
+import JsonApi.Documents
 import JsonApi.Resources
 import Http
 import Html exposing (..)
 import Debug
+import Result.Extra
 
 
 type alias Recipe =
@@ -18,11 +20,11 @@ type alias Recipe =
 
 
 type alias Model =
-    { recipe : Maybe Recipe }
+    { recipe : Maybe (List Recipe) }
 
 
 type Msg
-    = RecipeLoaded (Result Http.Error JsonApi.Resource)
+    = RecipeLoaded (Result Http.Error (List JsonApi.Resource))
     | GetInitialModel
 
 
@@ -37,7 +39,7 @@ getRecipe : Cmd Msg
 getRecipe =
     let
         request =
-            JsonApi.Http.getPrimaryResource "http://localhost:8890/node/recipe/126a9e15-b5f1-4367-9dfa-5bcd34f95469"
+            JsonApi.Http.getPrimaryResourceCollection "http://localhost:8890/node/recipe"
     in
         Http.send RecipeLoaded request
 
@@ -49,7 +51,13 @@ update msg model =
             ( model, getRecipe )
 
         RecipeLoaded (Ok resource) ->
-            { model | recipe = JsonApi.Resources.attributes recipeDecoder resource |> Result.toMaybe } ! []
+            { model
+                | recipe =
+                    List.map (JsonApi.Resources.attributes recipeDecoder) resource
+                        |> Result.Extra.combine
+                        |> Result.toMaybe
+            }
+                ! []
 
         RecipeLoaded (Err _) ->
             let
@@ -80,10 +88,17 @@ view model =
         Nothing ->
             text "No content loaded yet"
 
-        Just recipe ->
-            div []
-                [ h3 [] [text "Title"]
-                , p [] [text (toString recipe.title)]
-                , h3 [] [text "Total time"]
-                , p [] [text (toString recipe.field_total_time)]
-                ]
+        Just recipes ->
+            ul []
+                (List.map
+                    (\recipe ->
+                        (li []
+                            [ h3 [] [ text "Title" ]
+                            , p [] [ text (toString recipe.title) ]
+                            , h3 [] [ text "Total time" ]
+                            , p [] [ text (toString recipe.field_total_time) ]
+                            ]
+                        )
+                    )
+                    recipes
+                )
