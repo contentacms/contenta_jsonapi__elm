@@ -8,9 +8,13 @@ import Http
 
 recipeDecoder : Decoder Recipe
 recipeDecoder =
-    map2 Recipe
+    map6 Recipe
         (field "title" string)
+        (field "field_difficulty" string)
+        (field "field_ingredients" (list string))
         (field "field_total_time" int)
+        (field "field_preparation_time" int)
+        (field "field_recipe_instruction" (field "value" string))
 
 
 getRecipe : Cmd Msg

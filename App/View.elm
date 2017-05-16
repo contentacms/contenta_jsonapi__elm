@@ -42,6 +42,7 @@ viewHome : Model -> Html Msg
 viewHome model =
     text "Home page"
 
+
 viewAboutUs : Model -> Html Msg
 viewAboutUs model =
     text "About us ... not implemented yet"
@@ -68,6 +69,14 @@ viewRecipe recipe =
     div []
         [ h3 [] [ text "Title" ]
         , p [] [ text (toString recipe.title) ]
+        , h3 [] [ text "Difficulty" ]
+        , p [] [ text (toString recipe.difficulty) ]
+        , h3 [] [ text "Ingredients" ]
+        , ul [] (List.map (\inc -> li [] [ text inc ]) recipe.ingredients)
+        , h3 [] [ text "Preparation time" ]
+        , p [] [ text (toString recipe.prepTime) ]
         , h3 [] [ text "Total time" ]
-        , p [] [ text (toString recipe.field_total_time) ]
+        , p [] [ text (toString recipe.totalTime) ]
+        , h3 [] [ text "Instruction" ]
+        , p [] [ text (toString recipe.recipeInstruction) ]
         ]

@@ -13,7 +13,11 @@ type Msg
 
 type alias Recipe =
     { title : String
-    , field_total_time : Int
+    , difficulty : String
+    , ingredients : List String
+    , totalTime : Int
+    , prepTime : Int
+    , recipeInstruction : String
     }
 
 
