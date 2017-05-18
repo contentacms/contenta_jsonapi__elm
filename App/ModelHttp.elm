@@ -23,7 +23,7 @@ getRecipe =
     let
         request =
             JsonApi.Http.getPrimaryResourceCollection
-                ("http://localhost:8890/node/recipe?include=field_image&fields[file--file]=url,uri&fields[node--recipe]="
+                ("http://localhost:8891/node/recipe?include=field_image&fields[file--file]=url,uri&fields[node--recipe]="
                     ++ "title,"
                     ++ "field_difficulty,"
                     ++ "field_ingredients,"
