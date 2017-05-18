@@ -4,19 +4,23 @@
     "repository": "https://github.com/user/project.git",
     "license": "BSD3",
     "source-directories": [
-        "app",
+        "App",
         ".",
-        "src"
+        "elm-jsonapi/2.2.1/src",
+        "elm-jsonapi-http/2.0.0/src"
     ],
     "exposed-modules": [],
     "dependencies": {
+        "Fresheyeball/elm-tuple-extra": "3.0.0 <= v < 4.0.0",
+        "NoRedInk/elm-decode-pipeline": "3.0.0 <= v < 4.0.0",
+        "danyx23/elm-uuid": "2.0.2 <= v < 3.0.0",
+        "elm-community/json-extra": "2.1.0 <= v < 3.0.0",
+        "elm-community/list-extra": "6.1.0 <= v < 7.0.0",
         "elm-community/result-extra": "2.2.0 <= v < 3.0.0",
         "elm-lang/core": "5.1.1 <= v < 6.0.0",
         "elm-lang/html": "2.0.0 <= v < 3.0.0",
         "elm-lang/http": "1.0.0 <= v < 2.0.0",
         "evancz/url-parser": "2.0.1 <= v < 3.0.0",
-        "noahzgordon/elm-jsonapi": "2.2.1 <= v < 3.0.0",
-        "noahzgordon/elm-jsonapi-http": "2.0.0 <= v < 3.0.0",
         "rgrempel/elm-route-url": "3.0.0 <= v < 4.0.0"
     },
     "elm-version": "0.18.0 <= v < 0.19.0"
