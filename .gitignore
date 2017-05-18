@@ -1,3 +1,4 @@
 elm-stuff
 *.swp
 node_modules
+.idea
