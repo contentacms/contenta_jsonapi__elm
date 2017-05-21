@@ -9,9 +9,10 @@ import Html
 
 
 initialModel =
-    { recipe =
+    { recipes =
         Nothing
     , currentPage = Home
+    , selectedRecipe = Nothing
     }
 
 

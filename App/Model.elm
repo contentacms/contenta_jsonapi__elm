@@ -9,6 +9,7 @@ type Msg
     = RecipesLoaded (Result Http.Error (List JsonApi.Resource))
     | GetInitialModel
     | SetActivePage Page
+    | SelectRecipe String
 
 
 type alias Recipe =
@@ -29,6 +30,7 @@ type alias File =
 
 
 type alias Model =
-    { recipe : Maybe (List Recipe)
+    { recipes : Maybe (List Recipe)
+    , selectedRecipe : Maybe String
     , currentPage : Page
     }

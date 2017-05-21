@@ -9,4 +9,4 @@ type Page
     = Home
     | AboutUs
     | RecipeList
-    | RecipePage RecipeId
+    | RecipeSelectionPage

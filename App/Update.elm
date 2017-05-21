@@ -17,7 +17,7 @@ update msg model =
 
         RecipesLoaded (Ok resources) ->
             { model
-                | recipe =
+                | recipes =
                     List.map
                         (\resource ->
                             let
@@ -29,7 +29,6 @@ update msg model =
 
                                 resourceResult =
                                     JsonApi.Resources.attributes (recipeDecoderWithImage (Maybe.map .url file_image)) resource
-                                        |> Debug.log "muh"
                                         |> Result.toMaybe
                             in
                                 resourceResult
@@ -50,6 +49,9 @@ update msg model =
 
                 _ ->
                     ( { model | currentPage = page }, Cmd.none )
+
+        SelectRecipe string ->
+            { model | selectedRecipe = Just string } ! []
 
 
 filterListMaybe : List (Maybe a) -> Maybe (List a)

@@ -3,9 +3,10 @@ module App.View exposing (view)
 import App.Model exposing (..)
 import App.PageType exposing (..)
 import Html exposing (..)
-import Html.Events exposing (onClick)
+import Html.Events exposing (onClick, onInput)
 import Html.Attributes exposing (..)
 import List
+import List.Extra
 
 
 view : Model -> Html Msg
@@ -22,8 +23,8 @@ view model =
             RecipeList ->
                 viewRecipes model
 
-            RecipePage string ->
-                text string
+            RecipeSelectionPage ->
+                viewRecipeSelectionPage model
           )
         ]
 
@@ -33,8 +34,46 @@ viewHeader model =
     ul []
         [ li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
         , li [] [ a [ href "#", onClick (SetActivePage RecipeList) ] [ text "Recipes" ] ]
-        , li [] [ a [ href "#", onClick (SetActivePage (RecipePage "123")) ] [ text "Recipe 123" ] ]
+        , li [] [ a [ href "#", onClick (SetActivePage (RecipeSelectionPage)) ] [ text "Recipe select" ] ]
         , li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
+        ]
+
+
+viewRecipeSelectionPage : Model -> Html Msg
+viewRecipeSelectionPage model =
+    Html.form []
+        [ label [] [ text "Select recipe" ]
+        , Maybe.withDefault
+            (text "No recipe available")
+            (Maybe.andThen
+                (\recipes ->
+                    (Just
+                        (select [ onInput SelectRecipe ] <|
+                            List.append
+                                [ option [] [ text "Nothing" ] ]
+                            <|
+                                (List.map
+                                    (\recipe ->
+                                        option [ value recipe.title ] [ text recipe.title ]
+                                    )
+                                    recipes
+                                )
+                        )
+                    )
+                )
+                model.recipes
+            )
+        , model.selectedRecipe
+            |> Maybe.andThen
+                (\recipeTitle ->
+                    Maybe.andThen
+                        (\recipes ->
+                            List.Extra.find (\recipe -> recipe.title == recipeTitle) recipes
+                                |> Maybe.map viewRecipe
+                        )
+                        model.recipes
+                )
+            |> Maybe.withDefault (p [] [ text "Nothing selected yet" ])
         ]
 
 
@@ -50,7 +89,7 @@ viewAboutUs model =
 
 viewRecipes : Model -> Html Msg
 viewRecipes model =
-    case model.recipe of
+    case model.recipes of
         Nothing ->
             text "No content loaded yet"
 
