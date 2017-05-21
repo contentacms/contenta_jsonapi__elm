@@ -1,3 +1,0 @@
-require './server'
-
-run ExampleServer
