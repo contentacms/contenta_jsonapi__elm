@@ -17,7 +17,7 @@ initialModel =
 
 main =
     Html.program
-        { init = (initialModel, Cmd.none)
+        { init = update (SetActivePage RecipeList) initialModel
         , update = update
         , subscriptions = \_ -> Sub.none
         , view = view

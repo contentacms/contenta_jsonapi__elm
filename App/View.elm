@@ -69,6 +69,9 @@ viewRecipe recipe =
     div []
         [ h3 [] [ text "Title" ]
         , p [] [ text (toString recipe.title) ]
+        , h3 [] [ text "Image" ]
+        , Maybe.map (\url -> (img [ src url ] [])) recipe.image
+            |> Maybe.withDefault (p [] [ text "No image" ])
         , h3 [] [ text "Difficulty" ]
         , p [] [ text (toString recipe.difficulty) ]
         , h3 [] [ text "Ingredients" ]

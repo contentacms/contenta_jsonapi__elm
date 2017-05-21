@@ -18,6 +18,13 @@ type alias Recipe =
     , totalTime : Int
     , prepTime : Int
     , recipeInstruction : String
+    , image: Maybe String
+    }
+
+
+type alias File =
+    { uuid : String
+    , url : String
     }
 
 
