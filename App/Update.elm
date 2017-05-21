@@ -12,8 +12,36 @@ import Maybe
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        GetInitialModel ->
-            ( model, getRecipe )
+        GetRecipes ->
+            ( model, getRecipes )
+
+        GetRecipe string ->
+            ( model, getRecipe string )
+
+        RecipeLoaded (Ok resource) ->
+            { model
+                | recipes =
+                    let
+                        id =
+                            JsonApi.Resources.id resource
+
+                        file_image =
+                            JsonApi.Resources.relatedResource "field_image" resource
+                                |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
+                                |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
+                                |> Result.toMaybe
+
+                        recipeResult =
+                            JsonApi.Resources.attributes (recipeDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
+                                |> Result.toMaybe
+                    in
+                        recipeResult
+                            |> Maybe.map List.singleton
+            }
+                ! []
+
+        RecipeLoaded (Err _) ->
+            ( model, Cmd.none )
 
         RecipesLoaded (Ok resources) ->
             { model
@@ -21,17 +49,20 @@ update msg model =
                     List.map
                         (\resource ->
                             let
+                                id =
+                                    JsonApi.Resources.id resource
+
                                 file_image =
                                     JsonApi.Resources.relatedResource "field_image" resource
                                         |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
                                         |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
                                         |> Result.toMaybe
 
-                                resourceResult =
-                                    JsonApi.Resources.attributes (recipeDecoderWithImage (Maybe.map .url file_image)) resource
+                                recipeResult =
+                                    JsonApi.Resources.attributes (recipeDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
                                         |> Result.toMaybe
                             in
-                                resourceResult
+                                recipeResult
                         )
                         resources
                         |> filterListMaybe
@@ -43,9 +74,13 @@ update msg model =
 
         SetActivePage page ->
             case page of
+                RecipeDetailPage string ->
+                    { model | currentPage = page }
+                        |> update (GetRecipe string)
+
                 RecipeList ->
                     { model | currentPage = page }
-                        |> update GetInitialModel
+                        |> update GetRecipes
 
                 _ ->
                     ( { model | currentPage = page }, Cmd.none )

@@ -10,3 +10,4 @@ type Page
     | AboutUs
     | RecipeList
     | RecipeSelectionPage
+    | RecipeDetailPage String

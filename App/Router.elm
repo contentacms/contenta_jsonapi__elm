@@ -9,17 +9,21 @@ import UrlParser exposing (Parser, map, parseHash, s, oneOf, (</>), int, string)
 
 delta2url : Model -> Model -> Maybe UrlChange
 delta2url previous current =
-    case current.activePage of
+    case current.currentPage of
         Home ->
             Just <| UrlChange NewEntry "/"
+
         AboutUs ->
             Just <| UrlChange NewEntry "/about-us"
 
         RecipeList ->
             Just <| UrlChange NewEntry "/recipes"
 
-        Recipe recipeId ->
-            Just |< NewEntry ("/recipes" ++ recipeId)
+        RecipeSelectionPage ->
+            Just <| UrlChange NewEntry "/recipes/selection"
+
+        RecipeDetailPage recipeId ->
+            Just <| UrlChange NewEntry ("/recipes/" ++ recipeId)
 
 
 location2messages : Location -> List Msg
@@ -38,5 +42,6 @@ parseUrl =
         [ map (SetActivePage Home) (s "")
         , map (SetActivePage AboutUs) (s "about-us")
         , map (SetActivePage RecipeList) (s "recipes")
-        , map (\recipeId -> SetActivePage <| Recipe (toString recipeId)) (s "recipes" </> string)
+        , map (SetActivePage RecipeSelectionPage) (s "recipes/selection")
+        , map (\recipeId -> SetActivePage <| RecipeDetailPage (toString recipeId)) (s "item" </> string)
         ]

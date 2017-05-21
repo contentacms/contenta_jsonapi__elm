@@ -7,14 +7,10 @@ import JsonApi.Http
 import Http
 
 
-recipeDecoder : Decoder Recipe
-recipeDecoder =
-    recipeDecoderWithImage Nothing
-
-
-recipeDecoderWithImage : Maybe String -> Decoder Recipe
-recipeDecoderWithImage image =
-    map7 Recipe
+recipeDecoderWithIdAndImage : String -> Maybe String -> Decoder Recipe
+recipeDecoderWithIdAndImage id image =
+    map8 Recipe
+        (succeed id)
         (field "title" string)
         (field "field_difficulty" string)
         (field "field_ingredients" (list string))
@@ -24,8 +20,8 @@ recipeDecoderWithImage image =
         (succeed image)
 
 
-getRecipe : Cmd Msg
-getRecipe =
+getRecipes : Cmd Msg
+getRecipes =
     let
         request =
             JsonApi.Http.getPrimaryResourceCollection
@@ -40,6 +36,26 @@ getRecipe =
                 )
     in
         Http.send RecipesLoaded request
+
+
+getRecipe : String -> Cmd Msg
+getRecipe id =
+    let
+        request =
+            JsonApi.Http.getPrimaryResource
+                ("http://localhost:8890/node/recipe/"
+                    ++ id
+                    ++ "?include=field_image&fields[file--file]=uuid,url,uri&fields[node--recipe]="
+                    ++ "title,"
+                    ++ "field_difficulty,"
+                    ++ "field_ingredients,"
+                    ++ "field_total_time,"
+                    ++ "field_preparation_time,"
+                    ++ "field_recipe_instruction,"
+                    ++ "field_image"
+                )
+    in
+        Http.send RecipeLoaded request
 
 
 fileDecoder : Decoder File

@@ -25,6 +25,12 @@ view model =
 
             RecipeSelectionPage ->
                 viewRecipeSelectionPage model
+
+            RecipeDetailPage id ->
+                model.recipes
+                    |> Maybe.andThen List.head
+                    |> Maybe.map viewRecipe
+                    |> Maybe.withDefault (text "Recipe not found")
           )
         ]
 
@@ -48,13 +54,13 @@ viewRecipeSelectionPage model =
             (Maybe.andThen
                 (\recipes ->
                     (Just
-                        (select [ onInput SelectRecipe ] <|
+                        (select [ onInput (\id -> SetActivePage <| RecipeDetailPage id) ] <|
                             List.append
                                 [ option [] [ text "Nothing" ] ]
                             <|
                                 (List.map
                                     (\recipe ->
-                                        option [ value recipe.title ] [ text recipe.title ]
+                                        option [ value recipe.id ] [ text recipe.title ]
                                     )
                                     recipes
                                 )
@@ -63,17 +69,6 @@ viewRecipeSelectionPage model =
                 )
                 model.recipes
             )
-        , model.selectedRecipe
-            |> Maybe.andThen
-                (\recipeTitle ->
-                    Maybe.andThen
-                        (\recipes ->
-                            List.Extra.find (\recipe -> recipe.title == recipeTitle) recipes
-                                |> Maybe.map viewRecipe
-                        )
-                        model.recipes
-                )
-            |> Maybe.withDefault (p [] [ text "Nothing selected yet" ])
         ]
 
 

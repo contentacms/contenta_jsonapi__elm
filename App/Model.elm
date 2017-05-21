@@ -6,20 +6,23 @@ import JsonApi
 
 
 type Msg
-    = RecipesLoaded (Result Http.Error (List JsonApi.Resource))
-    | GetInitialModel
+    = RecipeLoaded (Result Http.Error JsonApi.Resource)
+    | RecipesLoaded (Result Http.Error (List JsonApi.Resource))
+    | GetRecipe String
+    | GetRecipes
     | SetActivePage Page
     | SelectRecipe String
 
 
 type alias Recipe =
-    { title : String
+    { id : String
+    , title : String
     , difficulty : String
     , ingredients : List String
     , totalTime : Int
     , prepTime : Int
     , recipeInstruction : String
-    , image: Maybe String
+    , image : Maybe String
     }
 
 
