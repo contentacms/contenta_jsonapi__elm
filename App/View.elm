@@ -2,6 +2,7 @@ module App.View exposing (view)
 
 import App.Model exposing (..)
 import App.PageType exposing (..)
+import App.Pages.Frontpage
 import Html exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Html.Attributes exposing (..)
@@ -15,7 +16,7 @@ view model =
         [ (viewHeader model)
         , (case model.currentPage of
             Home ->
-                viewHome model
+                App.Pages.Frontpage.view model
 
             AboutUs ->
                 viewAboutUs model
@@ -71,10 +72,6 @@ viewRecipeSelectionPage model =
             )
         ]
 
-
-viewHome : Model -> Html Msg
-viewHome model =
-    text "Home page"
 
 
 viewAboutUs : Model -> Html Msg
