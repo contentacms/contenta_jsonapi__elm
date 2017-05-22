@@ -12,6 +12,10 @@ type Msg
     | GetRecipes
     | SetActivePage Page
     | SelectRecipe String
+    | LoginFormState Bool
+    | InputLoginName String
+    | InputLoginPassword String
+    | InputLoginSubmit
 
 
 type alias Recipe =
@@ -32,8 +36,16 @@ type alias File =
     }
 
 
+type alias LoginDetails =
+    { name : String
+    , password : String
+    }
+
+
 type alias Model =
     { recipes : Maybe (List Recipe)
     , selectedRecipe : Maybe String
     , currentPage : Page
+    , loginFormActive : Bool
+    , loginDetails : Maybe LoginDetails
     }

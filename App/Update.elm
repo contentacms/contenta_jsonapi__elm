@@ -88,6 +88,21 @@ update msg model =
         SelectRecipe string ->
             { model | selectedRecipe = Just string } ! []
 
+        LoginFormState bool ->
+            { model | loginFormActive = bool } ! []
+
+        InputLoginName string ->
+            ( model, Cmd.none )
+
+        InputLoginPassword string ->
+            ( model, Cmd.none )
+
+        InputLoginSubmit ->
+            ( model
+                |> Debug.log "login submit"
+            , Cmd.none
+            )
+
 
 filterListMaybe : List (Maybe a) -> Maybe (List a)
 filterListMaybe list =

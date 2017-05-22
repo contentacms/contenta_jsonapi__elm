@@ -11,7 +11,7 @@ view model =
         , viewCurrentMonthIssue model
         , viewCookMenu model
         , viewRecipes model
-        , viewFooterMenu
+        , viewFooterMenu model
         ]
 
 

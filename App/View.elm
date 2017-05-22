@@ -4,7 +4,7 @@ import App.Model exposing (..)
 import App.PageType exposing (..)
 import App.Pages.Frontpage
 import Html exposing (..)
-import Html.Events exposing (onClick, onInput)
+import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
 import List
 import List.Extra
@@ -38,12 +38,39 @@ view model =
 
 viewHeader : Model -> Html Msg
 viewHeader model =
-    ul []
-        [ li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
-        , li [] [ a [ href "#", onClick (SetActivePage RecipeList) ] [ text "Recipes" ] ]
-        , li [] [ a [ href "#", onClick (SetActivePage (RecipeSelectionPage)) ] [ text "Recipe select" ] ]
-        , li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
+    div []
+        [ div []
+            [ text "Search"
+            , (if (model.loginFormActive) then
+                a [ onClick (LoginFormState (not model.loginFormActive)) ] [ text "Login form" ]
+               else
+                viewLoginForm model
+              )
+            ]
+        , ul []
+            [ li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
+            , li [] [ a [ href "#", onClick (SetActivePage RecipeList) ] [ text "Recipes" ] ]
+            , li [] [ a [ href "#", onClick (SetActivePage (RecipeSelectionPage)) ] [ text "Recipe select" ] ]
+            , li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
+            ]
         ]
+
+
+viewLoginForm : Model -> Html Msg
+viewLoginForm model =
+    let
+        loginDetails =
+            Maybe.withDefault
+                { name = ""
+                , password = ""
+                }
+                model.loginDetails
+    in
+        Html.form []
+            [ input [ onInput InputLoginName, type_ "textfield", value loginDetails.name ] []
+            , input [ onInput InputLoginPassword, type_ "password", value loginDetails.password ] []
+            , button [ onClick InputLoginSubmit ] [ text "Login" ]
+            ]
 
 
 viewRecipeSelectionPage : Model -> Html Msg
@@ -71,7 +98,6 @@ viewRecipeSelectionPage model =
                 model.recipes
             )
         ]
-
 
 
 viewAboutUs : Model -> Html Msg

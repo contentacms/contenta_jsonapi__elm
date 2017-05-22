@@ -10,11 +10,18 @@ import Html
 import RouteUrl
 
 
+initialModel : Model
 initialModel =
     { recipes =
         Nothing
     , currentPage = Home
     , selectedRecipe = Nothing
+    , loginFormActive = False
+    , loginDetails =
+        Just
+            { name = "Hey"
+            , password = "blub"
+            }
     }
 
 
