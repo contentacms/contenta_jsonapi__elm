@@ -47,6 +47,7 @@ viewHeader model =
                 viewLoginForm model
               )
             ]
+        , h1 [] [ text "Umami, food magazine" ]
         , ul []
             [ li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
             , li [] [ a [ href "#", onClick (SetActivePage RecipeList) ] [ text "Recipes" ] ]

@@ -33,6 +33,11 @@ type alias Recipe =
     }
 
 
+type ArticleOrRecipe
+    = ArticleId String
+    | RecipeId String
+
+
 type alias Article =
     { id : String
     , title : String

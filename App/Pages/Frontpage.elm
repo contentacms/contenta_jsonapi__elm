@@ -8,7 +8,7 @@ import Html.Attributes exposing (src)
 view : Model -> Html Msg
 view model =
     div []
-        [ viewPromotedArticles model
+        [ viewPromotedContent model
         , viewCurrentMonthIssue model
         , viewCookMenu model
         , viewRecipes model
@@ -16,8 +16,8 @@ view model =
         ]
 
 
-viewPromotedArticles : Model -> Html Msg
-viewPromotedArticles model =
+viewPromotedContent : Model -> Html Msg
+viewPromotedContent model =
     div [] []
 
 
