@@ -26,7 +26,7 @@ articleDecoderWithIdAndImage id image =
     map4 Article
         (succeed id)
         (field "title" string)
-        (field "body" string)
+        (at [ "body", "value" ] string)
         (succeed image)
 
 
@@ -46,6 +46,22 @@ getRecipes =
                 )
     in
         Http.send RecipesLoaded request
+
+
+getArticles : Cmd Msg
+getArticles =
+    let
+        request =
+            JsonApi.Http.getPrimaryResourceCollection
+                ("http://localhost:8890/node/article?include=field_image&fields[file--file]=uuid,url,uri&fields[node--article]="
+                    ++ "title,"
+                    --                    ++ "field_image,"
+                    ++
+                        "field_recipes,"
+                    ++ "body"
+                )
+    in
+        Http.send ArticlesLoaded request
 
 
 getPromotedRecipes : Cmd Msg
@@ -77,7 +93,7 @@ getPromotedArticles =
                     ++ "title,"
                     ++ "field_image,"
                     ++ "field_recipes,"
-                    ++ "field_body,"
+                    ++ "body,"
                     ++ "&filter[promote][value]=1"
                     ++ "&pager[limit]=3"
                 )

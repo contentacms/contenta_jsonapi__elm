@@ -27,6 +27,9 @@ initialModel =
             { promotedArticles = Nothing
             , promotedRecipes = Nothing
             }
+        , articles =
+            { articles = Nothing
+            }
         }
     }
 
@@ -35,7 +38,7 @@ main =
     RouteUrl.program
         { delta2url = delta2url
         , location2messages = location2messages
-        , init = update (SetActivePage Home) initialModel
+        , init = update (SetActivePage ArticleList) initialModel
         , update = update
         , subscriptions = \_ -> Sub.none
         , view = view

@@ -15,6 +15,9 @@ update msg model =
         GetRecipes ->
             ( model, getRecipes )
 
+        GetArticles ->
+            ( model, getArticles )
+
         GetRecipe string ->
             ( model, getRecipe string )
 
@@ -72,6 +75,54 @@ update msg model =
         RecipesLoaded (Err _) ->
             ( model, Cmd.none )
 
+        ArticlesLoaded (Ok resources) ->
+            let
+                pages =
+                    model.pages
+
+                articlesPage =
+                    pages.articles
+
+                newArticlesPage =
+                    { articlesPage
+                        | articles =
+                            List.map
+                                (\resource ->
+                                    let
+                                        id =
+                                            JsonApi.Resources.id resource
+
+                                        -- @todo Loading fails atm.
+                                        file_image =
+                                            Nothing
+
+                                        --                                            JsonApi.Resources.relatedResource "field_image" resource
+                                        --                                                |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
+                                        --                                                |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
+                                        --                                                |> Result.toMaybe
+                                        articleResult =
+                                            JsonApi.Resources.attributes (articleDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
+                                                |> Debug.log "articles"
+                                                |> Result.toMaybe
+                                    in
+                                        articleResult
+                                )
+                                resources
+                                |> filterListMaybe
+                    }
+
+                newPages =
+                    { pages | articles = newArticlesPage }
+            in
+                { model | pages = newPages } ! []
+
+        ArticlesLoaded (Err err) ->
+            let
+                _ =
+                    Debug.log "error" err
+            in
+                ( model, Cmd.none )
+
         SetActivePage page ->
             case page of
                 Home ->
@@ -86,6 +137,10 @@ update msg model =
                 RecipeList ->
                     { model | currentPage = page }
                         |> update GetRecipes
+
+                ArticleList ->
+                    { model | currentPage = page }
+                        |> update GetArticles
 
                 _ ->
                     ( { model | currentPage = page }, Cmd.none )

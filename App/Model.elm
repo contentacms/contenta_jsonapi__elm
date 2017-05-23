@@ -6,19 +6,24 @@ import JsonApi
 
 
 type Msg
-    = RecipeLoaded (Result Http.Error JsonApi.Resource)
-    | RecipesLoaded (Result Http.Error (List JsonApi.Resource))
-    | GetRecipe String
-    | GetRecipes
-    | SetActivePage Page
+    = SetActivePage Page
     | SelectRecipe String
     | LoginFormState Bool
     | InputLoginName String
     | InputLoginPassword String
     | InputLoginSubmit
       -- | LoginCompleted
+      -- # Homepage
     | PromotedRecipesLoaded (Result Http.Error (List JsonApi.Resource))
     | PromotedArticlesLoaded (Result Http.Error (List JsonApi.Resource))
+      -- # Recipes page
+    | GetRecipe String
+    | RecipeLoaded (Result Http.Error JsonApi.Resource)
+    | GetRecipes
+    | RecipesLoaded (Result Http.Error (List JsonApi.Resource))
+      -- # Features / Articles page
+    | GetArticles
+    | ArticlesLoaded (Result Http.Error (List JsonApi.Resource))
 
 
 type alias Recipe =
@@ -68,6 +73,9 @@ type alias Model =
         { home :
             { promotedArticles : Maybe (List Article)
             , promotedRecipes : Maybe (List Recipe)
+            }
+        , articles :
+            { articles : Maybe (List Article)
             }
         }
     }

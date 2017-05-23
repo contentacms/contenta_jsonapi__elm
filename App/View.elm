@@ -3,6 +3,7 @@ module App.View exposing (view)
 import App.Model exposing (..)
 import App.PageType exposing (..)
 import App.Pages.Home
+import App.Pages.Articles
 import Html exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
@@ -23,6 +24,9 @@ view model =
 
             RecipeList ->
                 viewRecipes model
+
+            ArticleList ->
+                App.Pages.Articles.view model
 
             RecipeSelectionPage ->
                 viewRecipeSelectionPage model
@@ -50,6 +54,7 @@ viewHeader model =
         , h1 [] [ text "Umami, food magazine" ]
         , ul []
             [ li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
+            , li [] [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
             , li [] [ a [ href "#", onClick (SetActivePage RecipeList) ] [ text "Recipes" ] ]
             , li [] [ a [ href "#", onClick (SetActivePage (RecipeSelectionPage)) ] [ text "Recipe select" ] ]
             , li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
