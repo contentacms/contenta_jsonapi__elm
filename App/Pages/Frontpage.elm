@@ -2,6 +2,7 @@ module App.Pages.Frontpage exposing (view)
 
 import App.Model exposing (..)
 import Html exposing (..)
+import Html.Attributes exposing (src)
 
 
 view : Model -> Html Msg
@@ -49,7 +50,28 @@ viewCookMenu model =
 
 viewRecipes : Model -> Html Msg
 viewRecipes model =
-    div [] []
+    div []
+        [ h2 [] [ text "Recipes" ]
+        , p [] [ text "Explore recipes across every type of occasion, ingredient and skill level" ]
+        , div []
+            (Maybe.map
+                (List.map viewPromotedRecipe)
+                model.promotedRecipes
+                |> Maybe.withDefault [ text "Loading" ]
+            )
+        ]
+
+
+viewPromotedRecipe : Recipe -> Html Msg
+viewPromotedRecipe recipe =
+    div []
+        [ (recipe.image
+            |> Maybe.map (\url -> img [ src url ] [])
+            |> Maybe.withDefault (text "No image")
+          )
+        , text "TODO Category"
+        , h3 [] [ text recipe.title ]
+        ]
 
 
 viewFooterMenu : Model -> Html Msg

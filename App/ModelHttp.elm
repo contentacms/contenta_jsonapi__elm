@@ -21,6 +21,15 @@ recipeDecoderWithIdAndImage id image =
         (succeed image)
 
 
+articleDecoderWithIdAndImage : String -> Maybe String -> Decoder Article
+articleDecoderWithIdAndImage id image =
+    map4 Article
+        (succeed id)
+        (field "title" string)
+        (field "body" string)
+        (succeed image)
+
+
 getRecipes : Cmd Msg
 getRecipes =
     let
@@ -37,6 +46,43 @@ getRecipes =
                 )
     in
         Http.send RecipesLoaded request
+
+
+getPromotedRecipes : Cmd Msg
+getPromotedRecipes =
+    let
+        request =
+            JsonApi.Http.getPrimaryResourceCollection
+                ("http://localhost:8890/node/recipe?include=field_image&fields[file--file]=uuid,url,uri&fields[node--recipe]="
+                    ++ "title,"
+                    ++ "field_difficulty,"
+                    ++ "field_ingredients,"
+                    ++ "field_total_time,"
+                    ++ "field_preparation_time,"
+                    ++ "field_recipe_instruction,"
+                    ++ "field_image"
+                    ++ "&filter[promote][value]=1"
+                    ++ "&pager[limit]=3"
+                )
+    in
+        Http.send PromotedRecipesLoaded request
+
+
+getPromotedArticles : Cmd Msg
+getPromotedArticles =
+    let
+        request =
+            JsonApi.Http.getPrimaryResourceCollection
+                ("http://localhost:8890/node/article?include=field_image&fields[file--file]=uuid,url,uri&fields[node--article]="
+                    ++ "title,"
+                    ++ "field_image,"
+                    ++ "field_recipes,"
+                    ++ "field_body,"
+                    ++ "&filter[promote][value]=1"
+                    ++ "&pager[limit]=3"
+                )
+    in
+        Http.send PromotedArticlesLoaded request
 
 
 getRecipe : String -> Cmd Msg
@@ -64,6 +110,7 @@ fileDecoder =
     map2 File
         (field "uuid" string)
         (field "url" string)
+
 
 
 --loginRequest : LoginDetails -> Cmd Msg

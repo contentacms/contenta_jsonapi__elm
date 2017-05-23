@@ -16,7 +16,9 @@ type Msg
     | InputLoginName String
     | InputLoginPassword String
     | InputLoginSubmit
---    | LoginCompleted
+      -- | LoginCompleted
+    | PromotedRecipesLoaded (Result Http.Error (List JsonApi.Resource))
+    | PromotedArticlesLoaded (Result Http.Error (List JsonApi.Resource))
 
 
 type alias Recipe =
@@ -27,6 +29,14 @@ type alias Recipe =
     , totalTime : Int
     , prepTime : Int
     , recipeInstruction : String
+    , image : Maybe String
+    }
+
+
+type alias Article =
+    { id : String
+    , title : String
+    , body : String
     , image : Maybe String
     }
 
@@ -49,4 +59,6 @@ type alias Model =
     , currentPage : Page
     , loginFormActive : Bool
     , loginDetails : Maybe LoginDetails
+    , promotedArticles : Maybe (List Article)
+    , promotedRecipes : Maybe (List Recipe)
     }
