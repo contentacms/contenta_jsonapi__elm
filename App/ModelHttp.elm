@@ -1,6 +1,7 @@
 module App.ModelHttp exposing (..)
 
 import App.Model exposing (..)
+import Json.Encode
 import Json.Decode exposing (..)
 import JsonApi
 import JsonApi.Http
@@ -63,3 +64,27 @@ fileDecoder =
     map2 File
         (field "uuid" string)
         (field "url" string)
+
+
+--loginRequest : LoginDetails -> Cmd Msg
+--loginRequest loginDetails =
+--    let
+--        request =
+--            123
+--    in
+--        Http.send (Result Http.Error LoginCompleted)
+--            (Http.post "http://localhost:8890/user/login?_format=json"
+--                (encodeLoginData loginDetails)
+--                decodeLoginResult
+--            )
+--
+--
+--encodeLoginData : LoginDetails -> Http.Body
+--encodeLoginData details =
+--    Http.jsonBody <|
+--        Json.Encode.object
+--            [ ("name" Json.Encode.string details.name)
+--            , ("pass" Json.Encode.string details.password)
+--            ]
+--
+--decodeLoginResult : Json.Decoder

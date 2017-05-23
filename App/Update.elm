@@ -104,6 +104,11 @@ update msg model =
             )
 
 
+
+--        LoginCompleted ->
+--            ( model, Cmd.none )
+
+
 filterListMaybe : List (Maybe a) -> Maybe (List a)
 filterListMaybe list =
     let

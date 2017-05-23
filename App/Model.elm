@@ -16,6 +16,7 @@ type Msg
     | InputLoginName String
     | InputLoginPassword String
     | InputLoginSubmit
+--    | LoginCompleted
 
 
 type alias Recipe =
