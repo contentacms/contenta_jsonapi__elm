@@ -111,59 +111,83 @@ update msg model =
         --        LoginCompleted ->
         --            ( model, Cmd.none )
         PromotedArticlesLoaded (Ok resources) ->
-            { model
-                | promotedArticles =
-                    List.map
-                        (\resource ->
-                            let
-                                id =
-                                    JsonApi.Resources.id resource
+            let
+                pages =
+                    model.pages
 
-                                file_image =
-                                    JsonApi.Resources.relatedResource "field_image" resource
-                                        |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
-                                        |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
-                                        |> Result.toMaybe
+                homePageModel =
+                    pages.home
 
-                                articleResult =
-                                    JsonApi.Resources.attributes (articleDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
-                                        |> Result.toMaybe
-                            in
-                                articleResult
-                        )
-                        resources
-                        |> filterListMaybe
-            }
-                ! []
+                newHomePageModel =
+                    { homePageModel
+                        | promotedArticles =
+                            List.map
+                                (\resource ->
+                                    let
+                                        id =
+                                            JsonApi.Resources.id resource
+
+                                        file_image =
+                                            JsonApi.Resources.relatedResource "field_image" resource
+                                                |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
+                                                |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
+                                                |> Result.toMaybe
+
+                                        articleResult =
+                                            JsonApi.Resources.attributes (articleDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
+                                                |> Result.toMaybe
+                                    in
+                                        articleResult
+                                )
+                                resources
+                                |> filterListMaybe
+                    }
+
+                newPages =
+                    { pages | home = newHomePageModel }
+            in
+                { model | pages = newPages } ! []
 
         PromotedArticlesLoaded (Err _) ->
             ( model, Cmd.none )
 
         PromotedRecipesLoaded (Ok resources) ->
-            { model
-                | promotedRecipes =
-                    List.map
-                        (\resource ->
-                            let
-                                id =
-                                    JsonApi.Resources.id resource
+            let
+                pages =
+                    model.pages
 
-                                file_image =
-                                    JsonApi.Resources.relatedResource "field_image" resource
-                                        |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
-                                        |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
-                                        |> Result.toMaybe
+                homePageModel =
+                    pages.home
 
-                                recipeResult =
-                                    JsonApi.Resources.attributes (recipeDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
-                                        |> Result.toMaybe
-                            in
-                                recipeResult
-                        )
-                        resources
-                        |> filterListMaybe
-            }
-                ! []
+                newHomePageModel =
+                    { homePageModel
+                        | promotedRecipes =
+                            List.map
+                                (\resource ->
+                                    let
+                                        id =
+                                            JsonApi.Resources.id resource
+
+                                        file_image =
+                                            JsonApi.Resources.relatedResource "field_image" resource
+                                                |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
+                                                |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
+                                                |> Result.toMaybe
+
+                                        recipeResult =
+                                            JsonApi.Resources.attributes (recipeDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
+                                                |> Result.toMaybe
+                                    in
+                                        recipeResult
+                                )
+                                resources
+                                |> filterListMaybe
+                    }
+
+                newPages =
+                    { pages | home = newHomePageModel }
+            in
+                { model | pages = newPages } ! []
 
         PromotedRecipesLoaded (Err _) ->
             ( model, Cmd.none )

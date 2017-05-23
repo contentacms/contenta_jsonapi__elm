@@ -64,6 +64,10 @@ type alias Model =
     , currentPage : Page
     , loginFormActive : Bool
     , loginDetails : Maybe LoginDetails
-    , promotedArticles : Maybe (List Article)
-    , promotedRecipes : Maybe (List Recipe)
+    , pages :
+        { home :
+            { promotedArticles : Maybe (List Article)
+            , promotedRecipes : Maybe (List Recipe)
+            }
+        }
     }

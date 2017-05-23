@@ -56,7 +56,7 @@ viewRecipes model =
         , div []
             (Maybe.map
                 (List.map viewPromotedRecipe)
-                model.promotedRecipes
+                model.pages.home.promotedRecipes
                 |> Maybe.withDefault [ text "Loading" ]
             )
         ]

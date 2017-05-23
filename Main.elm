@@ -22,8 +22,12 @@ initialModel =
             { name = "Hey"
             , password = "blub"
             }
-    , promotedArticles = Nothing
-    , promotedRecipes = Nothing
+    , pages =
+        { home =
+            { promotedArticles = Nothing
+            , promotedRecipes = Nothing
+            }
+        }
     }
 
 
