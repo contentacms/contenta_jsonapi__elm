@@ -16,7 +16,7 @@ view model =
         [ (viewHeader model)
         , (case model.currentPage of
             Home ->
-                App.Pages.Frontpage.view model
+                App.Pages.Home.view model
 
             AboutUs ->
                 viewAboutUs model

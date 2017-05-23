@@ -14,7 +14,6 @@ initialModel : Model
 initialModel =
     { recipes =
         Nothing
-    , currentPage = Home
     , selectedRecipe = Nothing
     , loginFormActive = False
     , loginDetails =
@@ -22,6 +21,7 @@ initialModel =
             { name = "Hey"
             , password = "blub"
             }
+    , currentPage = Home
     , pages =
         { home =
             { promotedArticles = Nothing
