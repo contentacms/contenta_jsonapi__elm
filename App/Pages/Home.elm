@@ -1,4 +1,4 @@
-module App.Pages.Frontpage exposing (view)
+module App.Pages.Home exposing (view)
 
 import App.Model exposing (..)
 import Html exposing (..)

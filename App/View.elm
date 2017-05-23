@@ -2,7 +2,7 @@ module App.View exposing (view)
 
 import App.Model exposing (..)
 import App.PageType exposing (..)
-import App.Pages.Frontpage
+import App.Pages.Home
 import Html exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
