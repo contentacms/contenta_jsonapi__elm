@@ -13,13 +13,13 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GetRecipes ->
-            ( model, getRecipes )
+            ( model, getRecipes model.flags )
 
         GetArticles ->
-            ( model, getArticles )
+            ( model, getArticles model.flags )
 
         GetRecipe string ->
-            ( model, getRecipe string )
+            ( model, getRecipe model.flags string )
 
         RecipeLoaded (Ok resource) ->
             { model
@@ -127,7 +127,7 @@ update msg model =
             case page of
                 Home ->
                     ( { model | currentPage = page }
-                    , Cmd.batch [ getPromotedRecipes, getPromotedArticles, getRecipes ]
+                    , Cmd.batch [ getPromotedRecipes model.flags, getPromotedArticles model.flags, getRecipes model.flags ]
                     )
 
                 RecipeDetailPage string ->

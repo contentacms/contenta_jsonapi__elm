@@ -30,12 +30,12 @@ articleDecoderWithIdAndImage id image =
         (succeed image)
 
 
-getRecipes : Cmd Msg
-getRecipes =
+getRecipes : Flags -> Cmd Msg
+getRecipes flags =
     let
         request =
             JsonApi.Http.getPrimaryResourceCollection
-                ("http://localhost:8890/node/recipe?include=field_image&fields[file--file]=uuid,url,uri&fields[node--recipe]="
+                (flags.baseUrl ++ "/node/recipe?include=field_image&fields[file--file]=uuid,url,uri&fields[node--recipe]="
                     ++ "title,"
                     ++ "field_difficulty,"
                     ++ "field_ingredients,"
@@ -48,12 +48,12 @@ getRecipes =
         Http.send RecipesLoaded request
 
 
-getArticles : Cmd Msg
-getArticles =
+getArticles : Flags -> Cmd Msg
+getArticles flags =
     let
         request =
             JsonApi.Http.getPrimaryResourceCollection
-                ("http://localhost:8890/node/article?include=field_image&fields[file--file]=uuid,url,uri&fields[node--article]="
+                (flags.baseUrl ++ "/node/article?include=field_image&fields[file--file]=uuid,url,uri&fields[node--article]="
                     ++ "title,"
                     --                    ++ "field_image,"
                     ++
@@ -64,12 +64,12 @@ getArticles =
         Http.send ArticlesLoaded request
 
 
-getPromotedRecipes : Cmd Msg
-getPromotedRecipes =
+getPromotedRecipes : Flags -> Cmd Msg
+getPromotedRecipes flags =
     let
         request =
             JsonApi.Http.getPrimaryResourceCollection
-                ("http://localhost:8890/node/recipe?include=field_image&fields[file--file]=uuid,url,uri&fields[node--recipe]="
+                (flags.baseUrl ++ "/node/recipe?include=field_image&fields[file--file]=uuid,url,uri&fields[node--recipe]="
                     ++ "title,"
                     ++ "field_difficulty,"
                     ++ "field_ingredients,"
@@ -84,12 +84,12 @@ getPromotedRecipes =
         Http.send PromotedRecipesLoaded request
 
 
-getPromotedArticles : Cmd Msg
-getPromotedArticles =
+getPromotedArticles : Flags -> Cmd Msg
+getPromotedArticles flags =
     let
         request =
             JsonApi.Http.getPrimaryResourceCollection
-                ("http://localhost:8890/node/article?include=field_image&fields[file--file]=uuid,url,uri&fields[node--article]="
+                (flags.baseUrl ++ "/node/article?include=field_image&fields[file--file]=uuid,url,uri&fields[node--article]="
                     ++ "title,"
                     ++ "field_image,"
                     ++ "field_recipes,"
@@ -101,12 +101,12 @@ getPromotedArticles =
         Http.send PromotedArticlesLoaded request
 
 
-getRecipe : String -> Cmd Msg
-getRecipe id =
+getRecipe : Flags -> String -> Cmd Msg
+getRecipe flags id =
     let
         request =
             JsonApi.Http.getPrimaryResource
-                ("http://localhost:8890/node/recipe/"
+                (flags.baseUrl ++ "/node/recipe/"
                     ++ id
                     ++ "?include=field_image&fields[file--file]=uuid,url,uri&fields[node--recipe]="
                     ++ "title,"

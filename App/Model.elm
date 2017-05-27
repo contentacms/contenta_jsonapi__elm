@@ -63,12 +63,18 @@ type alias LoginDetails =
     }
 
 
+type alias Flags =
+    { baseUrl : String
+    }
+
+
 type alias Model =
     { recipes : Maybe (List Recipe)
     , selectedRecipe : Maybe String
     , currentPage : Page
     , loginFormActive : Bool
     , loginDetails : Maybe LoginDetails
+    , flags : Flags
     , pages :
         { home :
             { promotedArticles : Maybe (List Article)
