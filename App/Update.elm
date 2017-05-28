@@ -117,6 +117,7 @@ update msg model =
         --        LoginCompleted ->
         --            ( model, Cmd.none )
         PromotedArticlesLoaded (Ok resources) ->
+           -- @todo: Nested data models aren't ideal.
             let
                 pages =
                     model.pages
@@ -142,6 +143,7 @@ update msg model =
             ( model, Cmd.none )
 
         PromotedRecipesLoaded (Ok resources) ->
+           -- @todo: Nested data models aren't ideal.
             let
                 pages =
                     model.pages
