@@ -6,6 +6,7 @@ import App.ModelHttp exposing (..)
 import JsonApi.Resources
 import Result.Extra
 import List exposing (filter)
+import Http exposing (Error(..), Response)
 import Maybe
 
 
@@ -29,8 +30,8 @@ update msg model =
             }
                 ! []
 
-        RecipeLoaded (Err _) ->
-            ( model, Cmd.none )
+        RecipeLoaded (Err err) ->
+            updateError "error: RecipeLoaded" err model
 
         RecipesLoaded (Ok resources) ->
             { model
@@ -42,8 +43,8 @@ update msg model =
             }
                 ! []
 
-        RecipesLoaded (Err _) ->
-            ( model, Cmd.none )
+        RecipesLoaded (Err err) ->
+            updateError "error: RecipesLoaded" err model
 
         ArticlesLoaded (Ok resources) ->
             let
@@ -68,11 +69,7 @@ update msg model =
                 { model | pages = newPages } ! []
 
         ArticlesLoaded (Err err) ->
-            let
-                _ =
-                    Debug.log "error" err
-            in
-                ( model, Cmd.none )
+            updateError "error: ArticlesLoaded" err model
 
         SetActivePage page ->
             case page of
@@ -117,7 +114,7 @@ update msg model =
         --        LoginCompleted ->
         --            ( model, Cmd.none )
         PromotedArticlesLoaded (Ok resources) ->
-           -- @todo: Nested data models aren't ideal.
+            -- @todo: Nested data models aren't ideal.
             let
                 pages =
                     model.pages
@@ -139,11 +136,11 @@ update msg model =
             in
                 { model | pages = newPages } ! []
 
-        PromotedArticlesLoaded (Err _) ->
-            ( model, Cmd.none )
+        PromotedArticlesLoaded (Err err) ->
+            updateError "error: PromotedArticlesLoaded" err model
 
         PromotedRecipesLoaded (Ok resources) ->
-           -- @todo: Nested data models aren't ideal.
+            -- @todo: Nested data models aren't ideal.
             let
                 pages =
                     model.pages
@@ -165,8 +162,8 @@ update msg model =
             in
                 { model | pages = newPages } ! []
 
-        PromotedRecipesLoaded (Err _) ->
-            ( model, Cmd.none )
+        PromotedRecipesLoaded (Err err) ->
+            updateError "error: PromotedRecipesLoaded" err model
 
 
 filterListMaybe : List (Maybe a) -> Maybe (List a)
@@ -181,3 +178,31 @@ filterListMaybe list =
 
             _ ->
                 Just filteredList
+
+
+updateError : String -> Http.Error -> Model -> ( Model, Cmd Msg )
+updateError debugMessage error model =
+    let
+        _ =
+            Debug.log debugMessage <| errorString error
+    in
+        ( model, Cmd.none )
+
+
+errorString : Http.Error -> String
+errorString error =
+    case error of
+        BadUrl string ->
+            "BadUrl " ++ string
+
+        Timeout ->
+            "Timeout"
+
+        NetworkError ->
+            "NetworkError"
+
+        BadStatus response ->
+            "BadStatus " ++ toString (response.status)
+
+        BadPayload string response ->
+            "BadPayload " ++ string
