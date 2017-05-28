@@ -69,7 +69,6 @@ viewPromotedRecipe recipe =
             |> Maybe.withDefault (text "No image")
           )
         , viewTags recipe.tags
-        , text "TODO Category"
         , h3 [] [ text recipe.title ]
         ]
 
