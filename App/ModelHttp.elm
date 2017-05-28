@@ -8,10 +8,12 @@ import JsonApi
 import JsonApi.Http
 import Http
 import RemoteData
+import Result.Extra
+import Json.Decode.Extra
 
 
-recipeDecoderWithIdAndImage : String -> Maybe String -> Decoder Recipe
-recipeDecoderWithIdAndImage id image =
+recipeDecoderWithValues : String -> Maybe String -> List Term -> Decoder Recipe
+recipeDecoderWithValues id image tags =
     map8 Recipe
         (succeed id)
         (field "title" string)
@@ -21,6 +23,7 @@ recipeDecoderWithIdAndImage id image =
         (field "field_preparation_time" int)
         (field "field_recipe_instruction" (field "value" string))
         (succeed image)
+        |> Json.Decode.Extra.andMap (succeed tags)
 
 
 articleDecoderWithIdAndImage : String -> Maybe String -> Decoder Article
@@ -32,29 +35,6 @@ articleDecoderWithIdAndImage id image =
         (succeed image)
 
 
-getRecipes : Flags -> Cmd Msg
-getRecipes flags =
-    let
-        request =
-            JsonApi.Http.getPrimaryResourceCollection
-                (flags.apiBaseUrl
-                    ++ "/node/recipe"
-                    ++ "?"
-                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file&fields[field_image]=field_image&fields[file--file]=url,uuid"
-                    ++ "&fields[node--recipe]="
-                    ++ "title,"
-                    ++ "field_difficulty,"
-                    ++ "field_ingredients,"
-                    ++ "field_total_time,"
-                    ++ "field_preparation_time,"
-                    ++ "field_recipe_instruction,"
-                    ++ "field_image"
-                )
-    in
-        RemoteData.sendRequest request
-            |> Cmd.map RecipesLoaded
-
-
 getArticles : Flags -> Cmd Msg
 getArticles flags =
     let
@@ -63,14 +43,42 @@ getArticles flags =
                 (flags.apiBaseUrl
                     ++ "/node/article"
                     ++ "?"
-                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file&fields[field_image]=field_image&fields[file--file]=url,uuid"
+                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file,field_tags"
+                    ++ "&fields[field_image]=field_image&fields[file--file]=url,uuid"
                     ++ "title,"
                     ++ "field_recipes,"
-                    ++ "body"
+                    ++ "body,"
+                    ++ "field_tags,"
                 )
     in
         RemoteData.sendRequest request
             |> Cmd.map ArticlesLoaded
+
+
+getRecipes : Flags -> Cmd Msg
+getRecipes flags =
+    let
+        request =
+            JsonApi.Http.getPrimaryResourceCollection
+                (flags.apiBaseUrl
+                    ++ "/node/recipe"
+                    ++ "?"
+                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file,field_tags"
+                    ++ "&fields[field_image]=field_image&fields[file--file]=url,uuid"
+                    ++ "&fields[node--recipe]="
+                    ++ "title,"
+                    ++ "field_difficulty,"
+                    ++ "field_ingredients,"
+                    ++ "field_total_time,"
+                    ++ "field_preparation_time,"
+                    ++ "field_recipe_instruction,"
+                    ++ "field_image,"
+                    ++ "field_tags,"
+                    ++ "&fields[taxonomy_term--tags]=tid,name"
+                )
+    in
+        RemoteData.sendRequest request
+            |> Cmd.map RecipesLoaded
 
 
 getPromotedRecipes : Flags -> Cmd Msg
@@ -81,7 +89,8 @@ getPromotedRecipes flags =
                 (flags.apiBaseUrl
                     ++ "/node/recipe"
                     ++ "?"
-                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file&fields[field_image]=field_image&fields[file--file]=url,uuid"
+                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file,field_tags"
+                    ++ "&fields[field_image]=field_image&fields[file--file]=url,uuid"
                     ++ "&fields[node--recipe]="
                     ++ "title,"
                     ++ "field_difficulty,"
@@ -89,7 +98,9 @@ getPromotedRecipes flags =
                     ++ "field_total_time,"
                     ++ "field_preparation_time,"
                     ++ "field_recipe_instruction,"
-                    ++ "field_image"
+                    ++ "field_image,"
+                    ++ "field_tags,"
+                    ++ "&fields[taxonomy_term--tags]=tid,name"
                     ++ "&filter[promote][value]=1"
                     ++ "&pager[limit]=3"
                 )
@@ -106,12 +117,15 @@ getPromotedArticles flags =
                 (flags.apiBaseUrl
                     ++ "/node/article"
                     ++ "?"
-                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file&fields[field_image]=field_image&fields[file--file]=url,uuid"
+                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file,field_tags"
+                    ++ "&fields[field_image]=field_image&fields[file--file]=url,uuid"
                     ++ "&fields[node--article]="
                     ++ "title,"
                     ++ "field_image,"
+                    ++ "field_tags,"
                     ++ "field_recipes,"
                     ++ "body,"
+                    ++ "&fields[taxonomy_term--tags]=tid,name"
                     ++ "&filter[promote][value]=1"
                     ++ "&pager[limit]=3"
                 )
@@ -129,7 +143,8 @@ getRecipe flags id =
                     ++ "/node/recipe/"
                     ++ id
                     ++ "?"
-                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file&fields[field_image]=field_image&fields[file--file]=url,uuid"
+                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file,field_tags"
+                    ++ "&fields[field_image]=field_image&fields[file--file]=url,uuid"
                     ++ "&fields[node--recipe]="
                     ++ "title,"
                     ++ "field_difficulty,"
@@ -137,7 +152,9 @@ getRecipe flags id =
                     ++ "field_total_time,"
                     ++ "field_preparation_time,"
                     ++ "field_recipe_instruction,"
-                    ++ "field_image"
+                    ++ "field_image,"
+                    ++ "field_tags,"
+                    ++ "&fields[taxonomy_term--tags]=tid,name"
                 )
     in
         RemoteData.sendRequest request
@@ -149,6 +166,13 @@ fileDecoder =
     map2 File
         (field "uuid" string)
         (field "url" string)
+
+
+termDecoder : Decoder Term
+termDecoder =
+    map2 Term
+        (field "tid" int)
+        (field "name" string)
 
 
 mediaDecoder : Decoder Media
@@ -170,8 +194,18 @@ decodeRecipe flags resource =
                 |> Result.map (\file -> { file | url = flags.baseUrl ++ file.url })
                 |> Result.toMaybe
 
+        tags =
+            JsonApi.Resources.relatedResourceCollection "field_tags" resource
+                |> Result.andThen
+                    (\resources ->
+                        (List.map (JsonApi.Resources.attributes termDecoder) resources
+                            |> Result.Extra.combine
+                        )
+                    )
+                |> Result.withDefault []
+
         recipeResult =
-            JsonApi.Resources.attributes (recipeDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
+            JsonApi.Resources.attributes (recipeDecoderWithValues id (Maybe.map .url file_image) tags) resource
                 |> Result.toMaybe
     in
         recipeResult

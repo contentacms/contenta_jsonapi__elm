@@ -1,4 +1,4 @@
-module App.View.Components exposing (viewRecipe, viewRemoteData)
+module App.View.Components exposing (viewRecipe, viewRemoteData, viewTags)
 
 import App.Model exposing (..)
 import Html exposing (..)
@@ -41,3 +41,19 @@ viewRecipe recipe =
         , h3 [] [ text "Instruction" ]
         , p [] [ text (toString recipe.recipeInstruction) ]
         ]
+
+
+viewTags : List Term -> Html Msg
+viewTags terms =
+    ul []
+        (List.map
+            (\tag ->
+                li [] [ viewTag tag ]
+            )
+            terms
+        )
+
+
+viewTag : Term -> Html Msg
+viewTag term =
+    text term.name

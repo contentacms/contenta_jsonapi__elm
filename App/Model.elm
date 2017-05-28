@@ -38,6 +38,7 @@ type alias Recipe =
     , prepTime : Int
     , recipeInstruction : String
     , image : Maybe String
+    , tags : List Term
     }
 
 
@@ -51,6 +52,12 @@ type alias Article =
     , title : String
     , body : String
     , image : Maybe String
+    }
+
+
+type alias Term =
+    { id : Int
+    , name : String
     }
 
 
