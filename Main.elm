@@ -8,6 +8,7 @@ import App.View exposing (..)
 import App.Update exposing (..)
 import Html
 import RouteUrl
+import RemoteData exposing (RemoteData)
 
 
 initialModel : Model
@@ -28,8 +29,8 @@ initialModel =
     , currentPage = Home
     , pages =
         { home =
-            { promotedArticles = Nothing
-            , promotedRecipes = Nothing
+            { promotedArticles = RemoteData.NotAsked
+            , promotedRecipes = RemoteData.NotAsked
             }
         , articles =
             { articles = Nothing

@@ -8,6 +8,7 @@ import Result.Extra
 import List exposing (filter)
 import Http exposing (Error(..), Response)
 import Maybe
+import RemoteData exposing (RemoteData(..))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -39,7 +40,7 @@ update msg model =
                     List.map
                         (decodeRecipe model.flags)
                         resources
-                        |> filterListMaybe
+                        |> joinListMaybe
             }
                 ! []
 
@@ -60,7 +61,7 @@ update msg model =
                             List.map
                                 (decodeArticle model.flags)
                                 resources
-                                |> filterListMaybe
+                                |> joinListMaybe
                     }
 
                 newPages =
@@ -74,9 +75,21 @@ update msg model =
         SetActivePage page ->
             case page of
                 Home ->
-                    ( { model | currentPage = page }
-                    , Cmd.batch [ getPromotedRecipes model.flags, getPromotedArticles model.flags, getRecipes model.flags ]
-                    )
+                    let
+                        pagesModel =
+                            model.pages
+
+                        newPagesModel =
+                            { pagesModel
+                                | home =
+                                    { promotedArticles = RemoteData.Loading
+                                    , promotedRecipes = RemoteData.Loading
+                                    }
+                            }
+                    in
+                        ( { model | currentPage = page, pages = newPagesModel }
+                        , Cmd.batch [ getPromotedRecipes model.flags, getPromotedArticles model.flags, getRecipes model.flags ]
+                        )
 
                 RecipeDetailPage string ->
                     { model | currentPage = page }
@@ -113,7 +126,7 @@ update msg model =
 
         --        LoginCompleted ->
         --            ( model, Cmd.none )
-        PromotedArticlesLoaded (Ok resources) ->
+        PromotedArticlesLoaded remoteResponse ->
             -- @todo: Nested data models aren't ideal.
             let
                 pages =
@@ -125,10 +138,14 @@ update msg model =
                 newHomePageModel =
                     { homePageModel
                         | promotedArticles =
-                            List.map
-                                (decodeArticle model.flags)
-                                resources
-                                |> filterListMaybe
+                            RemoteData.map
+                                (\resources ->
+                                    List.map
+                                        (decodeArticle model.flags)
+                                        resources
+                                        |> removeMaybeFromList
+                                )
+                                remoteResponse
                     }
 
                 newPages =
@@ -136,10 +153,7 @@ update msg model =
             in
                 { model | pages = newPages } ! []
 
-        PromotedArticlesLoaded (Err err) ->
-            updateError "error: PromotedArticlesLoaded" err model
-
-        PromotedRecipesLoaded (Ok resources) ->
+        PromotedRecipesLoaded remoteResponse ->
             -- @todo: Nested data models aren't ideal.
             let
                 pages =
@@ -151,10 +165,14 @@ update msg model =
                 newHomePageModel =
                     { homePageModel
                         | promotedRecipes =
-                            List.map
-                                (decodeRecipe model.flags)
-                                resources
-                                |> filterListMaybe
+                            RemoteData.map
+                                (\resources ->
+                                    List.map
+                                        (decodeRecipe model.flags)
+                                        resources
+                                        |> removeMaybeFromList
+                                )
+                                remoteResponse
                     }
 
                 newPages =
@@ -162,12 +180,9 @@ update msg model =
             in
                 { model | pages = newPages } ! []
 
-        PromotedRecipesLoaded (Err err) ->
-            updateError "error: PromotedRecipesLoaded" err model
 
-
-filterListMaybe : List (Maybe a) -> Maybe (List a)
-filterListMaybe list =
+joinListMaybe : List (Maybe a) -> Maybe (List a)
+joinListMaybe list =
     let
         filteredList =
             List.filterMap identity list
@@ -178,6 +193,19 @@ filterListMaybe list =
 
             _ ->
                 Just filteredList
+
+
+removeMaybeFromList : List (Maybe a) -> List a
+removeMaybeFromList list =
+    case (List.reverse list) of
+        (Just a) :: xs ->
+            a :: removeMaybeFromList xs
+
+        Nothing :: xs ->
+            removeMaybeFromList xs
+
+        [] ->
+            []
 
 
 updateError : String -> Http.Error -> Model -> ( Model, Cmd Msg )

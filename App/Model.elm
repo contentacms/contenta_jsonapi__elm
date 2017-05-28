@@ -3,6 +3,7 @@ module App.Model exposing (..)
 import App.PageType exposing (..)
 import Http
 import JsonApi
+import RemoteData exposing (WebData)
 
 
 type Msg
@@ -14,8 +15,8 @@ type Msg
     | InputLoginSubmit
       -- | LoginCompleted
       -- # Homepage
-    | PromotedRecipesLoaded (Result Http.Error (List JsonApi.Resource))
-    | PromotedArticlesLoaded (Result Http.Error (List JsonApi.Resource))
+    | PromotedRecipesLoaded (WebData (List JsonApi.Resource))
+    | PromotedArticlesLoaded (WebData (List JsonApi.Resource))
       -- # Recipes page
     | GetRecipe String
     | RecipeLoaded (Result Http.Error JsonApi.Resource)
@@ -72,7 +73,7 @@ type alias LoginDetails =
 
 type alias Flags =
     { baseUrl : String
-    , apiBaseUrl: String
+    , apiBaseUrl : String
     }
 
 
@@ -85,8 +86,8 @@ type alias Model =
     , flags : Flags
     , pages :
         { home :
-            { promotedArticles : Maybe (List Article)
-            , promotedRecipes : Maybe (List Recipe)
+            { promotedArticles : WebData (List Article)
+            , promotedRecipes : WebData (List Recipe)
             }
         , articles :
             { articles : Maybe (List Article)

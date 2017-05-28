@@ -3,6 +3,7 @@ module App.Pages.Home exposing (view)
 import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (src)
+import RemoteData exposing (WebData, RemoteData(..))
 
 
 view : Model -> Html Msg
@@ -53,13 +54,26 @@ viewRecipes model =
     div []
         [ h2 [] [ text "Recipes" ]
         , p [] [ text "Explore recipes across every type of occasion, ingredient and skill level" ]
-        , div []
-            (Maybe.map
-                (List.map viewPromotedRecipe)
-                model.pages.home.promotedRecipes
-                |> Maybe.withDefault [ text "Loading" ]
-            )
+        , viewRemoteData
+            model.pages.home.promotedRecipes
+            (\data -> div [] <| List.map viewPromotedRecipe data)
         ]
+
+
+viewRemoteData : WebData a -> (a -> Html msg) -> Html msg
+viewRemoteData webdata innerView =
+    case webdata of
+        NotAsked ->
+            text "Initialisting"
+
+        Loading ->
+            text "Loading"
+
+        Failure err ->
+            text ("Error: " ++ toString err)
+
+        Success a ->
+            innerView a
 
 
 viewPromotedRecipe : Recipe -> Html Msg

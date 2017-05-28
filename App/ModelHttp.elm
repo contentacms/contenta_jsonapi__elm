@@ -7,6 +7,7 @@ import JsonApi.Resources
 import JsonApi
 import JsonApi.Http
 import Http
+import RemoteData
 
 
 recipeDecoderWithIdAndImage : String -> Maybe String -> Decoder Recipe
@@ -91,7 +92,8 @@ getPromotedRecipes flags =
                     ++ "&pager[limit]=3"
                 )
     in
-        Http.send PromotedRecipesLoaded request
+        RemoteData.sendRequest request
+            |> Cmd.map PromotedRecipesLoaded
 
 
 getPromotedArticles : Flags -> Cmd Msg
@@ -112,7 +114,8 @@ getPromotedArticles flags =
                     ++ "&pager[limit]=3"
                 )
     in
-        Http.send PromotedArticlesLoaded request
+        RemoteData.sendRequest request
+            |> Cmd.map PromotedArticlesLoaded
 
 
 getRecipe : Flags -> String -> Cmd Msg
