@@ -8,12 +8,6 @@ import RemoteData exposing (WebData)
 
 type Msg
     = SetActivePage Page
-      -- # Login
-    | LoginFormState Bool
-    | InputLoginName String
-    | InputLoginPassword String
-    | InputLoginSubmit
-      -- | LoginCompleted
       -- # Homepage
     | PromotedRecipesLoaded (WebData (List JsonApi.Resource))
     | PromotedArticlesLoaded (WebData (List JsonApi.Resource))
@@ -72,12 +66,6 @@ type alias Media =
     }
 
 
-type alias LoginDetails =
-    { name : String
-    , password : String
-    }
-
-
 type alias Flags =
     { baseUrl : String
     , apiBaseUrl : String
@@ -88,8 +76,6 @@ type alias Model =
     { recipes : WebData (List Recipe)
     , selectedRecipe : Maybe String
     , currentPage : Page
-    , loginFormActive : Bool
-    , loginDetails : Maybe LoginDetails
     , flags : Flags
     , pages :
         { home :

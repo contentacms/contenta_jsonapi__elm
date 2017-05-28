@@ -20,12 +20,6 @@ initialModel =
         , apiBaseUrl = "http://localhost:8888/jsonapi"
         }
     , selectedRecipe = Nothing
-    , loginFormActive = False
-    , loginDetails =
-        Just
-            { name = "Hey"
-            , password = "blub"
-            }
     , currentPage = Home
     , pages =
         { home =

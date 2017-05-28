@@ -48,11 +48,6 @@ viewHeader model =
         [ div []
             []
           --            [ text "Search"
-          --            , (if (model.loginFormActive) then
-          --                a [ onClick (LoginFormState (not model.loginFormActive)) ] [ text "Login form" ]
-          --               else
-          --                viewLoginForm model
-          --              )
           --            ]
         , h1 [] [ text "Umami, food magazine" ]
         , ul []
@@ -63,23 +58,3 @@ viewHeader model =
             , li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
             ]
         ]
-
-
-viewLoginForm : Model -> Html Msg
-viewLoginForm model =
-    let
-        loginDetails =
-            Maybe.withDefault
-                { name = ""
-                , password = ""
-                }
-                model.loginDetails
-    in
-        Html.form []
-            [ input [ onInput InputLoginName, type_ "textfield", value loginDetails.name ] []
-            , input [ onInput InputLoginPassword, type_ "password", value loginDetails.password ] []
-            , button [ onClick InputLoginSubmit ] [ text "Login" ]
-            ]
-
-
-

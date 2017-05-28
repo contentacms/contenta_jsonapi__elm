@@ -119,23 +119,6 @@ update msg model =
         SelectRecipe string ->
             { model | selectedRecipe = Just string } ! []
 
-        LoginFormState bool ->
-            { model | loginFormActive = bool } ! []
-
-        InputLoginName string ->
-            model ! []
-
-        InputLoginPassword string ->
-            model ! []
-
-        InputLoginSubmit ->
-            (model
-                |> Debug.log "login submit"
-            )
-                ! []
-
-        --        LoginCompleted ->
-        --            ( model, Cmd.none )
         PromotedArticlesLoaded remoteResponse ->
             -- @todo: Nested data models aren't ideal.
             let
