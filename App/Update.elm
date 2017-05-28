@@ -24,22 +24,8 @@ update msg model =
         RecipeLoaded (Ok resource) ->
             { model
                 | recipes =
-                    let
-                        id =
-                            JsonApi.Resources.id resource
-
-                        file_image =
-                            JsonApi.Resources.relatedResource "field_image" resource
-                                |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
-                                |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
-                                |> Result.toMaybe
-
-                        recipeResult =
-                            JsonApi.Resources.attributes (recipeDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
-                                |> Result.toMaybe
-                    in
-                        recipeResult
-                            |> Maybe.map List.singleton
+                    decodeRecipe resource
+                        |> Maybe.map List.singleton
             }
                 ! []
 
@@ -50,23 +36,7 @@ update msg model =
             { model
                 | recipes =
                     List.map
-                        (\resource ->
-                            let
-                                id =
-                                    JsonApi.Resources.id resource
-
-                                file_image =
-                                    JsonApi.Resources.relatedResource "field_image" resource
-                                        |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
-                                        |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
-                                        |> Result.toMaybe
-
-                                recipeResult =
-                                    JsonApi.Resources.attributes (recipeDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
-                                        |> Result.toMaybe
-                            in
-                                recipeResult
-                        )
+                        decodeRecipe
                         resources
                         |> filterListMaybe
             }
@@ -87,26 +57,7 @@ update msg model =
                     { articlesPage
                         | articles =
                             List.map
-                                (\resource ->
-                                    let
-                                        id =
-                                            JsonApi.Resources.id resource
-
-                                        -- @todo Loading fails atm.
-                                        file_image =
-                                            Nothing
-
-                                        --                                            JsonApi.Resources.relatedResource "field_image" resource
-                                        --                                                |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
-                                        --                                                |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
-                                        --                                                |> Result.toMaybe
-                                        articleResult =
-                                            JsonApi.Resources.attributes (articleDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
-                                                |> Debug.log "articles"
-                                                |> Result.toMaybe
-                                    in
-                                        articleResult
-                                )
+                                decodeArticle
                                 resources
                                 |> filterListMaybe
                     }
@@ -177,23 +128,7 @@ update msg model =
                     { homePageModel
                         | promotedArticles =
                             List.map
-                                (\resource ->
-                                    let
-                                        id =
-                                            JsonApi.Resources.id resource
-
-                                        file_image =
-                                            JsonApi.Resources.relatedResource "field_image" resource
-                                                |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
-                                                |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
-                                                |> Result.toMaybe
-
-                                        articleResult =
-                                            JsonApi.Resources.attributes (articleDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
-                                                |> Result.toMaybe
-                                    in
-                                        articleResult
-                                )
+                                decodeArticle
                                 resources
                                 |> filterListMaybe
                     }
@@ -218,23 +153,7 @@ update msg model =
                     { homePageModel
                         | promotedRecipes =
                             List.map
-                                (\resource ->
-                                    let
-                                        id =
-                                            JsonApi.Resources.id resource
-
-                                        file_image =
-                                            JsonApi.Resources.relatedResource "field_image" resource
-                                                |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
-                                                |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
-                                                |> Result.toMaybe
-
-                                        recipeResult =
-                                            JsonApi.Resources.attributes (recipeDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
-                                                |> Result.toMaybe
-                                    in
-                                        recipeResult
-                                )
+                                decodeRecipe
                                 resources
                                 |> filterListMaybe
                     }
