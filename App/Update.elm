@@ -114,7 +114,7 @@ update msg model =
                             |> update GetArticles
 
                 _ ->
-                    ( { model | currentPage = page }, Cmd.none )
+                    { model | currentPage = page } ! []
 
         SelectRecipe string ->
             { model | selectedRecipe = Just string } ! []
@@ -123,16 +123,16 @@ update msg model =
             { model | loginFormActive = bool } ! []
 
         InputLoginName string ->
-            ( model, Cmd.none )
+            model ! []
 
         InputLoginPassword string ->
-            ( model, Cmd.none )
+            model ! []
 
         InputLoginSubmit ->
-            ( model
+            (model
                 |> Debug.log "login submit"
-            , Cmd.none
             )
+                ! []
 
         --        LoginCompleted ->
         --            ( model, Cmd.none )
@@ -224,7 +224,7 @@ updateError debugMessage error model =
         _ =
             Debug.log debugMessage <| errorString error
     in
-        ( model, Cmd.none )
+        model ! []
 
 
 errorString : Http.Error -> String
