@@ -7,7 +7,7 @@ import JsonApi
 
 type Msg
     = SetActivePage Page
-    | SelectRecipe String
+      -- # Login
     | LoginFormState Bool
     | InputLoginName String
     | InputLoginPassword String
@@ -24,6 +24,8 @@ type Msg
       -- # Features / Articles page
     | GetArticles
     | ArticlesLoaded (Result Http.Error (List JsonApi.Resource))
+      -- # Select recipe page.
+    | SelectRecipe String
 
 
 type alias Recipe =
