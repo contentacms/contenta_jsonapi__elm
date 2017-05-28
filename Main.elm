@@ -32,9 +32,7 @@ initialModel =
             { promotedArticles = RemoteData.NotAsked
             , promotedRecipes = RemoteData.NotAsked
             }
-        , articles =
-            { articles = RemoteData.NotAsked
-            }
+        , articles = RemoteData.NotAsked
         }
     }
 

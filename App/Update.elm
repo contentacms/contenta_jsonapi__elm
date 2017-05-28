@@ -58,11 +58,8 @@ update msg model =
                 pages =
                     model.pages
 
-                articlesPage =
-                    pages.articles
-
-                newArticlesPage =
-                    { articlesPage
+                pages_ =
+                    { pages
                         | articles =
                             RemoteData.map
                                 (\resources ->
@@ -73,11 +70,8 @@ update msg model =
                                 )
                                 remoteResponse
                     }
-
-                newPages =
-                    { pages | articles = newArticlesPage }
             in
-                { model | pages = newPages } ! []
+                { model | pages = pages_ } ! []
 
         SetActivePage page ->
             case page of
@@ -108,17 +102,15 @@ update msg model =
 
                 ArticleList ->
                     let
-                        pagesModel =
+                        pages =
                             model.pages
 
-                        newPagesModel =
-                            { pagesModel
-                                | articles =
-                                    { articles = RemoteData.Loading
-                                    }
+                        pages_ =
+                            { pages
+                                | articles = RemoteData.Loading
                             }
                     in
-                        { model | currentPage = page, pages = newPagesModel }
+                        { model | currentPage = page, pages = pages_ }
                             |> update GetArticles
 
                 _ ->

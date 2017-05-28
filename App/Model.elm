@@ -96,8 +96,6 @@ type alias Model =
             { promotedArticles : WebData (List Article)
             , promotedRecipes : WebData (List Recipe)
             }
-        , articles :
-            { articles : WebData (List Article)
-            }
+        , articles : WebData (List Article)
         }
     }

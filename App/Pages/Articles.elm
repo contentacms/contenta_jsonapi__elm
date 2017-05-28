@@ -18,7 +18,7 @@ view model =
                 list ->
                     div [] <| List.map viewArticle list
         )
-        model.pages.articles.articles
+        model.pages.articles
 
 
 viewArticle : Article -> Html Msg
