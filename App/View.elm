@@ -44,13 +44,14 @@ viewHeader : Model -> Html Msg
 viewHeader model =
     div []
         [ div []
-            [ text "Search"
-            , (if (model.loginFormActive) then
-                a [ onClick (LoginFormState (not model.loginFormActive)) ] [ text "Login form" ]
-               else
-                viewLoginForm model
-              )
-            ]
+            []
+          --            [ text "Search"
+          --            , (if (model.loginFormActive) then
+          --                a [ onClick (LoginFormState (not model.loginFormActive)) ] [ text "Login form" ]
+          --               else
+          --                viewLoginForm model
+          --              )
+          --            ]
         , h1 [] [ text "Umami, food magazine" ]
         , ul []
             [ li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
