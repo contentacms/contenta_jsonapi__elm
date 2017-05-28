@@ -4,9 +4,13 @@ import App.Model exposing (..)
 import App.PageType exposing (..)
 import App.Pages.Home
 import App.Pages.Articles
+import App.Pages.AboutUs
+import App.Pages.RecipeSelectionPage
+import App.Pages.RecipeList
 import Html exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
+import App.View.Components exposing (viewRecipe)
 import List
 import List.Extra
 
@@ -20,16 +24,16 @@ view model =
                 App.Pages.Home.view model
 
             AboutUs ->
-                viewAboutUs model
+                App.Pages.AboutUs.view model
 
             RecipeList ->
-                viewRecipes model
+                App.Pages.RecipeList.view model
 
             ArticleList ->
                 App.Pages.Articles.view model
 
             RecipeSelectionPage ->
-                viewRecipeSelectionPage model
+                App.Pages.RecipeSelectionPage.view model
 
             RecipeDetailPage id ->
                 model.recipes
@@ -80,70 +84,4 @@ viewLoginForm model =
             ]
 
 
-viewRecipeSelectionPage : Model -> Html Msg
-viewRecipeSelectionPage model =
-    Html.form []
-        [ label [] [ text "Select recipe" ]
-        , Maybe.withDefault
-            (text "No recipe available")
-            (Maybe.andThen
-                (\recipes ->
-                    (Just
-                        (select [ onInput (\id -> SetActivePage <| RecipeDetailPage id) ] <|
-                            List.append
-                                [ option [] [ text "Nothing" ] ]
-                            <|
-                                (List.map
-                                    (\recipe ->
-                                        option [ value recipe.id ] [ text recipe.title ]
-                                    )
-                                    recipes
-                                )
-                        )
-                    )
-                )
-                model.recipes
-            )
-        ]
 
-
-viewAboutUs : Model -> Html Msg
-viewAboutUs model =
-    text "About us ... not implemented yet"
-
-
-viewRecipes : Model -> Html Msg
-viewRecipes model =
-    case model.recipes of
-        Nothing ->
-            text "No content loaded yet"
-
-        Just recipes ->
-            ul []
-                (List.map
-                    (\recipe ->
-                        (li [] [ viewRecipe recipe ])
-                    )
-                    recipes
-                )
-
-
-viewRecipe : Recipe -> Html Msg
-viewRecipe recipe =
-    div []
-        [ h3 [] [ text "Title" ]
-        , p [] [ text (toString recipe.title) ]
-        , h3 [] [ text "Image" ]
-        , Maybe.map (\url -> (img [ src url ] [])) recipe.image
-            |> Maybe.withDefault (p [] [ text "No image" ])
-        , h3 [] [ text "Difficulty" ]
-        , p [] [ text (toString recipe.difficulty) ]
-        , h3 [] [ text "Ingredients" ]
-        , ul [] (List.map (\inc -> li [] [ text inc ]) recipe.ingredients)
-        , h3 [] [ text "Preparation time" ]
-        , p [] [ text (toString recipe.prepTime) ]
-        , h3 [] [ text "Total time" ]
-        , p [] [ text (toString recipe.totalTime) ]
-        , h3 [] [ text "Instruction" ]
-        , p [] [ text (toString recipe.recipeInstruction) ]
-        ]
