@@ -4,6 +4,7 @@ import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (src)
 import RemoteData exposing (WebData, RemoteData(..))
+import App.View.Components exposing (viewRemoteData)
 
 
 view : Model -> Html Msg
@@ -18,22 +19,6 @@ view model =
                 list ->
                     div [] <| List.map viewArticle list
         )
-
-
-viewRemoteData : WebData a -> (a -> Html msg) -> Html msg
-viewRemoteData webdata innerView =
-    case webdata of
-        NotAsked ->
-            text "Initialisting"
-
-        Loading ->
-            text "Loading"
-
-        Failure err ->
-            text ("Error: " ++ toString err)
-
-        Success a ->
-            innerView a
 
 
 viewArticle : Article -> Html Msg

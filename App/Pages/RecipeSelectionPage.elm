@@ -2,26 +2,11 @@ module App.Pages.RecipeSelectionPage exposing (view)
 
 import App.Model exposing (..)
 import App.PageType exposing (Page(..))
+import App.View.Components exposing (viewRemoteData)
 import Html exposing (..)
 import Html.Attributes exposing (src, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import RemoteData exposing (WebData, RemoteData(..))
-
-
-viewRemoteData : WebData a -> (a -> Html msg) -> Html msg
-viewRemoteData webdata innerView =
-    case webdata of
-        NotAsked ->
-            text "Initialisting"
-
-        Loading ->
-            text "Loading"
-
-        Failure err ->
-            text ("Error: " ++ toString err)
-
-        Success a ->
-            innerView a
 
 
 view : Model -> Html Msg

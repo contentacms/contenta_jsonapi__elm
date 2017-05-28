@@ -4,6 +4,7 @@ import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (src)
 import RemoteData exposing (WebData, RemoteData(..))
+import App.View.Components exposing (viewRemoteData)
 
 
 view : Model -> Html Msg
@@ -58,22 +59,6 @@ viewRecipes model =
             model.pages.home.promotedRecipes
             (\data -> div [] <| List.map viewPromotedRecipe data)
         ]
-
-
-viewRemoteData : WebData a -> (a -> Html msg) -> Html msg
-viewRemoteData webdata innerView =
-    case webdata of
-        NotAsked ->
-            text "Initialisting"
-
-        Loading ->
-            text "Loading"
-
-        Failure err ->
-            text ("Error: " ++ toString err)
-
-        Success a ->
-            innerView a
 
 
 viewPromotedRecipe : Recipe -> Html Msg

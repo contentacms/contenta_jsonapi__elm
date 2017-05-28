@@ -1,8 +1,25 @@
-module App.View.Components exposing (viewRecipe)
+module App.View.Components exposing (viewRecipe, viewRemoteData)
 
 import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import RemoteData exposing (WebData, RemoteData(..))
+
+
+viewRemoteData : WebData a -> (a -> Html msg) -> Html msg
+viewRemoteData webdata innerView =
+    case webdata of
+        NotAsked ->
+            text "Initialisting"
+
+        Loading ->
+            text "Loading"
+
+        Failure err ->
+            text ("Error: " ++ toString err)
+
+        Success a ->
+            innerView a
 
 
 viewRecipe : Recipe -> Html Msg
