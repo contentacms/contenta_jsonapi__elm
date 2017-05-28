@@ -10,7 +10,6 @@ import App.View.Components exposing (viewRemoteData)
 view : Model -> Html Msg
 view model =
     viewRemoteData
-        model.pages.articles.articles
         (\data ->
             case data of
                 [] ->
@@ -19,6 +18,7 @@ view model =
                 list ->
                     div [] <| List.map viewArticle list
         )
+        model.pages.articles.articles
 
 
 viewArticle : Article -> Html Msg

@@ -11,11 +11,9 @@ import App.View.Components exposing (viewRemoteData)
 view : Model -> Html Msg
 view model =
     viewRemoteData
-        model.recipes
         (\recipes ->
             List.head recipes
                 |> Maybe.map viewRecipe
                 |> Maybe.withDefault (text "Recipe not found")
         )
-
-
+        model.recipes

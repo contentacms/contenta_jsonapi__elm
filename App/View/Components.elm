@@ -6,8 +6,8 @@ import Html.Attributes exposing (..)
 import RemoteData exposing (WebData, RemoteData(..))
 
 
-viewRemoteData : WebData a -> (a -> Html msg) -> Html msg
-viewRemoteData webdata innerView =
+viewRemoteData : (a -> Html msg) -> WebData a -> Html msg
+viewRemoteData innerView webdata =
     case webdata of
         NotAsked ->
             text "Initialisting"

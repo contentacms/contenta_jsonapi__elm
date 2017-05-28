@@ -13,7 +13,7 @@ view : Model -> Html Msg
 view model =
     Html.form []
         [ label [] [ text "Select recipe" ]
-        , viewRemoteData model.recipes
+        , viewRemoteData
             (\recipes ->
                 case recipes of
                     [] ->
@@ -31,4 +31,5 @@ view model =
                                     actualRecipes
                                 )
             )
+            model.recipes
         ]

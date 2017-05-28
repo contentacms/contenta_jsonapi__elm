@@ -15,7 +15,7 @@ view =
 
 viewRecipes : Model -> Html Msg
 viewRecipes model =
-    viewRemoteData model.recipes
+    viewRemoteData
         (\recipes ->
             ul []
                 (List.map
@@ -25,3 +25,4 @@ viewRecipes model =
                     recipes
                 )
         )
+        model.recipes

@@ -56,8 +56,8 @@ viewRecipes model =
         [ h2 [] [ text "Recipes" ]
         , p [] [ text "Explore recipes across every type of occasion, ingredient and skill level" ]
         , viewRemoteData
-            model.pages.home.promotedRecipes
             (\data -> div [] <| List.map viewPromotedRecipe data)
+            model.pages.home.promotedRecipes
         ]
 
 
