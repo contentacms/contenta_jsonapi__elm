@@ -59,6 +59,11 @@ type alias File =
     }
 
 
+type alias Media =
+    { uuid : String
+    }
+
+
 type alias LoginDetails =
     { name : String
     , password : String
@@ -67,6 +72,7 @@ type alias LoginDetails =
 
 type alias Flags =
     { baseUrl : String
+    , apiBaseUrl: String
     }
 
 

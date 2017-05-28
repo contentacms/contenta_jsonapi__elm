@@ -14,9 +14,10 @@ initialModel : Model
 initialModel =
     { recipes =
         Nothing
-    , flags = {
-      baseUrl = "http://localhost:8888/jsonapi"
-    }
+    , flags =
+        { baseUrl = "http://localhost:8888"
+        , apiBaseUrl = "http://localhost:8888/jsonapi"
+        }
     , selectedRecipe = Nothing
     , loginFormActive = False
     , loginDetails =

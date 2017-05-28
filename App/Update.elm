@@ -25,7 +25,7 @@ update msg model =
         RecipeLoaded (Ok resource) ->
             { model
                 | recipes =
-                    decodeRecipe resource
+                    (decodeRecipe model.flags) resource
                         |> Maybe.map List.singleton
             }
                 ! []
@@ -37,7 +37,7 @@ update msg model =
             { model
                 | recipes =
                     List.map
-                        decodeRecipe
+                        (decodeRecipe model.flags)
                         resources
                         |> filterListMaybe
             }
@@ -58,7 +58,7 @@ update msg model =
                     { articlesPage
                         | articles =
                             List.map
-                                decodeArticle
+                                (decodeArticle model.flags)
                                 resources
                                 |> filterListMaybe
                     }
@@ -126,7 +126,7 @@ update msg model =
                     { homePageModel
                         | promotedArticles =
                             List.map
-                                decodeArticle
+                                (decodeArticle model.flags)
                                 resources
                                 |> filterListMaybe
                     }
@@ -152,7 +152,7 @@ update msg model =
                     { homePageModel
                         | promotedRecipes =
                             List.map
-                                decodeRecipe
+                                (decodeRecipe model.flags)
                                 resources
                                 |> filterListMaybe
                     }

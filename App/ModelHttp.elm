@@ -36,8 +36,11 @@ getRecipes flags =
     let
         request =
             JsonApi.Http.getPrimaryResourceCollection
-                (flags.baseUrl
-                    ++ "/node/recipe?include=field_image&fields[file--file]=uuid,url,uri&fields[node--recipe]="
+                (flags.apiBaseUrl
+                    ++ "/node/recipe"
+                    ++ "?"
+                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file&fields[field_image]=field_image&fields[file--file]=url,uuid"
+                    ++ "&fields[node--recipe]="
                     ++ "title,"
                     ++ "field_difficulty,"
                     ++ "field_ingredients,"
@@ -55,12 +58,12 @@ getArticles flags =
     let
         request =
             JsonApi.Http.getPrimaryResourceCollection
-                (flags.baseUrl
-                    ++ "/node/article?include=field_image&fields[file--file]=uuid,url,uri&fields[node--article]="
+                (flags.apiBaseUrl
+                    ++ "/node/article"
+                    ++ "?"
+                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file&fields[field_image]=field_image&fields[file--file]=url,uuid"
                     ++ "title,"
-                    --                    ++ "field_image,"
-                    ++
-                        "field_recipes,"
+                    ++ "field_recipes,"
                     ++ "body"
                 )
     in
@@ -72,8 +75,11 @@ getPromotedRecipes flags =
     let
         request =
             JsonApi.Http.getPrimaryResourceCollection
-                (flags.baseUrl
-                    ++ "/node/recipe?include=field_image&fields[file--file]=uuid,url,uri&fields[node--recipe]="
+                (flags.apiBaseUrl
+                    ++ "/node/recipe"
+                    ++ "?"
+                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file&fields[field_image]=field_image&fields[file--file]=url,uuid"
+                    ++ "&fields[node--recipe]="
                     ++ "title,"
                     ++ "field_difficulty,"
                     ++ "field_ingredients,"
@@ -93,8 +99,11 @@ getPromotedArticles flags =
     let
         request =
             JsonApi.Http.getPrimaryResourceCollection
-                (flags.baseUrl
-                    ++ "/node/article?include=field_image&fields[file--file]=uuid,url,uri&fields[node--article]="
+                (flags.apiBaseUrl
+                    ++ "/node/article"
+                    ++ "?"
+                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file&fields[field_image]=field_image&fields[file--file]=url,uuid"
+                    ++ "&fields[node--article]="
                     ++ "title,"
                     ++ "field_image,"
                     ++ "field_recipes,"
@@ -111,10 +120,12 @@ getRecipe flags id =
     let
         request =
             JsonApi.Http.getPrimaryResource
-                (flags.baseUrl
+                (flags.apiBaseUrl
                     ++ "/node/recipe/"
                     ++ id
-                    ++ "?include=field_image&fields[file--file]=uuid,url,uri&fields[node--recipe]="
+                    ++ "?"
+                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file&fields[field_image]=field_image&fields[file--file]=url,uuid"
+                    ++ "&fields[node--recipe]="
                     ++ "title,"
                     ++ "field_difficulty,"
                     ++ "field_ingredients,"
@@ -134,15 +145,23 @@ fileDecoder =
         (field "url" string)
 
 
-decodeRecipe resource =
+mediaDecoder : Decoder Media
+mediaDecoder =
+    map Media
+        (field "uuid" string)
+
+
+decodeRecipe : Flags -> JsonApi.Resource -> Maybe Recipe
+decodeRecipe flags resource =
     let
         id =
             JsonApi.Resources.id resource
 
         file_image =
             JsonApi.Resources.relatedResource "field_image" resource
+                |> Result.andThen (JsonApi.Resources.relatedResource "field_image")
                 |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
-                |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
+                |> Result.map (\file -> { file | url = flags.baseUrl ++ file.url })
                 |> Result.toMaybe
 
         recipeResult =
@@ -152,15 +171,17 @@ decodeRecipe resource =
         recipeResult
 
 
-decodeArticle resource =
+decodeArticle : Flags -> JsonApi.Resource -> Maybe Article
+decodeArticle flags resource =
     let
         id =
             JsonApi.Resources.id resource
 
         file_image =
             JsonApi.Resources.relatedResource "field_image" resource
+                |> Result.andThen (JsonApi.Resources.relatedResource "field_image")
                 |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
-                |> Result.map (\file -> { file | url = "http://localhost:8890" ++ file.url })
+                |> Result.map (\file -> { file | url = flags.baseUrl ++ file.url })
                 |> Result.toMaybe
 
         articleResult =
