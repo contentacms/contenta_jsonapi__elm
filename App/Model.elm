@@ -19,12 +19,12 @@ type Msg
     | PromotedArticlesLoaded (WebData (List JsonApi.Resource))
       -- # Recipes page
     | GetRecipe String
-    | RecipeLoaded (Result Http.Error JsonApi.Resource)
+    | RecipeLoaded (WebData JsonApi.Resource)
     | GetRecipes
-    | RecipesLoaded (Result Http.Error (List JsonApi.Resource))
+    | RecipesLoaded (WebData (List JsonApi.Resource))
       -- # Features / Articles page
     | GetArticles
-    | ArticlesLoaded (Result Http.Error (List JsonApi.Resource))
+    | ArticlesLoaded (WebData (List JsonApi.Resource))
       -- # Select recipe page.
     | SelectRecipe String
 
@@ -78,7 +78,7 @@ type alias Flags =
 
 
 type alias Model =
-    { recipes : Maybe (List Recipe)
+    { recipes : WebData (List Recipe)
     , selectedRecipe : Maybe String
     , currentPage : Page
     , loginFormActive : Bool
@@ -90,7 +90,7 @@ type alias Model =
             , promotedRecipes : WebData (List Recipe)
             }
         , articles :
-            { articles : Maybe (List Article)
+            { articles : WebData (List Article)
             }
         }
     }

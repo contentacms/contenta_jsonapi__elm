@@ -14,7 +14,7 @@ import RemoteData exposing (RemoteData)
 initialModel : Model
 initialModel =
     { recipes =
-        Nothing
+        RemoteData.NotAsked
     , flags =
         { baseUrl = "http://localhost:8888"
         , apiBaseUrl = "http://localhost:8888/jsonapi"
@@ -33,7 +33,7 @@ initialModel =
             , promotedRecipes = RemoteData.NotAsked
             }
         , articles =
-            { articles = Nothing
+            { articles = RemoteData.NotAsked
             }
         }
     }

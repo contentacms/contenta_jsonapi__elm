@@ -7,6 +7,7 @@ import App.Pages.Articles
 import App.Pages.AboutUs
 import App.Pages.RecipeSelectionPage
 import App.Pages.RecipeList
+import App.Pages.RecipeDetailPage
 import Html exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
@@ -36,10 +37,7 @@ view model =
                 App.Pages.RecipeSelectionPage.view model
 
             RecipeDetailPage id ->
-                model.recipes
-                    |> Maybe.andThen List.head
-                    |> Maybe.map viewRecipe
-                    |> Maybe.withDefault (text "Recipe not found")
+                App.Pages.RecipeDetailPage.view model
           )
         ]
 

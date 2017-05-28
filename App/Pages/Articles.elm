@@ -3,15 +3,37 @@ module App.Pages.Articles exposing (view)
 import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (src)
+import RemoteData exposing (WebData, RemoteData(..))
 
 
 view : Model -> Html Msg
 view model =
-    div []
-        (model.pages.articles.articles
-            |> Maybe.map (List.map viewArticle)
-            |> Maybe.withDefault ([ text "No articles" ])
+    viewRemoteData
+        model.pages.articles.articles
+        (\data ->
+            case data of
+                [] ->
+                    text "No Articles found"
+
+                list ->
+                    div [] <| List.map viewArticle list
         )
+
+
+viewRemoteData : WebData a -> (a -> Html msg) -> Html msg
+viewRemoteData webdata innerView =
+    case webdata of
+        NotAsked ->
+            text "Initialisting"
+
+        Loading ->
+            text "Loading"
+
+        Failure err ->
+            text ("Error: " ++ toString err)
+
+        Success a ->
+            innerView a
 
 
 viewArticle : Article -> Html Msg

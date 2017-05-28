@@ -23,31 +23,37 @@ update msg model =
         GetRecipe string ->
             ( model, getRecipe model.flags string )
 
-        RecipeLoaded (Ok resource) ->
+        RecipeLoaded remoteResponse ->
             { model
                 | recipes =
-                    (decodeRecipe model.flags) resource
-                        |> Maybe.map List.singleton
+                    RemoteData.map (decodeRecipe model.flags) remoteResponse
+                        |> RemoteData.map
+                            (\recipe ->
+                                case recipe of
+                                    Nothing ->
+                                        []
+
+                                    Just r ->
+                                        [ r ]
+                            )
             }
                 ! []
 
-        RecipeLoaded (Err err) ->
-            updateError "error: RecipeLoaded" err model
-
-        RecipesLoaded (Ok resources) ->
+        RecipesLoaded remoteResponse ->
             { model
                 | recipes =
-                    List.map
-                        (decodeRecipe model.flags)
-                        resources
-                        |> joinListMaybe
+                    RemoteData.map
+                        (\resources ->
+                            List.map
+                                (decodeRecipe model.flags)
+                                resources
+                                |> removeMaybeFromList
+                        )
+                        remoteResponse
             }
                 ! []
 
-        RecipesLoaded (Err err) ->
-            updateError "error: RecipesLoaded" err model
-
-        ArticlesLoaded (Ok resources) ->
+        ArticlesLoaded remoteResponse ->
             let
                 pages =
                     model.pages
@@ -58,19 +64,20 @@ update msg model =
                 newArticlesPage =
                     { articlesPage
                         | articles =
-                            List.map
-                                (decodeArticle model.flags)
-                                resources
-                                |> joinListMaybe
+                            RemoteData.map
+                                (\resources ->
+                                    List.map
+                                        (decodeArticle model.flags)
+                                        resources
+                                        |> removeMaybeFromList
+                                )
+                                remoteResponse
                     }
 
                 newPages =
                     { pages | articles = newArticlesPage }
             in
                 { model | pages = newPages } ! []
-
-        ArticlesLoaded (Err err) ->
-            updateError "error: ArticlesLoaded" err model
 
         SetActivePage page ->
             case page of
@@ -100,8 +107,19 @@ update msg model =
                         |> update GetRecipes
 
                 ArticleList ->
-                    { model | currentPage = page }
-                        |> update GetArticles
+                    let
+                        pagesModel =
+                            model.pages
+
+                        newPagesModel =
+                            { pagesModel
+                                | articles =
+                                    { articles = RemoteData.Loading
+                                    }
+                            }
+                    in
+                        { model | currentPage = page, pages = newPagesModel }
+                            |> update GetArticles
 
                 _ ->
                     ( { model | currentPage = page }, Cmd.none )

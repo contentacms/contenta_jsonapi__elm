@@ -51,7 +51,8 @@ getRecipes flags =
                     ++ "field_image"
                 )
     in
-        Http.send RecipesLoaded request
+        RemoteData.sendRequest request
+            |> Cmd.map RecipesLoaded
 
 
 getArticles : Flags -> Cmd Msg
@@ -68,7 +69,8 @@ getArticles flags =
                     ++ "body"
                 )
     in
-        Http.send ArticlesLoaded request
+        RemoteData.sendRequest request
+            |> Cmd.map ArticlesLoaded
 
 
 getPromotedRecipes : Flags -> Cmd Msg
@@ -138,7 +140,8 @@ getRecipe flags id =
                     ++ "field_image"
                 )
     in
-        Http.send RecipeLoaded request
+        RemoteData.sendRequest request
+            |> Cmd.map RecipeLoaded
 
 
 fileDecoder : Decoder File
