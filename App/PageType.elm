@@ -8,7 +8,7 @@ type alias RecipeId =
 type Page
     = Home
     | AboutUs
-    | RecipeList
+    | RecipesPerCategoryList
     | ArticleList
     | RecipeSelectionPage
     | RecipeDetailPage String

@@ -9,6 +9,7 @@ import App.Update exposing (..)
 import Html
 import RouteUrl
 import RemoteData exposing (RemoteData)
+import Dict
 
 
 initialModel : Model
@@ -27,6 +28,7 @@ initialModel =
             , promotedRecipes = RemoteData.NotAsked
             }
         , articles = RemoteData.NotAsked
+        , recipes = Dict.empty
         }
     }
 

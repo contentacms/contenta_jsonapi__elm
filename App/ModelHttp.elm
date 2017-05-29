@@ -55,8 +55,8 @@ getArticles flags =
             |> Cmd.map ArticlesLoaded
 
 
-getRecipes : Flags -> Cmd Msg
-getRecipes flags =
+getRecipePerCategory : Flags -> String -> Cmd Msg
+getRecipePerCategory flags category =
     let
         request =
             JsonApi.Http.getPrimaryResourceCollection
@@ -75,10 +75,13 @@ getRecipes flags =
                     ++ "field_image,"
                     ++ "field_tags,"
                     ++ "&fields[taxonomy_term--tags]=tid,name"
+                    ++ "&pager[limit]=4"
+                    ++ "&filter[field_category.name][value]="
+                    ++ category
                 )
     in
         RemoteData.sendRequest request
-            |> Cmd.map RecipesLoaded
+            |> Cmd.map (RecipesPerCategoryLoaded category)
 
 
 getPromotedRecipes : Flags -> Cmd Msg

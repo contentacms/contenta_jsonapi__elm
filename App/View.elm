@@ -6,8 +6,8 @@ import App.Pages.Home
 import App.Pages.Articles
 import App.Pages.AboutUs
 import App.Pages.RecipeSelectionPage
-import App.Pages.RecipeList
 import App.Pages.RecipeDetailPage
+import App.Pages.RecipesPerCategoryList
 import Html exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
@@ -27,9 +27,6 @@ view model =
             AboutUs ->
                 App.Pages.AboutUs.view model
 
-            RecipeList ->
-                App.Pages.RecipeList.view model
-
             ArticleList ->
                 App.Pages.Articles.view model
 
@@ -38,6 +35,9 @@ view model =
 
             RecipeDetailPage id ->
                 App.Pages.RecipeDetailPage.view model
+
+            RecipesPerCategoryList ->
+                App.Pages.RecipesPerCategoryList.view model
           )
         ]
 
@@ -53,7 +53,7 @@ viewHeader model =
         , ul []
             [ li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
             , li [] [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
-            , li [] [ a [ href "#", onClick (SetActivePage RecipeList) ] [ text "Recipes" ] ]
+            , li [] [ a [ href "#", onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ] ]
             , li [] [ a [ href "#", onClick (SetActivePage (RecipeSelectionPage)) ] [ text "Recipe select" ] ]
             , li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
             ]

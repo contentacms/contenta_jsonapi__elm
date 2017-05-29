@@ -9,14 +9,12 @@ import List exposing (filter)
 import Http exposing (Error(..), Response)
 import Maybe
 import RemoteData exposing (RemoteData(..))
+import Dict
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        GetRecipes ->
-            ( model, getRecipes model.flags )
-
         GetArticles ->
             ( model, getArticles model.flags )
 
@@ -36,20 +34,6 @@ update msg model =
                                     Just r ->
                                         [ r ]
                             )
-            }
-                ! []
-
-        RecipesLoaded remoteResponse ->
-            { model
-                | recipes =
-                    RemoteData.map
-                        (\resources ->
-                            List.map
-                                (decodeRecipe model.flags)
-                                resources
-                                |> removeMaybeFromList
-                        )
-                        remoteResponse
             }
                 ! []
 
@@ -89,16 +73,16 @@ update msg model =
                             }
                     in
                         ( { model | currentPage = page, pages = newPagesModel }
-                        , Cmd.batch [ getPromotedRecipes model.flags, getPromotedArticles model.flags, getRecipes model.flags ]
+                        , Cmd.batch [ getPromotedRecipes model.flags, getPromotedArticles model.flags ]
                         )
 
                 RecipeDetailPage string ->
                     { model | currentPage = page }
                         |> update (GetRecipe string)
 
-                RecipeList ->
+                RecipesPerCategoryList ->
                     { model | currentPage = page }
-                        |> update GetRecipes
+                        |> update GetRecipesPerCategories
 
                 ArticleList ->
                     let
@@ -172,6 +156,38 @@ update msg model =
                     { pages | home = newHomePageModel }
             in
                 { model | pages = newPages } ! []
+
+        GetRecipesPerCategories ->
+            ( model
+            , Cmd.batch
+                [ getRecipePerCategory model.flags "dessert"
+                , getRecipePerCategory model.flags "dinner"
+                ]
+            )
+
+        RecipesPerCategoryLoaded category remoteResponse ->
+            -- @todo: Nested data models aren't ideal.
+            let
+                additionalRecipes =
+                    RemoteData.map
+                        (\resources ->
+                            List.map
+                                (decodeRecipe model.flags)
+                                resources
+                                |> removeMaybeFromList
+                        )
+                        remoteResponse
+
+                pages =
+                    model.pages
+
+                pages_ =
+                    { pages
+                        | recipes =
+                            Dict.insert category additionalRecipes pages.recipes
+                    }
+            in
+                { model | pages = pages_ } ! []
 
 
 joinListMaybe : List (Maybe a) -> Maybe (List a)

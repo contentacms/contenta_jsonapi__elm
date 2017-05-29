@@ -4,6 +4,7 @@ import App.PageType exposing (..)
 import Http
 import JsonApi
 import RemoteData exposing (WebData)
+import Dict exposing (Dict)
 
 
 type Msg
@@ -14,8 +15,9 @@ type Msg
       -- # Recipes page
     | GetRecipe String
     | RecipeLoaded (WebData JsonApi.Resource)
-    | GetRecipes
-    | RecipesLoaded (WebData (List JsonApi.Resource))
+      -- # Recipes per category
+    | GetRecipesPerCategories
+    | RecipesPerCategoryLoaded String (WebData (List JsonApi.Resource))
       -- # Features / Articles page
     | GetArticles
     | ArticlesLoaded (WebData (List JsonApi.Resource))
@@ -83,5 +85,6 @@ type alias Model =
             , promotedRecipes : WebData (List Recipe)
             }
         , articles : WebData (List Article)
+        , recipes : Dict String (WebData (List Recipe))
         }
     }
