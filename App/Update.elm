@@ -16,10 +16,28 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GetArticles ->
-            ( model, getArticles model.flags )
+            let
+                pages =
+                    model.pages
+
+                pages_ =
+                    { pages
+                        | articles = RemoteData.Loading
+                    }
+            in
+                ( { model | pages = pages_ }, getArticles model.flags )
 
         GetRecipe string ->
-            ( model, getRecipe model.flags string )
+            let
+                pages =
+                    model.pages
+
+                pages_ =
+                    { pages
+                        | articles = RemoteData.Loading
+                    }
+            in
+                ( { model | pages = pages_ }, getRecipe model.flags string )
 
         RecipeLoaded remoteResponse ->
             { model
@@ -158,12 +176,21 @@ update msg model =
                 { model | pages = newPages } ! []
 
         GetRecipesPerCategories ->
-            ( model
-            , Cmd.batch
-                [ getRecipePerCategory model.flags "dessert"
-                , getRecipePerCategory model.flags "dinner"
-                ]
-            )
+            let
+                pages =
+                    model.pages
+
+                pages_ =
+                    { pages
+                        | recipes = Dict.fromList [ ( "dessert", RemoteData.Loading ), ( "dinner", RemoteData.Loading ) ]
+                    }
+            in
+                ( { model | pages = pages_ }
+                , Cmd.batch
+                    [ getRecipePerCategory model.flags "dessert"
+                    , getRecipePerCategory model.flags "dinner"
+                    ]
+                )
 
         RecipesPerCategoryLoaded category remoteResponse ->
             -- @todo: Nested data models aren't ideal.
