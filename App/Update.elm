@@ -118,9 +118,6 @@ update msg model =
                 _ ->
                     { model | currentPage = page } ! []
 
-        SelectRecipe string ->
-            { model | selectedRecipe = Just string } ! []
-
         PromotedArticlesLoaded remoteResponse ->
             -- @todo: Nested data models aren't ideal.
             let

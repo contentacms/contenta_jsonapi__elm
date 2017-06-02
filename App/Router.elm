@@ -22,9 +22,6 @@ delta2url previous current =
         RecipesPerCategoryList ->
             Just <| UrlChange NewEntry "/recipes"
 
-        RecipeSelectionPage ->
-            Just <| UrlChange NewEntry "/recipes/selection"
-
         RecipeDetailPage recipeId ->
             Just <| UrlChange NewEntry ("/recipes/" ++ recipeId)
 
@@ -46,6 +43,5 @@ parseUrl =
         , map (SetActivePage AboutUs) (s "about-us")
         , map (SetActivePage ArticleList) (s "features")
         , map (SetActivePage RecipesPerCategoryList) (s "recipes")
-        , map (SetActivePage RecipeSelectionPage) (s "recipes/selection")
         , map (\recipeId -> SetActivePage <| RecipeDetailPage (toString recipeId)) (s "item" </> string)
         ]

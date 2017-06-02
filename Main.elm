@@ -20,7 +20,6 @@ initialModel =
         { baseUrl = "http://localhost:8888"
         , apiBaseUrl = "http://localhost:8888/jsonapi"
         }
-    , selectedRecipe = Nothing
     , currentPage = Home
     , pages =
         { home =

@@ -10,5 +10,4 @@ type Page
     | AboutUs
     | RecipesPerCategoryList
     | ArticleList
-    | RecipeSelectionPage
     | RecipeDetailPage String

@@ -21,8 +21,6 @@ type Msg
       -- # Features / Articles page
     | GetArticles
     | ArticlesLoaded (WebData (List JsonApi.Resource))
-      -- # Select recipe page.
-    | SelectRecipe String
 
 
 type alias Recipe =
@@ -76,7 +74,6 @@ type alias Flags =
 
 type alias Model =
     { recipes : WebData (List Recipe)
-    , selectedRecipe : Maybe String
     , currentPage : Page
     , flags : Flags
     , pages :

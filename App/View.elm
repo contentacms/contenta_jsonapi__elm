@@ -5,7 +5,6 @@ import App.PageType exposing (..)
 import App.Pages.Home
 import App.Pages.Articles
 import App.Pages.AboutUs
-import App.Pages.RecipeSelectionPage
 import App.Pages.RecipeDetailPage
 import App.Pages.RecipesPerCategoryList
 import Html exposing (..)
@@ -30,9 +29,6 @@ view model =
             ArticleList ->
                 App.Pages.Articles.view model
 
-            RecipeSelectionPage ->
-                App.Pages.RecipeSelectionPage.view model
-
             RecipeDetailPage id ->
                 App.Pages.RecipeDetailPage.view model
 
@@ -54,7 +50,6 @@ viewHeader model =
             [ li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
             , li [] [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
             , li [] [ a [ href "#", onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ] ]
-            , li [] [ a [ href "#", onClick (SetActivePage (RecipeSelectionPage)) ] [ text "Recipe select" ] ]
             , li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
             ]
         ]
