@@ -6,6 +6,7 @@ import Html.Attributes exposing (src)
 import RemoteData exposing (WebData, RemoteData(..))
 import App.View.Components exposing (viewRecipe)
 import App.View.Components exposing (viewRemoteData)
+import App.View.Template exposing (..)
 
 
 view : Model -> Html Msg
@@ -13,7 +14,7 @@ view model =
     viewRemoteData
         (\recipes ->
             List.head recipes
-                |> Maybe.map viewRecipe
+                |> Maybe.map recipeDetail
                 |> Maybe.withDefault (text "Recipe not found")
         )
         model.recipes

@@ -11,7 +11,7 @@ recipeCard recipe =
     div []
         [ imageInCard <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image
         , cardTags <| List.map (.name) recipe.tags
-        , cardTitle recipe.title
+        , recipeLink recipe [ cardTitle recipe.title ]
         ]
 
 
@@ -46,4 +46,47 @@ moreFeaturedArticlesBlock articles =
     div
         []
         [ blockTitle "More featured article"
+        ]
+
+
+recipesDetailMetadata : Recipe -> Html Msg
+recipesDetailMetadata recipe =
+    div []
+        [ div []
+            [ text "recipe detail image"
+            , recipeDetailItem "Preperation time" <| (toString recipe.prepTime) ++ " minutes"
+            , recipeDetailItem "Cooking time" <| (toString recipe.totalTime) ++ " minutes"
+            ]
+        , div []
+            [ text "recipe detail image"
+            , recipeDetailItem "Serves" "todo 4"
+            ]
+        , div []
+            [ text "recipe detail image"
+            , recipeDetailItem "Difficultiy" recipe.difficulty
+            ]
+        ]
+
+
+recipeIngredients : Recipe -> Html Msg
+recipeIngredients recipe =
+    div []
+        [ blockTitle "Ingredients for this recipe"
+        , ul [] <| List.map (\ingredient -> li [] [ text ingredient ]) recipe.ingredients
+        ]
+
+
+recipeMethod : Recipe -> Html Msg
+recipeMethod recipe =
+    div []
+        [ blockTitle "Method"
+        , p [] [ text recipe.recipeInstruction ]
+        ]
+
+
+recipeAuthorLine : Recipe -> Html Msg
+recipeAuthorLine recipe =
+    div []
+        [ text <| "by" ++ "TODO: Fetch name"
+        , div [] [ text "Tag", cardTags <| List.map (.name) recipe.tags ]
         ]

@@ -8,3 +8,12 @@ import App.View.Molecule exposing (..)
 import App.View.Organism exposing (..)
 
 
+recipeDetail : Recipe -> Html Msg
+recipeDetail recipe =
+    div []
+        [ pageTitle recipe.title
+        , recipeAuthorLine recipe
+        , recipeDetailHeader recipe
+        , sectionTitle "What you'll need and how to make this dish"
+        , recipeDetailMain recipe
+        ]
