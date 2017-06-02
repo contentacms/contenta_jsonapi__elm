@@ -10,9 +10,11 @@ import Http
 import RemoteData
 import Result.Extra
 import Json.Decode.Extra
+import Result exposing (Result(..))
+import Dict
 
 
-recipeDecoderWithValues : String -> Maybe String -> List Term -> Decoder Recipe
+recipeDecoderWithValues : String -> Result String String -> List Term -> Decoder Recipe
 recipeDecoderWithValues id image tags =
     map8 Recipe
         (succeed id)
@@ -22,7 +24,7 @@ recipeDecoderWithValues id image tags =
         (field "field_total_time" int)
         (field "field_preparation_time" int)
         (field "field_recipe_instruction" (field "value" string))
-        (succeed image)
+        (succeed <| Result.toMaybe image)
         |> Json.Decode.Extra.andMap (succeed tags)
 
 
@@ -184,7 +186,7 @@ mediaDecoder =
         (field "uuid" string)
 
 
-decodeRecipe : Flags -> JsonApi.Resource -> Maybe Recipe
+decodeRecipe : Flags -> JsonApi.Resource -> Result String Recipe
 decodeRecipe flags resource =
     let
         id =
@@ -195,7 +197,6 @@ decodeRecipe flags resource =
                 |> Result.andThen (JsonApi.Resources.relatedResource "field_image")
                 |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
                 |> Result.map (\file -> { file | url = flags.baseUrl ++ file.url })
-                |> Result.toMaybe
 
         tags =
             JsonApi.Resources.relatedResourceCollection "field_tags" resource
@@ -208,10 +209,26 @@ decodeRecipe flags resource =
                 |> Result.withDefault []
 
         recipeResult =
-            JsonApi.Resources.attributes (recipeDecoderWithValues id (Maybe.map .url file_image) tags) resource
-                |> Result.toMaybe
+            JsonApi.Resources.attributes (recipeDecoderWithValues id (Result.map .url file_image) tags) resource
     in
         recipeResult
+
+
+resultToWebData : Result String a -> RemoteData.WebData a
+resultToWebData result =
+    case result of
+        Ok value ->
+            RemoteData.Success value
+
+        Err string ->
+            RemoteData.Failure <|
+                Http.BadPayload
+                    string
+                    { url = ""
+                    , status = { code = 200, message = "Ok" }
+                    , headers = Dict.empty
+                    , body = ""
+                    }
 
 
 decodeArticle : Flags -> JsonApi.Resource -> Maybe Article

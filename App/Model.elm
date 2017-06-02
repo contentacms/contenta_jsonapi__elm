@@ -73,8 +73,7 @@ type alias Flags =
 
 
 type alias Model =
-    { recipes : WebData (List Recipe)
-    , currentPage : Page
+    { currentPage : Page
     , flags : Flags
     , pages :
         { home :
@@ -83,5 +82,6 @@ type alias Model =
             }
         , articles : WebData (List Article)
         , recipes : Dict String (WebData (List Recipe))
+        , recipe : WebData Recipe
         }
     }

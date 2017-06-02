@@ -8,7 +8,7 @@ import Result.Extra
 import List exposing (filter)
 import Http exposing (Error(..), Response)
 import Maybe
-import RemoteData exposing (RemoteData(..))
+import RemoteData exposing (RemoteData(..), fromResult)
 import Dict
 
 
@@ -34,26 +34,24 @@ update msg model =
 
                 pages_ =
                     { pages
-                        | articles = RemoteData.Loading
+                        | recipe = RemoteData.Loading
                     }
             in
                 ( { model | pages = pages_ }, getRecipe model.flags string )
 
         RecipeLoaded remoteResponse ->
-            { model
-                | recipes =
-                    RemoteData.map (decodeRecipe model.flags) remoteResponse
-                        |> RemoteData.map
-                            (\recipe ->
-                                case recipe of
-                                    Nothing ->
-                                        []
+            let
+                pages =
+                    model.pages
 
-                                    Just r ->
-                                        [ r ]
-                            )
-            }
-                ! []
+                pages_ =
+                    { pages
+                        | recipe =
+                            RemoteData.andThen (\res -> resultToWebData <| decodeRecipe model.flags res) remoteResponse
+                    }
+            in
+                { model | pages = pages_ }
+                    ! []
 
         ArticlesLoaded remoteResponse ->
             let
@@ -162,7 +160,7 @@ update msg model =
                                     List.map
                                         (decodeRecipe model.flags)
                                         resources
-                                        |> removeMaybeFromList
+                                        |> removeErrorFromList
                                 )
                                 remoteResponse
                     }
@@ -198,7 +196,7 @@ update msg model =
                             List.map
                                 (decodeRecipe model.flags)
                                 resources
-                                |> removeMaybeFromList
+                                |> removeErrorFromList
                         )
                         remoteResponse
 
@@ -236,6 +234,19 @@ removeMaybeFromList list =
 
         Nothing :: xs ->
             removeMaybeFromList xs
+
+        [] ->
+            []
+
+
+removeErrorFromList : List (Result a b) -> List b
+removeErrorFromList list =
+    case (List.reverse list) of
+        (Ok a) :: xs ->
+            a :: removeErrorFromList xs
+
+        (Err b) :: xs ->
+            removeErrorFromList xs
 
         [] ->
             []

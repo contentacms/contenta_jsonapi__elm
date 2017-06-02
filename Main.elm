@@ -14,9 +14,7 @@ import Dict
 
 initialModel : Model
 initialModel =
-    { recipes =
-        RemoteData.NotAsked
-    , flags =
+    { flags =
         { baseUrl = "http://localhost:8888"
         , apiBaseUrl = "http://localhost:8888/jsonapi"
         }
@@ -28,6 +26,7 @@ initialModel =
             }
         , articles = RemoteData.NotAsked
         , recipes = Dict.empty
+        , recipe = RemoteData.NotAsked
         }
     }
 
