@@ -4,36 +4,28 @@ import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (src)
 import RemoteData exposing (WebData, RemoteData(..))
-import App.View.Components exposing (viewRemoteData)
+import App.View.Components exposing (viewRecipe, viewRemoteData)
 import Dict
-import App.View.Components exposing (viewRecipe)
+import App.View.Organism exposing (..)
 
 
 view : Model -> Html Msg
 view model =
-    div []
-        (Dict.toList model.pages.recipes
-            |> List.map
-                (uncurry
-                    (\category recipes ->
-                        div []
-                            [ h3 []
-                                [ text category ]
-                            , viewRemoteData
-                                viewRecipes
-                                recipes
-                            ]
+    let
+        foo =
+            Dict.toList model.pages.recipes
+                |> Debug.log "RecipesPerCategoryList"
+    in
+        div []
+            (Dict.toList model.pages.recipes
+                |> List.map
+                    (\( category, recipes ) ->
+                        viewRemoteData (recipesPerCategory category) recipes
                     )
-                )
-        )
-
-
-viewRecipes : List Recipe -> Html Msg
-viewRecipes recipes =
-    ul []
-        (List.map
-            (\recipe ->
-                (li [] [ viewRecipe recipe ])
             )
-            recipes
-        )
+
+
+
+--        (Dict.toList model.pages.recipes
+--            |> List.map (viewRemoteData (uncurry recipesPerCategory))
+--        )

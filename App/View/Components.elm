@@ -1,4 +1,4 @@
-module App.View.Components exposing (viewRecipe, viewRemoteData, viewTags)
+module App.View.Components exposing (viewRecipe, viewRemoteData)
 
 import App.Model exposing (..)
 import Html exposing (..)
@@ -53,7 +53,6 @@ viewTags terms =
             terms
         )
 
-
 viewTag : Term -> Html Msg
 viewTag term =
-    text term.name
+  text term.name

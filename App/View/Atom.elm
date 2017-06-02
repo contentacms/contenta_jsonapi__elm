@@ -1,4 +1,4 @@
-module App.View.Atom exposing (image, cardTags, cardTitle, moreLink, recipeCategoryTitle)
+module App.View.Atom exposing (..)
 
 import App.Model exposing (..)
 import Html exposing (..)
@@ -9,9 +9,22 @@ image url =
     img [ src url ] []
 
 
+imageInCard url =
+    img [ width 200, height 300, src url ] []
+
+
+imageWithAlt url altString =
+    img [ src url, alt altString ] []
+
+
+blockTitle : String -> Html Msg
+blockTitle title =
+    h3 [] [ text title ]
+
+
 cardTags : List String -> Html msg
 cardTags tags =
-    ul [] <| List.map (\tag -> li [] [ text tag ])
+    ul [] <| List.map (\tag -> li [] [ text tag ]) tags
 
 
 cardTitle string =
@@ -19,7 +32,10 @@ cardTitle string =
 
 
 moreLink : Html Msg
-moreLink = div [] [text "more"]
+moreLink =
+    div [] [ text "more" ]
 
-recipesPerCategory: String -> Html msg
-recipesPerCategory title = h2 [] [text title]
+
+recipeCategoryTitle : String -> Html msg
+recipeCategoryTitle title =
+    h2 [] [ text title ]

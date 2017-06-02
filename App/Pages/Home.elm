@@ -5,6 +5,7 @@ import Html exposing (..)
 import Html.Attributes exposing (src)
 import RemoteData exposing (WebData, RemoteData(..))
 import App.View.Components exposing (..)
+import App.View.Molecule exposing (..)
 
 
 view : Model -> Html Msg
@@ -62,15 +63,8 @@ viewRecipes model =
 
 
 viewPromotedRecipe : Recipe -> Html Msg
-viewPromotedRecipe recipe =
-    div []
-        [ (recipe.image
-            |> Maybe.map (\url -> img [ src url ] [])
-            |> Maybe.withDefault (text "No image")
-          )
-        , viewTags recipe.tags
-        , h3 [] [ text recipe.title ]
-        ]
+viewPromotedRecipe =
+    recipeCard
 
 
 viewFooterMenu : Model -> Html Msg
