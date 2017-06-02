@@ -14,7 +14,11 @@ import Result exposing (Result(..))
 import Dict
 
 
-recipeDecoderWithValues : String -> Result String String -> List Term -> Decoder Recipe
+type alias ImageResult =
+    Result String String
+
+
+recipeDecoderWithValues : String -> ImageResult -> List Term -> Decoder Recipe
 recipeDecoderWithValues id image tags =
     map8 Recipe
         (succeed id)
@@ -28,13 +32,13 @@ recipeDecoderWithValues id image tags =
         |> Json.Decode.Extra.andMap (succeed tags)
 
 
-articleDecoderWithIdAndImage : String -> Maybe String -> Decoder Article
+articleDecoderWithIdAndImage : String -> ImageResult -> Decoder Article
 articleDecoderWithIdAndImage id image =
     map4 Article
         (succeed id)
         (field "title" string)
         (at [ "body", "value" ] string)
-        (succeed image)
+        (succeed <| Result.toMaybe image)
 
 
 getArticles : Flags -> Cmd Msg
@@ -240,4 +244,4 @@ decodeArticle flags resource =
                 |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
                 |> Result.map (\file -> { file | url = flags.baseUrl ++ file.url })
     in
-        JsonApi.Resources.attributes (articleDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
+        JsonApi.Resources.attributes (articleDecoderWithIdAndImage id (Result.map .url file_image)) resource
