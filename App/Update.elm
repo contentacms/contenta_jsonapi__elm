@@ -66,7 +66,7 @@ update msg model =
                                     List.map
                                         (decodeArticle model.flags)
                                         resources
-                                        |> removeMaybeFromList
+                                        |> removeErrorFromList
                                 )
                                 remoteResponse
                     }
@@ -133,7 +133,7 @@ update msg model =
                                     List.map
                                         (decodeArticle model.flags)
                                         resources
-                                        |> removeMaybeFromList
+                                        |> removeErrorFromList
                                 )
                                 remoteResponse
                     }
@@ -224,19 +224,6 @@ joinListMaybe list =
 
             _ ->
                 Just filteredList
-
-
-removeMaybeFromList : List (Maybe a) -> List a
-removeMaybeFromList list =
-    case (List.reverse list) of
-        (Just a) :: xs ->
-            a :: removeMaybeFromList xs
-
-        Nothing :: xs ->
-            removeMaybeFromList xs
-
-        [] ->
-            []
 
 
 removeErrorFromList : List (Result a b) -> List b

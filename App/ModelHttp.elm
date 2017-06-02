@@ -207,11 +207,8 @@ decodeRecipe flags resource =
                         )
                     )
                 |> Result.withDefault []
-
-        recipeResult =
-            JsonApi.Resources.attributes (recipeDecoderWithValues id (Result.map .url file_image) tags) resource
     in
-        recipeResult
+        JsonApi.Resources.attributes (recipeDecoderWithValues id (Result.map .url file_image) tags) resource
 
 
 resultToWebData : Result String a -> RemoteData.WebData a
@@ -231,7 +228,7 @@ resultToWebData result =
                     }
 
 
-decodeArticle : Flags -> JsonApi.Resource -> Maybe Article
+decodeArticle : Flags -> JsonApi.Resource -> Result String Article
 decodeArticle flags resource =
     let
         id =
@@ -242,10 +239,5 @@ decodeArticle flags resource =
                 |> Result.andThen (JsonApi.Resources.relatedResource "field_image")
                 |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
                 |> Result.map (\file -> { file | url = flags.baseUrl ++ file.url })
-                |> Result.toMaybe
-
-        articleResult =
-            JsonApi.Resources.attributes (articleDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
-                |> Result.toMaybe
     in
-        articleResult
+        JsonApi.Resources.attributes (articleDecoderWithIdAndImage id (Maybe.map .url file_image)) resource
