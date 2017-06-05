@@ -10,7 +10,6 @@ import App.Pages.RecipesPerCategoryList
 import Html exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
-import App.View.Components exposing (viewRecipe)
 import List
 import List.Extra
 

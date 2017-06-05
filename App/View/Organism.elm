@@ -41,3 +41,13 @@ recipeDetailMain recipe =
         [ recipeIngredients recipe
         , recipeMethod recipe
         ]
+
+
+recipesFeaturedHeader : Html Msg
+recipesFeaturedHeader =
+    text "TODO Implement featured recipe header on recipes category listing"
+
+
+recipeMoreArticlesTeaser : Html Msg
+recipeMoreArticlesTeaser =
+    text "TODO Implement more articles teaser"
