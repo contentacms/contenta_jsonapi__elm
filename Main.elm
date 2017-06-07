@@ -16,7 +16,7 @@ initialModel : Model
 initialModel =
     { flags =
         { baseUrl = "http://localhost:8888"
-        , apiBaseUrl = "http://localhost:8888/jsonapi"
+        , apiBaseUrl = "http://localhost:8888/api"
         }
     , currentPage = Home
     , pages =
