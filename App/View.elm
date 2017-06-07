@@ -13,6 +13,7 @@ import Html.Attributes exposing (..)
 import List
 import List.Extra
 import Material as M
+import Material.List as ML
 
 
 withMaterial : Html Msg -> Html Msg
@@ -63,10 +64,10 @@ viewHeader model =
           --            [ text "Search"
           --            ]
         , h1 [] [ text "Umami, food magazine" ]
-        , ul []
-            [ li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
-            , li [] [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
-            , li [] [ a [ href "#", onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ] ]
-            , li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
+        , ML.ul []
+            [ ML.li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
+            , ML.li [] [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
+            , ML.li [] [ a [ href "#", onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ] ]
+            , ML.li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
             ]
         ]

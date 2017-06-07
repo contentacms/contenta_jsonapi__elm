@@ -6,6 +6,8 @@ import Html.Attributes exposing (src)
 import RemoteData exposing (WebData, RemoteData(..))
 import App.View.Components exposing (..)
 import App.View.Molecule exposing (..)
+import App.View.Grid exposing (grid4)
+import Material.List as ML
 
 
 view : Model -> Html Msg
@@ -31,7 +33,7 @@ viewCurrentMonthIssue model =
 
 viewCookMenu : Model -> Html Msg
 viewCookMenu model =
-    div []
+    grid4
         [ div []
             [ h3 [] [ text "Inspired to cook" ]
             , h4 [] [ text "What's the occasion?" ]
@@ -57,7 +59,7 @@ viewRecipes model =
         [ h2 [] [ text "Recipes" ]
         , p [] [ text "Explore recipes across every type of occasion, ingredient and skill level" ]
         , viewRemoteData
-            (\data -> div [] <| List.map viewPromotedRecipe data)
+            (\data -> grid4 <| List.map viewPromotedRecipe data)
             model.pages.home.promotedRecipes
         ]
 
@@ -76,19 +78,19 @@ viewFooterMenu model =
             ]
         , div []
             [ h3 [] [ text "The magazine" ]
-            , ul []
-                [ li [] [ text "Latest edition" ]
-                , li [] [ text "Where to buy" ]
-                , li [] [ text "Subscriptions" ]
-                , li [] [ text "Back issues" ]
-                , li [] [ text "Speak to us" ]
+            , ML.ul []
+                [ ML.li [] [ text "Latest edition" ]
+                , ML.li [] [ text "Where to buy" ]
+                , ML.li [] [ text "Subscriptions" ]
+                , ML.li [] [ text "Back issues" ]
+                , ML.li [] [ text "Speak to us" ]
                 ]
             ]
         , div []
             [ h3 [] [ text "About us" ]
-            , ul []
-                [ li [] [ text "About us" ]
-                , li [] [ text "Concat us" ]
+            , ML.ul []
+                [ ML.li [] [ text "About us" ]
+                , ML.li [] [ text "Concat us" ]
                 ]
             ]
         ]
