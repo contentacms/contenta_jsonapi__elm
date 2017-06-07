@@ -5,13 +5,14 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import App.View.Atom exposing (..)
 import App.View.Molecule exposing (..)
+import App.View.Grid exposing (grid4)
 
 
 recipesPerCategory : String -> List Recipe -> Html Msg
 recipesPerCategory title recipes =
     div []
         [ recipeCategoryTitle title
-        , div [] <|
+        , grid4 <|
             List.map
                 recipeCard
                 recipes
