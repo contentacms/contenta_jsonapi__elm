@@ -4,14 +4,17 @@ import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import App.View.Atom exposing (..)
+import Material.Card as Card
 
 
 recipeCard : Recipe -> Html Msg
 recipeCard recipe =
-    div []
-        [ imageInCard <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image
-        , cardTags <| List.map (.name) recipe.tags
-        , recipeLink recipe [ cardTitle recipe.title ]
+    Card.view []
+        [ Card.title [] [ recipeLink recipe [ cardTitle recipe.title ] ]
+        , Card.text []
+            [ imageInCard <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image
+            , cardTags <| List.map (.name) recipe.tags
+            ]
         ]
 
 
