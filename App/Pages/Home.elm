@@ -3,9 +3,10 @@ module App.Pages.Home exposing (view)
 import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (src)
-import RemoteData exposing (WebData, RemoteData(..))
+import RemoteData exposing (WebData, RemoteData, RemoteData(..))
 import App.View.Components exposing (..)
 import App.View.Molecule exposing (..)
+import List
 
 
 view : Model -> Html Msg
@@ -21,7 +22,42 @@ view model =
 
 viewPromotedContent : Model -> Html Msg
 viewPromotedContent model =
-    div [] []
+    --    let
+    let
+        mergedPromotedList =
+            RemoteData.append model.pages.home.promotedArticles model.pages.home.promotedRecipes
+                |> RemoteData.map (uncurry (\articles recipes -> List.append (List.map ArticleRef articles) (List.map RecipeRef recipes)))
+
+        --        mergedPromotedList =
+        --            List.concat [ List.map ArticleRef model.pages.home.promotedArticles, List.map RecipeRef model.pages.home.promotedRecipes ]
+    in
+        viewRemoteData
+            (\data ->
+                case List.length data of
+                    0 ->
+                        div [] []
+
+                    1 ->
+                        div [] <| List.map viewSinglePromotedContent <| List.take 1 data
+
+                    2 ->
+                        div [] <| List.map viewSinglePromotedContent <| List.take 2 data
+
+                    -- Provide a better way to extract promoted stuff.
+                    _ ->
+                        div [] <| List.map viewSinglePromotedContent <| List.take 3 data
+            )
+            mergedPromotedList
+
+
+viewSinglePromotedContent : ArticleOrRecipe -> Html Msg
+viewSinglePromotedContent articleOrRecipe =
+    case articleOrRecipe of
+        ArticleRef article ->
+            articleCard article
+
+        RecipeRef recipe ->
+            recipeCard recipe
 
 
 viewCurrentMonthIssue : Model -> Html Msg
@@ -33,20 +69,20 @@ viewCookMenu : Model -> Html Msg
 viewCookMenu model =
     div []
         [ div []
-            [ h3 [] [ text "Inspired to cook" ]
-            , h4 [] [ text "What's the occasion?" ]
+            [ h3 [] [ text "Dinners to impress" ]
+            , h4 [] [ text "List recipes" ]
             ]
         , div []
             [ h3 [] [ text "Learn to cook" ]
-            , h4 [] [ text "Articles for the kitchen shy" ]
+            , h4 [] [ text "Recipes for beginner" ]
             ]
         , div []
             [ h3 [] [ text "Backed up" ]
-            , h4 [] [ text "Cake, cake, cake" ]
+            , h4 [] [ text "Delicious cake and bakes" ]
             ]
         , div []
-            [ h3 [] [ text "Health & lifestyle" ]
-            , h4 [] [ text "Breaking down the carbs" ]
+            [ h3 [] [ text "Quick and Easy" ]
+            , h4 [] [ text "20 minutes or less" ]
             ]
         ]
 
@@ -57,14 +93,9 @@ viewRecipes model =
         [ h2 [] [ text "Recipes" ]
         , p [] [ text "Explore recipes across every type of occasion, ingredient and skill level" ]
         , viewRemoteData
-            (\data -> div [] <| List.map viewPromotedRecipe data)
+            (\data -> div [] <| List.map recipeCard data)
             model.pages.home.promotedRecipes
         ]
-
-
-viewPromotedRecipe : Recipe -> Html Msg
-viewPromotedRecipe =
-    recipeCard
 
 
 viewFooterMenu : Model -> Html Msg
