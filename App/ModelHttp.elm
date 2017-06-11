@@ -245,3 +245,19 @@ decodeArticle flags resource =
                 |> Result.map (\file -> { file | url = flags.baseUrl ++ file.url })
     in
         JsonApi.Resources.attributes (articleDecoderWithIdAndImage id (Result.map .url file_image)) resource
+
+
+sendContactForm : ContactForm -> Cmd Msg
+sendContactForm form =
+    let
+        body =
+            JsonApi.Resources.build "contact_message--contact"
+                |> JsonApi.Resources.withAttributes
+                    [ ( "name", Json.Encode.string form.name )
+                    , ( "email", Json.Encode.string form.email )
+                    , ( "subject", Json.Encode.string form.subject )
+                    , ( "telephone", Json.Encode.string form.telephone )
+                    , ( "message", Json.Encode.string form.message )
+                    ]
+    in
+        Http.post "http://example.com/hat-categories.json" (Http.jsonBody body) (list string)

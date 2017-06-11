@@ -211,6 +211,44 @@ update msg model =
             in
                 { model | pages = pages_ } ! []
 
+        ContactM PostContactForm ->
+            ( model, sendContactForm model.pages.contact )
+        ContactM msg ->
+            let
+                pages =
+                    model.pages
+
+                contact =
+                    pages.contact
+
+                pages_ =
+                    { pages
+                        | contact = updateContact msg contact
+                    }
+            in
+                { model | pages = pages_ } ! []
+
+
+updateContact : ContactMsg -> ContactForm -> ContactForm
+updateContact msg form =
+    case msg of
+        SetName string ->
+            { form | name = string }
+
+        SetEmail string ->
+            { form | email = string }
+
+        SetSubject string ->
+            { form | subject = string }
+
+        SetTelephone string ->
+            { form | telephone = string }
+
+        SetMessage string ->
+            { form | message = string }
+
+        SubmitForm ->
+            form
 
 joinListMaybe : List (Maybe a) -> Maybe (List a)
 joinListMaybe list =

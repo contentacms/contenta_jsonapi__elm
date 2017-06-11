@@ -7,6 +7,7 @@ import App.Pages.Articles
 import App.Pages.AboutUs
 import App.Pages.RecipeDetailPage
 import App.Pages.RecipesPerCategoryList
+import App.Pages.ContactPage
 import Html exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
@@ -34,7 +35,8 @@ view model =
 
             RecipesPerCategoryList ->
                 App.Pages.RecipesPerCategoryList.view model
+
+            ContactPage ->
+                App.Pages.ContactPage.view model.pages.contact
           )
         ]
-
-

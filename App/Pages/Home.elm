@@ -3,9 +3,11 @@ module App.Pages.Home exposing (view)
 import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (src)
+import Html.Events exposing (onClick)
 import RemoteData exposing (WebData, RemoteData, RemoteData(..))
 import App.View.Components exposing (..)
 import App.View.Molecule exposing (..)
+import App.PageType exposing (..)
 import List
 
 
@@ -119,7 +121,7 @@ viewFooterMenu model =
             [ h3 [] [ text "About us" ]
             , ul []
                 [ li [] [ text "About us" ]
-                , li [] [ text "Concat us" ]
+                , li [] [ a [ onClick <| SetActivePage ContactPage ] [ text "Concat us" ] ]
                 ]
             ]
         ]

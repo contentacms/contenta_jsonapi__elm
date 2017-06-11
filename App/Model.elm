@@ -21,6 +21,9 @@ type Msg
       -- # Features / Articles page
     | GetArticles
     | ArticlesLoaded (WebData (List JsonApi.Resource))
+      -- Contact
+    | ContactM ContactMsg
+    | PostContactForm
 
 
 type alias Recipe =
@@ -83,5 +86,23 @@ type alias Model =
         , articles : WebData (List Article)
         , recipes : Dict String (WebData (List Recipe))
         , recipe : WebData Recipe
+        , contact : ContactForm
         }
+    }
+
+
+type ContactMsg
+    = SetName String
+    | SetEmail String
+    | SetTelephone String
+    | SetSubject String
+    | SetMessage String
+    | SubmitForm
+
+type alias ContactForm =
+    { name : String
+    , email : String
+    , telephone : String
+    , subject : String
+    , message : String
     }

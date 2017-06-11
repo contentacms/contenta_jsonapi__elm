@@ -27,6 +27,13 @@ initialModel =
         , articles = RemoteData.NotAsked
         , recipes = Dict.empty
         , recipe = RemoteData.NotAsked
+        , contact =
+            { name = ""
+            , email = ""
+            , telephone = ""
+            , subject = ""
+            , message = ""
+            }
         }
     }
 
@@ -35,7 +42,7 @@ main =
     RouteUrl.program
         { delta2url = delta2url
         , location2messages = location2messages
-        , init = update (SetActivePage Home) initialModel
+        , init = update (SetActivePage ContactPage) initialModel
         , update = update
         , subscriptions = \_ -> Sub.none
         , view = view

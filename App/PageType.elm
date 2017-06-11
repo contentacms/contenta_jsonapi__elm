@@ -11,3 +11,4 @@ type Page
     | RecipesPerCategoryList
     | ArticleList
     | RecipeDetailPage String
+    | ContactPage
