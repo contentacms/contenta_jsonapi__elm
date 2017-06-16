@@ -1,12 +1,12 @@
 module App.JsonApiHelper exposing (..)
 
 {-
-This file is trying to implement some abstractions over the bare JSONAPI packages of elm.
+   This file is trying to implement some abstractions over the bare JSONAPI packages of elm.
 
-@todo
-- Actually write a toString for url
-- continue with defining the types for include and field
-- Write test coverage
+   @todo
+   - Actually write a toString for url
+   - continue with defining the types for include and field
+   - Write test coverage
 
 -}
 

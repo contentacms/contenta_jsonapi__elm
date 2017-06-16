@@ -3,9 +3,12 @@ module App.View.Organism exposing (..)
 import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
 import App.View.Atom exposing (..)
 import App.View.Molecule exposing (..)
 import App.View.Grid exposing (grid4)
+import App.PageType exposing (..)
+import Material.List as ML
 
 
 recipesPerCategory : String -> List Recipe -> Html Msg
@@ -52,3 +55,20 @@ recipesFeaturedHeader =
 recipeMoreArticlesTeaser : Html Msg
 recipeMoreArticlesTeaser =
     text "TODO Implement more articles teaser"
+
+
+viewHeader : Model -> Html Msg
+viewHeader model =
+    div []
+        [ div []
+            []
+          --            [ text "Search"
+          --            ]
+        , h1 [] [ text "Umami, food magazine" ]
+        , ML.ul []
+            [ ML.li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
+            , ML.li [] [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
+            , ML.li [] [ a [ href "#", onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ] ]
+            , ML.li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
+            ]
+        ]

@@ -37,8 +37,8 @@ type alias Recipe =
 
 
 type ArticleOrRecipe
-    = ArticleId String
-    | RecipeId String
+    = ArticleRef Article
+    | RecipeRef Recipe
 
 
 type alias Article =
@@ -56,8 +56,7 @@ type alias Term =
 
 
 type alias File =
-    { uuid : String
-    , url : String
+    { url : String
     }
 
 
