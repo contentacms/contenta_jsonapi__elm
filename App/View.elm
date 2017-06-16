@@ -10,6 +10,7 @@ import App.Pages.RecipesPerCategoryList
 import Html exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
+import App.View.Organism exposing (viewHeader)
 import List
 import List.Extra
 
@@ -37,18 +38,3 @@ view model =
         ]
 
 
-viewHeader : Model -> Html Msg
-viewHeader model =
-    div []
-        [ div []
-            []
-          --            [ text "Search"
-          --            ]
-        , h1 [] [ text "Umami, food magazine" ]
-        , ul []
-            [ li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
-            , li [] [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
-            , li [] [ a [ href "#", onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ] ]
-            , li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
-            ]
-        ]

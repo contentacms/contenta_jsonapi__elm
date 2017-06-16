@@ -37,8 +37,8 @@ type alias Recipe =
 
 
 type ArticleOrRecipe
-    = ArticleId String
-    | RecipeId String
+    = ArticleRef Article
+    | RecipeRef Recipe
 
 
 type alias Article =
