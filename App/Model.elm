@@ -56,8 +56,7 @@ type alias Term =
 
 
 type alias File =
-    { uuid : String
-    , url : String
+    { url : String
     }
 
 

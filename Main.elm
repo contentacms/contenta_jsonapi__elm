@@ -35,7 +35,7 @@ main =
     RouteUrl.program
         { delta2url = delta2url
         , location2messages = location2messages
-        , init = update (SetActivePage Home) initialModel
+        , init = update (SetActivePage (RecipeDetailPage "893fb726-5eeb-4cce-8d03-554c835285a5")) initialModel
         , update = update
         , subscriptions = \_ -> Sub.none
         , view = view

@@ -27,7 +27,7 @@ recipeDecoderWithValues id image tags =
         (field "ingredients" (list string))
         (field "totalTime" int)
         (field "preparationTime" int)
-        (field "instructions" (field "value" string))
+        (field "instructions" string)
         (succeed <| Result.toMaybe image)
         |> Json.Decode.Extra.andMap (succeed tags)
 
@@ -70,17 +70,19 @@ getRecipePerCategory flags category =
                     ++ "/recipes"
                     ++ "?"
                     ++ "include=image,image.field_image,tags"
---                    ++ "&fields[image]=image&fields[file--file]=url,uuid,tags"
---                    ++ "&fields[recipes]="
---                    ++ "title,"
---                    ++ "difficulty,"
---                    ++ "ingredients,"
---                    ++ "totalTime,"
---                    ++ "preparationTime,"
---                    ++ "instructions,"
---                    ++ "image,"
---                    ++ "tags,"
---                    ++ "&fields[tags]=tid,name"
+                    --                    ++ "&fields[image]=image&fields[file--file]=url,uuid,tags"
+                    --                    ++ "&fields[recipes]="
+                    --                    ++ "title,"
+                    --                    ++ "difficulty,"
+                    --                    ++ "ingredients,"
+                    --                    ++ "totalTime,"
+                    --                    ++ "preparationTime,"
+                    --                    ++ "instructions,"
+                    --                    ++ "image,"
+                    --                    ++ "tags,"
+                    --                    ++ "&fields[tags]=tid,name"
+                    ++
+                        "&pager[offset]=0"
                     ++ "&pager[limit]=4"
                     ++ "&filter[category.name][value]="
                     ++ category
@@ -152,7 +154,7 @@ getRecipe flags id =
                     ++ "/recipes/"
                     ++ id
                     ++ "?"
-                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file,tags"
+                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file,tags,field_image.owner,field_image.field_image.owner"
                     ++ "&fields[image]=image&fields[file--file]=url,uuid"
                     ++ "&fields[recipes]="
                     ++ "title,"
@@ -172,8 +174,7 @@ getRecipe flags id =
 
 fileDecoder : Decoder File
 fileDecoder =
-    map2 File
-        (field "uuid" string)
+    map File
         (field "url" string)
 
 
@@ -197,10 +198,9 @@ decodeRecipe flags resource =
             JsonApi.Resources.id resource
 
         file_image =
-            JsonApi.Resources.relatedResource "images" resource
-                |> Result.andThen (JsonApi.Resources.relatedResource "files")
+            JsonApi.Resources.relatedResource "image" resource
+                |> Result.andThen (JsonApi.Resources.relatedResource "imageFile")
                 |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
-                |> Result.map (\file -> { file | url = flags.baseUrl ++ file.url })
 
         tags =
             JsonApi.Resources.relatedResourceCollection "tags" resource
@@ -242,6 +242,5 @@ decodeArticle flags resource =
             JsonApi.Resources.relatedResource "image" resource
                 |> Result.andThen (JsonApi.Resources.relatedResource "image")
                 |> Result.andThen (JsonApi.Resources.attributes fileDecoder)
-                |> Result.map (\file -> { file | url = flags.baseUrl ++ file.url })
     in
         JsonApi.Resources.attributes (articleDecoderWithIdAndImage id (Result.map .url file_image)) resource
