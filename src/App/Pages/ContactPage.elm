@@ -16,7 +16,10 @@ view model =
             [ Textfield.render Mdl
                 [ 0 ]
                 model.mdl
-                [ Textfield.label "Name", Options.onInput <| ContactM << SetName ]
+                [ Textfield.label "Name"
+                , Options.onInput <| ContactM << SetName
+                , Textfield.floatingLabel
+                ]
                 []
             ]
         , div []
@@ -25,6 +28,7 @@ view model =
                 model.mdl
                 [ Textfield.label "Email address"
                 , Options.onInput <| ContactM << SetEmail
+                , Textfield.floatingLabel
                 ]
                 []
             ]
@@ -34,6 +38,7 @@ view model =
                 model.mdl
                 [ Textfield.label "Telephone"
                 , Options.onInput <| ContactM << SetTelephone
+                , Textfield.floatingLabel
                 ]
                 []
             ]
@@ -43,6 +48,7 @@ view model =
                 model.mdl
                 [ Textfield.label "Subject"
                 , Options.onInput <| ContactM << SetSubject
+                , Textfield.floatingLabel
                 ]
                 []
             ]
@@ -55,6 +61,7 @@ view model =
                 , Textfield.textarea
                 , Textfield.rows 6
                 , Options.onInput <| ContactM << SetMessage
+                , Textfield.floatingLabel
                 ]
                 []
             ]
