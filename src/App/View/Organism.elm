@@ -88,14 +88,13 @@ viewHeader model =
 viewFooter : Model -> Html Msg
 viewFooter model =
     Footer.mini []
-        { left = Footer.left [] [ Footer.html <| text "Umami Publications example footer content. Integer psuere erat a ante venenatis dapibus ..." ]
+        { left = Footer.left [] [ Footer.logo [] [ Footer.html <| text "Umami Publications example footer content. Integer psuere erat a ante venenatis dapibus ..." ] ]
         , right =
             Footer.right []
-                [ Footer.html <|
-                    ML.ul []
-                        [ ML.li [] [ a [ href "#", onClick (SetActivePage ContactPage) ] [ text "Get in touch" ] ]
-                        , ML.li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About the Contenta ELM frontend" ] ]
-                        ]
+                [ Footer.links []
+                    [ Footer.linkItem [ Footer.href "#", Options.onClick (SetActivePage ContactPage) ] [ Footer.html <| text "Get in touch" ]
+                    , Footer.linkItem [ Footer.href "#", Options.onClick (SetActivePage AboutUs) ] [ Footer.html <| text "About the Contenta ELM frontend" ]
+                    ]
                 ]
         }
 
