@@ -12,6 +12,7 @@ type Msg
       -- # Homepage
     | PromotedRecipesLoaded (WebData (List JsonApi.Resource))
     | PromotedArticlesLoaded (WebData (List JsonApi.Resource))
+    | HomepageRecipesLoaded (WebData (List JsonApi.Resource))
       -- # Recipes page
     | GetRecipe String
     | RecipeLoaded (WebData JsonApi.Resource)
@@ -78,6 +79,7 @@ type alias Model =
         { home :
             { promotedArticles : WebData (List Article)
             , promotedRecipes : WebData (List Recipe)
+            , recipes : WebData (List Recipe)
             }
         , articles : WebData (List Article)
         , recipes : Dict String (WebData (List Recipe))

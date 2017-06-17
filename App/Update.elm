@@ -85,11 +85,12 @@ update msg model =
                                 | home =
                                     { promotedArticles = RemoteData.Loading
                                     , promotedRecipes = RemoteData.Loading
+                                    , recipes = RemoteData.Loading
                                     }
                             }
                     in
                         ( { model | currentPage = page, pages = newPagesModel }
-                        , Cmd.batch [ getPromotedRecipes model.flags, getPromotedArticles model.flags ]
+                        , Cmd.batch [ getPromotedRecipes model.flags, getPromotedArticles model.flags, getHomepageRecipes model.flags ]
                         )
 
                 RecipeDetailPage string ->
@@ -155,6 +156,33 @@ update msg model =
                 newHomePageModel =
                     { homePageModel
                         | promotedRecipes =
+                            RemoteData.map
+                                (\resources ->
+                                    List.map
+                                        (decodeRecipe model.flags)
+                                        resources
+                                        |> removeErrorFromList
+                                )
+                                remoteResponse
+                    }
+
+                newPages =
+                    { pages | home = newHomePageModel }
+            in
+                { model | pages = newPages } ! []
+
+        HomepageRecipesLoaded remoteResponse ->
+            -- @todo: Nested data models aren't ideal.
+            let
+                pages =
+                    model.pages
+
+                homePageModel =
+                    pages.home
+
+                newHomePageModel =
+                    { homePageModel
+                        | recipes =
                             RemoteData.map
                                 (\resources ->
                                     List.map

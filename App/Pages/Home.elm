@@ -106,5 +106,5 @@ viewRecipes model =
         , h3 [] [ text "Explore recipes across every type of occasion, ingredient and skill level" ]
         , viewRemoteData
             (\data -> grid2x2 <| List.map recipeCard data)
-            model.pages.home.promotedRecipes
+            model.pages.home.recipes
         ]

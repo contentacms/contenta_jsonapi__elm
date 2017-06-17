@@ -23,6 +23,7 @@ initialModel =
         { home =
             { promotedArticles = RemoteData.NotAsked
             , promotedRecipes = RemoteData.NotAsked
+            , recipes = RemoteData.NotAsked
             }
         , articles = RemoteData.NotAsked
         , recipes = Dict.empty

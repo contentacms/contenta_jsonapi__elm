@@ -82,8 +82,8 @@ getRecipePerCategory flags category =
                     --                    ++ "tags,"
                     --                    ++ "&fields[tags]=tid,name"
                     ++
-                        "&pager[offset]=0"
-                    ++ "&pager[limit]=4"
+                        "&page[offset]=0"
+                    ++ "&page[limit]=4"
                     ++ "&filter[category.name][value]="
                     ++ category
                 )
@@ -113,7 +113,7 @@ getPromotedRecipes flags =
                     ++ "tags,"
                     ++ "&fields[tags]=tid,name"
                     ++ "&filter[promote][value]=1"
-                    ++ "&pager[limit]=3"
+                    ++ "&page[limit]=3"
                 )
     in
         RemoteData.sendRequest request
@@ -138,11 +138,40 @@ getPromotedArticles flags =
                     ++ "body,"
                     ++ "&fields[tags]=tid,name"
                     ++ "&filter[promote][value]=1"
-                    ++ "&pager[limit]=3"
+                    ++ "&page[limit]=3"
                 )
     in
         RemoteData.sendRequest request
             |> Cmd.map PromotedArticlesLoaded
+
+
+getHomepageRecipes : Flags -> Cmd Msg
+getHomepageRecipes flags =
+    let
+        request =
+            JsonApi.Http.getPrimaryResourceCollection
+                (flags.apiBaseUrl
+                    ++ "/recipes"
+                    ++ "?"
+                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file,tags"
+                    ++ "&fields[image]=image&fields[file--file]=url,uuid"
+                    ++ "&fields[recipes]="
+                    ++ "title,"
+                    ++ "difficulty,"
+                    ++ "ingredients,"
+                    ++ "totalTime,"
+                    ++ "preparationTime,"
+                    ++ "instructions,"
+                    ++ "image,"
+                    ++ "tags,"
+                    ++ "&fields[tags]=tid,name"
+                    ++ "&filter[promote][value]=1"
+                    ++ "&page[offset]=3"
+                    ++ "&page[limit]=4"
+                )
+    in
+        RemoteData.sendRequest request
+            |> Cmd.map HomepageRecipesLoaded
 
 
 getRecipe : Flags -> String -> Cmd Msg
