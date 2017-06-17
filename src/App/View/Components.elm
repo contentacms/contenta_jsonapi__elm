@@ -1,4 +1,4 @@
-module App.View.Components exposing (viewRemoteData, onClickPreventDefault, viewDrawer)
+module App.View.Components exposing (viewRemoteData, onClickPreventDefault)
 
 import App.Model exposing (..)
 import Html exposing (..)
@@ -52,15 +52,3 @@ onClickPreventDefault msg =
         , stopPropagation = False
         }
         (Json.Decode.succeed msg)
-
-
-viewDrawer : List (Html Msg)
-viewDrawer =
-    [ Layout.title [] [ text "Umami, food magazine" ]
-    , Layout.navigation []
-        [ Layout.link [ Layout.href "#", Options.onClick (SetActivePage Home) ] [ text "Home" ]
-        , Layout.link [ Layout.href "#", Options.onClick (SetActivePage ArticleList) ] [ text "Features" ]
-        , Layout.link [ Layout.href "#", Options.onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ]
-        , Layout.link [ Layout.href "#", Options.onClick (SetActivePage AboutUs) ] [ text "About us" ]
-        ]
-    ]

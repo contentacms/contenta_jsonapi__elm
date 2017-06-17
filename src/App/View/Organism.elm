@@ -98,3 +98,30 @@ viewFooter model =
                         ]
                 ]
         }
+
+
+viewMdlHeader : List (Html Msg)
+viewMdlHeader =
+    [ Layout.row []
+        [ Layout.title [] [ text "Contenta Elm" ]
+        , Layout.spacer
+        , Layout.navigation []
+            [ Layout.link [ Layout.href "#", Options.onClick (SetActivePage Home) ] [ text "Home" ]
+            , Layout.link [ Layout.href "#", Options.onClick (SetActivePage ArticleList) ] [ text "Features" ]
+            , Layout.link [ Layout.href "#", Options.onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ]
+            , Layout.link [ Layout.href "#", Options.onClick (SetActivePage AboutUs) ] [ text "About us" ]
+            ]
+        ]
+    ]
+
+
+viewDrawer : List (Html Msg)
+viewDrawer =
+    [ Layout.title [] [ text "Umami, food magazine" ]
+    , Layout.navigation []
+        [ Layout.link [ Layout.href "#", Options.onClick (SetActivePage Home) ] [ text "Home" ]
+        , Layout.link [ Layout.href "#", Options.onClick (SetActivePage ArticleList) ] [ text "Features" ]
+        , Layout.link [ Layout.href "#", Options.onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ]
+        , Layout.link [ Layout.href "#", Options.onClick (SetActivePage AboutUs) ] [ text "About us" ]
+        ]
+    ]
