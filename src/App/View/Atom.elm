@@ -5,6 +5,9 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import App.PageType exposing (..)
+import Color
+import Svg
+import Material.Typography as Typography
 
 
 image url =
@@ -17,6 +20,11 @@ imageInCard url =
 
 imageBig url =
     img [ attribute "width" "100%", src url ] []
+
+
+mIcon : (Color.Color -> Int -> Svg.Svg msg) -> Html msg
+mIcon icon =
+    Svg.svg [ width 48, height 48 ] [ icon Color.black 48 ]
 
 
 imageWithAlt url altString =
@@ -57,11 +65,14 @@ recipeCategoryTitle title =
     h2 [] [ text title ]
 
 
-recipeDetailItem : String -> String -> Html Msg
-recipeDetailItem title itemText =
+recipeDetailItem : Html Msg -> String -> String -> Html Msg
+recipeDetailItem icon title itemText =
     div []
-        [ span [] [ b [] [ text title ] ]
-        , span [] [ text itemText ]
+        [ icon
+        , div []
+            [ span [] [ b [] [ text (title ++ ": ") ] ]
+            , span [] [ text itemText ]
+            ]
         ]
 
 

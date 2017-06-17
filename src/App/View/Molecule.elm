@@ -4,7 +4,13 @@ import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import App.View.Atom exposing (..)
+import App.View.Grid exposing (grid2__2)
 import Material.Card as Card
+import Material.Icons.Device as IconsDevice
+import Material.Icons.Action as IconsAction
+import Material.Icons.Editor as IconsEditor
+import Color
+import Svg
 
 
 recipeCard : Recipe -> Html Msg
@@ -52,21 +58,11 @@ moreFeaturedArticlesBlock articles =
 
 recipesDetailMetadata : Recipe -> Html Msg
 recipesDetailMetadata recipe =
-    div []
-        [ div []
-            [ text "recipe detail image"
-            , recipeDetailItem "Preperation time" <| (toString recipe.prepTime) ++ " minutes"
-            , recipeDetailItem "Cooking time" <| (toString recipe.totalTime) ++ " minutes"
-            ]
-        , div []
-            [ text "recipe detail image"
-            , recipeDetailItem "Serves" "todo 4"
-            ]
-        , div []
-            [ text "recipe detail image"
-            , recipeDetailItem "Difficultiy" recipe.difficulty
-            ]
-        ]
+    grid2__2
+        (recipeDetailItem (mIcon IconsDevice.access_time) "Preperation time" <| (toString recipe.prepTime) ++ " minutes")
+        (recipeDetailItem (mIcon IconsDevice.access_time) "Cooking time" <| (toString recipe.totalTime) ++ " minutes")
+        (recipeDetailItem (mIcon IconsEditor.format_list_numbered) "Serves" "todo 4")
+        (recipeDetailItem (mIcon IconsAction.schedule) "Difficuly" <| (toString recipe.difficulty))
 
 
 recipeIngredients : Recipe -> Html Msg
