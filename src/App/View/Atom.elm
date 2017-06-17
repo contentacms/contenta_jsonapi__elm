@@ -16,7 +16,7 @@ imageInCard url =
 
 
 imageBig url =
-    img [ width 300, height 400, src url ] []
+    img [ attribute "width" "100%", src url ] []
 
 
 imageWithAlt url altString =
@@ -29,13 +29,13 @@ pageTitle title =
 
 
 sectionTitle : String -> Html Msg
-sectionTitle =
-    pageTitle
+sectionTitle title =
+    h3 [] [ text title ]
 
 
 blockTitle : String -> Html Msg
 blockTitle title =
-    h3 [] [ text title ]
+    h4 [] [ text title ]
 
 
 cardTags : List String -> Html msg

@@ -6,7 +6,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import App.View.Atom exposing (..)
 import App.View.Molecule exposing (..)
-import App.View.Grid exposing (grid4)
+import App.View.Grid exposing (grid4, grid1__1)
 import App.PageType exposing (..)
 import Material.List as ML
 import Material.Footer as Footer
@@ -33,21 +33,28 @@ articleCardList articles =
 recipeDetailHeader : Recipe -> Html Msg
 recipeDetailHeader recipe =
     -- @todo 2 column grid?
-    div []
-        [ imageBig <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image
-        , div []
+    grid1__1
+        (imageBig <|
+            Maybe.withDefault "http://placekitten.com/g/200/300"
+                recipe.image
+        )
+        (div
+            []
             [ recipesDetailMetadata recipe
             , text "Todo fetch description"
             ]
-        ]
+        )
 
 
 recipeDetailMain : Recipe -> Html Msg
 recipeDetailMain recipe =
-    div []
-        [ recipeIngredients recipe
-        , recipeMethod recipe
-        ]
+    grid1__1
+        (recipeIngredients
+            recipe
+        )
+        (recipeMethod
+            recipe
+        )
 
 
 recipesFeaturedHeader : Html Msg
