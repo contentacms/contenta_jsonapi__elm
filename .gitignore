@@ -4,3 +4,4 @@ node_modules
 .idea
 dist/elm.js
 dist/elm-dev.js
+.DS_Store
