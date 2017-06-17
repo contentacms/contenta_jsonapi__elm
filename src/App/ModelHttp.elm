@@ -81,7 +81,7 @@ getRecipePerCategory flags category =
                     --                    ++ "instructions,"
                     --                    ++ "image,"
                     --                    ++ "tags,"
-                    --                    ++ "&fields[tags]=tid,name"
+                    --                    ++ "&fields[tags]=internalId,name"
                     ++
                         "&page[offset]=0"
                     ++ "&page[limit]=4"
@@ -112,7 +112,7 @@ getPromotedRecipes flags =
                     ++ "instructions,"
                     ++ "image,"
                     ++ "tags,"
-                    ++ "&fields[tags]=tid,name"
+                    ++ "&fields[tags]=internalId,name"
                     ++ "&filter[promote][value]=1"
                     ++ "&page[limit]=3"
                 )
@@ -137,7 +137,7 @@ getPromotedArticles flags =
                     ++ "tags,"
                     ++ "recipes,"
                     ++ "body,"
-                    ++ "&fields[tags]=tid,name"
+                    ++ "&fields[tags]=internalId,name"
                     ++ "&filter[promote][value]=1"
                     ++ "&page[limit]=3"
                 )
@@ -165,7 +165,7 @@ getHomepageRecipes flags =
                     ++ "instructions,"
                     ++ "image,"
                     ++ "tags,"
-                    ++ "&fields[tags]=tid,name"
+                    ++ "&fields[tags]=internalId,name"
                     ++ "&filter[promote][value]=1"
                     ++ "&page[offset]=3"
                     ++ "&page[limit]=4"
@@ -195,7 +195,7 @@ getRecipe flags id =
                     ++ "instructions,"
                     ++ "image,"
                     ++ "tags,"
-                    ++ "&fields[tags]=tid,name"
+                    ++ "&fields[tags]=internalId,name"
                 )
     in
         RemoteData.sendRequest request
@@ -221,7 +221,7 @@ getRecipeRecipes flags =
                     ++ "instructions,"
                     ++ "image,"
                     ++ "tags,"
-                    ++ "&fields[tags]=tid,name"
+                    ++ "&fields[tags]=internalId,name"
                     ++ "&filter[promote][value]=1"
                     ++ "&page[offset]=3"
                     ++ "&page[limit]=4"
@@ -240,7 +240,7 @@ fileDecoder =
 termDecoder : Decoder Term
 termDecoder =
     map2 Term
-        (field "tid" int)
+        (field "internalId" int)
         (field "name" string)
 
 
@@ -270,6 +270,7 @@ decodeRecipe flags resource =
                         )
                     )
                 |> Result.withDefault []
+                |> Debug.log "tags"
     in
         JsonApi.Resources.attributes (recipeDecoderWithValues id (Result.map .url file_image) tags) resource
 

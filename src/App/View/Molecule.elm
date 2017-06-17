@@ -12,6 +12,9 @@ import Material.Card as Card
 import Material.Icons.Device as IconsDevice
 import Material.Icons.Action as IconsAction
 import Material.Icons.Editor as IconsEditor
+import Material.Options as Options
+import Material.Typography as Typography
+import Material.Elevation as Elevation
 import Color
 import Svg
 
@@ -19,8 +22,8 @@ import Svg
 recipeCard : Recipe -> Html Msg
 recipeCard recipe =
     div [ onClick <| SetActivePage <| RecipeDetailPage recipe.id ]
-        [ h3 [] [ a [ onClick <| SetActivePage <| RecipeDetailPage recipe.id, href "#" ] [ cardTitle recipe.title ] ]
-        , imageInCard <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image
+        [ imageInCard <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image
+        , h3 [] [ a [ onClick <| SetActivePage <| RecipeDetailPage recipe.id, href "#" ] [ cardTitle recipe.title ] ]
         , cardTags <| List.map (.name) recipe.tags
         ]
 
@@ -70,7 +73,7 @@ recipesDetailMetadata recipe =
 
 recipeIngredients : Recipe -> Html Msg
 recipeIngredients recipe =
-    div []
+    Options.div [ Elevation.e2 ]
         [ blockTitle "Ingredients for this recipe"
         , ul [] <| List.map (\ingredient -> li [] [ text ingredient ]) recipe.ingredients
         ]
@@ -88,5 +91,8 @@ recipeAuthorLine : Recipe -> Html Msg
 recipeAuthorLine recipe =
     div []
         [ text <| "by" ++ "TODO: Fetch name"
-        , div [] [ text "Tag", cardTags <| List.map (.name) recipe.tags ]
+        , div []
+            [ Options.span [ Typography.caption ] [ text "(tag)" ]
+            , Options.span [] [ cardTagsInline <| List.map (.name) recipe.tags ]
+            ]
         ]

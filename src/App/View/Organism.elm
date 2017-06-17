@@ -75,7 +75,7 @@ viewHeader model =
     in
         div
             []
-            [ h1 [] [ text "Umami, food magazine" ]
+            [ siteTitle "Umami, food magazine"
             , ML.ul []
                 [ ML.li liStyle [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
                 , ML.li liStyle [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]

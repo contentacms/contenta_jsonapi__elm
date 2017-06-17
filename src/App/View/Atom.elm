@@ -7,7 +7,10 @@ import Html.Events exposing (onClick)
 import App.PageType exposing (..)
 import Color
 import Svg
+import Material.Chip as Chip
+import Material.Grid as Grid
 import Material.Typography as Typography
+import Material.Options as Options
 
 
 image url =
@@ -31,14 +34,25 @@ imageWithAlt url altString =
     img [ src url, alt altString ] []
 
 
+siteTitle : String -> Html Msg
+siteTitle title =
+    Options.styled h1
+        [ Typography.display4 ]
+        [ text title ]
+
+
 pageTitle : String -> Html Msg
 pageTitle title =
-    h2 [] [ text title ]
+    Options.styled h2
+        [ Typography.display3 ]
+        [ text title ]
 
 
 sectionTitle : String -> Html Msg
 sectionTitle title =
-    h3 [] [ text title ]
+    Options.styled h3
+        [ Typography.display2 ]
+        [ text title ]
 
 
 blockTitle : String -> Html Msg
@@ -48,7 +62,26 @@ blockTitle title =
 
 cardTags : List String -> Html msg
 cardTags tags =
-    ul [] <| List.map (\tag -> li [] [ text tag ]) tags
+    div [] <|
+        List.map
+            (\tag ->
+                Chip.span []
+                    [ Chip.content [] [ text tag ]
+                    ]
+            )
+            tags
+
+
+cardTagsInline : List String -> Html msg
+cardTagsInline tags =
+    span [] <|
+        List.map
+            (\tag ->
+                Chip.span []
+                    [ Chip.content [] [ text tag ]
+                    ]
+            )
+            tags
 
 
 cardTitle string =
