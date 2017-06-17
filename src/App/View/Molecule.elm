@@ -80,7 +80,7 @@ recipeMethod : Recipe -> Html Msg
 recipeMethod recipe =
     div []
         [ blockTitle "Method"
-        , p [] [ text recipe.recipeInstruction ]
+        , ol [] <| List.map (\string -> li [] [ text string ]) <| String.split ", " recipe.recipeInstruction
         ]
 
 
