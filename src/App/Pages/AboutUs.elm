@@ -2,15 +2,15 @@ module App.Pages.AboutUs exposing (view)
 
 import App.Model exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (src)
+import Html.Attributes exposing (src, href)
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ h2 [] [ text "Contenta" ]
+        [ h2 [] [ a [ href "http://www.contentacms.org/" ] [ text "Contenta" ] ]
         , text "Contenta is an API-First Drupal distribution. It's all about the content"
-        , h3 [] [ text "Elm Frontend" ]
+        , h3 [] [ a [ href "http://elm-lang.org" ] [ text "Elm Frontend" ] ]
         , div []
             [ div [] [ text "This frontend is using elm to render the output." ]
             , div [] [ text "Elm is a delightful language for reliable webapps." ]
