@@ -5,6 +5,7 @@
     "license": "BSD3",
     "source-directories": [
         "App",
+        "src",
         ".",
         "elm-jsonapi/2.2.1/src",
         "elm-jsonapi-http/2.0.0/src"
