@@ -9,6 +9,9 @@ import App.View.Molecule exposing (..)
 import App.View.Grid exposing (grid4)
 import App.PageType exposing (..)
 import Material.List as ML
+import Material.Footer as Footer
+import Material.Layout as Layout
+import Material.Options as Options
 
 
 recipesPerCategory : String -> List Recipe -> Html Msg
@@ -59,16 +62,28 @@ recipeMoreArticlesTeaser =
 
 viewHeader : Model -> Html Msg
 viewHeader model =
-    div []
-        [ div []
+    let
+        liStyle =
+            [ Options.css "display" "inline", Options.css "padding-right" "5px" ]
+    in
+        div
             []
-          --            [ text "Search"
-          --            ]
-        , h1 [] [ text "Umami, food magazine" ]
-        , ML.ul []
-            [ ML.li [] [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
-            , ML.li [] [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
-            , ML.li [] [ a [ href "#", onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ] ]
-            , ML.li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
+            [ h1 [] [ text "Umami, food magazine" ]
+            , ML.ul []
+                [ ML.li liStyle [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
+                , ML.li liStyle [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
+                , ML.li liStyle [ a [ href "#", onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ] ]
+                , ML.li liStyle [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
+                ]
             ]
-        ]
+
+
+viewFooter : Model -> Html Msg
+viewFooter model =
+    Footer.mini []
+        { left = Footer.left [] [ Footer.html <| text "Umami Publications example footer content. Integer psuere erat a ante venenatis dapibus ..." ]
+        , right =
+            Footer.right []
+                [ Footer.html <| ML.ul [] [ ML.li [] [ text "Get in touch" ], ML.li [] [ text "About the Contenta ELM frontend" ] ]
+                ]
+        }

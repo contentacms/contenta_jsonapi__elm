@@ -9,12 +9,10 @@ import Material.Card as Card
 
 recipeCard : Recipe -> Html Msg
 recipeCard recipe =
-    Card.view []
-        [ Card.title [] [ recipeLink recipe [ cardTitle recipe.title ] ]
-        , Card.text []
-            [ imageInCard <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image
-            , cardTags <| List.map (.name) recipe.tags
-            ]
+    div []
+        [ h3 [] [ recipeLink recipe [ cardTitle recipe.title ] ]
+        , imageInCard <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image
+        , cardTags <| List.map (.name) recipe.tags
         ]
 
 

@@ -10,7 +10,7 @@ import App.Pages.RecipesPerCategoryList
 import Html exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
-import App.View.Organism exposing (viewHeader)
+import App.View.Organism exposing (viewHeader, viewFooter)
 import List
 import List.Extra
 import Material as M
@@ -51,6 +51,7 @@ view model =
                     RecipesPerCategoryList ->
                         App.Pages.RecipesPerCategoryList.view model
                   )
+                , (viewFooter model)
                 ]
     in
         withMaterial html

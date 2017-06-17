@@ -6,9 +6,10 @@ import Html.Attributes exposing (src)
 import RemoteData exposing (WebData, RemoteData, RemoteData(..))
 import App.View.Components exposing (..)
 import App.View.Molecule exposing (..)
-import App.View.Grid exposing (grid4)
+import App.View.Grid exposing (grid4, grid2x2, grid1__2, grid1__1, grid1__)
 import Material.List as ML
 import List
+import List.Extra
 
 
 view : Model -> Html Msg
@@ -18,7 +19,6 @@ view model =
         , viewCurrentMonthIssue model
         , viewCookMenu model
         , viewRecipes model
-        , viewFooterMenu model
         ]
 
 
@@ -32,6 +32,8 @@ viewPromotedContent model =
 
         --        mergedPromotedList =
         --            List.concat [ List.map ArticleRef model.pages.home.promotedArticles, List.map RecipeRef model.pages.home.promotedRecipes ]
+        emptyDiv =
+            div [] []
     in
         viewRemoteData
             (\data ->
@@ -40,16 +42,24 @@ viewPromotedContent model =
                         div [] []
 
                     1 ->
-                        div [] <| List.map viewSinglePromotedContent <| List.take 1 data
+                        grid1__ (Maybe.withDefault emptyDiv <| Maybe.map viewSinglePromotedContent <| List.head data)
 
                     2 ->
-                        div [] <| List.map viewSinglePromotedContent <| List.take 2 data
+                        grid1__1
+                            (Maybe.withDefault emptyDiv <| Maybe.map viewSinglePromotedContent <| List.Extra.getAt 0 data)
+                            (Maybe.withDefault emptyDiv <| Maybe.map viewSinglePromotedContent <| List.Extra.getAt 1 data)
 
-                    -- Provide a better way to extract promoted stuff.
+                    3 ->
+                        grid1__2
+                            (Maybe.withDefault emptyDiv <| Maybe.map viewSinglePromotedContent <| List.Extra.getAt 0 data)
+                            (Maybe.withDefault emptyDiv <| Maybe.map viewSinglePromotedContent <| List.Extra.getAt 1 data)
+                            (Maybe.withDefault emptyDiv <| Maybe.map viewSinglePromotedContent <| List.Extra.getAt 2 data)
+
                     _ ->
-                        div [] <| List.map viewSinglePromotedContent <| List.take 3 data
+                        div [] [ text "this code should not be triggered!!!" ]
             )
-            mergedPromotedList
+        <|
+            RemoteData.map (List.take 3) mergedPromotedList
 
 
 viewSinglePromotedContent : ArticleOrRecipe -> Html Msg
@@ -93,35 +103,8 @@ viewRecipes : Model -> Html Msg
 viewRecipes model =
     div []
         [ h2 [] [ text "Recipes" ]
-        , p [] [ text "Explore recipes across every type of occasion, ingredient and skill level" ]
+        , h3 [] [ text "Explore recipes across every type of occasion, ingredient and skill level" ]
         , viewRemoteData
-            (\data -> grid4 <| List.map recipeCard data)
+            (\data -> grid2x2 <| List.map recipeCard data)
             model.pages.home.promotedRecipes
-        ]
-
-
-viewFooterMenu : Model -> Html Msg
-viewFooterMenu model =
-    div []
-        [ div []
-            [ h3 [] [ text "Umami publications" ]
-            , div [] [ text "Umami Publications are one of the tastiest UK publishers ..." ]
-            ]
-        , div []
-            [ h3 [] [ text "The magazine" ]
-            , ML.ul []
-                [ ML.li [] [ text "Latest edition" ]
-                , ML.li [] [ text "Where to buy" ]
-                , ML.li [] [ text "Subscriptions" ]
-                , ML.li [] [ text "Back issues" ]
-                , ML.li [] [ text "Speak to us" ]
-                ]
-            ]
-        , div []
-            [ h3 [] [ text "About us" ]
-            , ML.ul []
-                [ ML.li [] [ text "About us" ]
-                , ML.li [] [ text "Concat us" ]
-                ]
-            ]
         ]
