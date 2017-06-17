@@ -16,13 +16,14 @@ initialModel : Model
 initialModel =
     { flags =
         { baseUrl = "http://localhost:8888"
-        , apiBaseUrl = "http://localhost:8888/jsonapi"
+        , apiBaseUrl = "http://localhost:8888/api"
         }
     , currentPage = Home
     , pages =
         { home =
             { promotedArticles = RemoteData.NotAsked
             , promotedRecipes = RemoteData.NotAsked
+            , recipes = RemoteData.NotAsked
             }
         , articles = RemoteData.NotAsked
         , recipes = Dict.empty

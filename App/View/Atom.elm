@@ -12,7 +12,7 @@ image url =
 
 
 imageInCard url =
-    img [ width 200, height 300, src url ] []
+    img [ attribute "width" "100%", src url ] []
 
 
 imageBig url =

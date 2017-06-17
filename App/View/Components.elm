@@ -4,6 +4,7 @@ import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import RemoteData exposing (WebData, RemoteData(..))
+import Material.Spinner
 
 
 viewRemoteData : (a -> Html msg) -> WebData a -> Html msg
@@ -13,7 +14,7 @@ viewRemoteData innerView webdata =
             text "Initialisting"
 
         Loading ->
-            text "Loading"
+            Material.Spinner.spinner []
 
         Failure err ->
             text ("Error: " ++ toString err)

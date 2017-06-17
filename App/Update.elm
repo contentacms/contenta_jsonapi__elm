@@ -85,11 +85,12 @@ update msg model =
                                 | home =
                                     { promotedArticles = RemoteData.Loading
                                     , promotedRecipes = RemoteData.Loading
+                                    , recipes = RemoteData.Loading
                                     }
                             }
                     in
                         ( { model | currentPage = page, pages = newPagesModel }
-                        , Cmd.batch [ getPromotedRecipes model.flags, getPromotedArticles model.flags ]
+                        , Cmd.batch [ getPromotedRecipes model.flags, getPromotedArticles model.flags, getHomepageRecipes model.flags ]
                         )
 
                 RecipeDetailPage string ->
@@ -170,6 +171,33 @@ update msg model =
             in
                 { model | pages = newPages } ! []
 
+        HomepageRecipesLoaded remoteResponse ->
+            -- @todo: Nested data models aren't ideal.
+            let
+                pages =
+                    model.pages
+
+                homePageModel =
+                    pages.home
+
+                newHomePageModel =
+                    { homePageModel
+                        | recipes =
+                            RemoteData.map
+                                (\resources ->
+                                    List.map
+                                        (decodeRecipe model.flags)
+                                        resources
+                                        |> removeErrorFromList
+                                )
+                                remoteResponse
+                    }
+
+                newPages =
+                    { pages | home = newHomePageModel }
+            in
+                { model | pages = newPages } ! []
+
         GetRecipesPerCategories ->
             let
                 pages =
@@ -177,12 +205,12 @@ update msg model =
 
                 pages_ =
                     { pages
-                        | recipes = Dict.fromList [ ( "dessert", RemoteData.Loading ), ( "dinner", RemoteData.Loading ) ]
+                        | recipes = Dict.fromList [ ( "Dessert", RemoteData.Loading ), ( "Main course", RemoteData.Loading ) ]
                     }
             in
                 ( { model | pages = pages_ }
                 , Cmd.batch
-                    [ getRecipePerCategory model.flags "dessert"
+                    [ getRecipePerCategory model.flags "Main course"
                     , getRecipePerCategory model.flags "dinner"
                     ]
                 )
