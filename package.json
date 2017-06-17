@@ -4,6 +4,8 @@
     "elm-live": "^2.7.4"
   },
   "scripts": {
-    "app-dev": "elm-live src/Main.elm --pushstate --open --debug"
+    "app-dev": "elm-live src/Main.elm --pushstate --open --debug",
+    "app-build": "elm-make src/Main.elm --output=dist/elm.js",
+    "deploy": "yarn run app-build && firebase deploy"
   }
 }
