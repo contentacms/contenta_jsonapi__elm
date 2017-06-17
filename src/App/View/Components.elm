@@ -1,7 +1,9 @@
-module App.View.Components exposing (viewRemoteData)
+module App.View.Components exposing (viewRemoteData, onClickPreventDefault)
 
 import App.Model exposing (..)
 import Html exposing (..)
+import Html.Events exposing (onWithOptions)
+import Json.Decode
 import Html.Attributes exposing (..)
 import RemoteData exposing (WebData, RemoteData(..))
 import Material.Spinner
@@ -37,3 +39,13 @@ viewTags terms =
 viewTag : Term -> Html Msg
 viewTag term =
     text term.name
+
+
+onClickPreventDefault : msg -> Attribute msg
+onClickPreventDefault msg =
+    onWithOptions
+        "click"
+        { preventDefault = True
+        , stopPropagation = False
+        }
+        (Json.Decode.succeed msg)

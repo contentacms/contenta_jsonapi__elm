@@ -3,8 +3,11 @@ module App.View.Molecule exposing (..)
 import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
+import App.View.Components exposing (..)
 import App.View.Atom exposing (..)
 import App.View.Grid exposing (grid2__2)
+import App.PageType exposing (Page(..))
 import Material.Card as Card
 import Material.Icons.Device as IconsDevice
 import Material.Icons.Action as IconsAction
@@ -15,8 +18,8 @@ import Svg
 
 recipeCard : Recipe -> Html Msg
 recipeCard recipe =
-    div []
-        [ h3 [] [ recipeLink recipe [ cardTitle recipe.title ] ]
+    div [ onClick <| SetActivePage <| RecipeDetailPage recipe.id ]
+        [ h3 [] [ a [ onClick <| SetActivePage <| RecipeDetailPage recipe.id, href "#" ] [ cardTitle recipe.title ] ]
         , imageInCard <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image
         , cardTags <| List.map (.name) recipe.tags
         ]

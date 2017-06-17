@@ -15,8 +15,8 @@ type Msg
     | PromotedArticlesLoaded (WebData (List JsonApi.Resource))
     | HomepageRecipesLoaded (WebData (List JsonApi.Resource))
       -- # Recipes page
-    | GetRecipe String
     | RecipeLoaded (WebData JsonApi.Resource)
+    | RecipeRecipesLoaded (WebData (List JsonApi.Resource))
       -- # Recipes per category
     | GetRecipesPerCategories
     | RecipesPerCategoryLoaded String (WebData (List JsonApi.Resource))
@@ -90,7 +90,7 @@ type alias Model =
             }
         , articles : WebData (List Article)
         , recipes : Dict String (WebData (List Recipe))
-        , recipe : WebData Recipe
+        , recipe : { recipe : WebData Recipe, recipes : WebData (List Recipe) }
         , contact : ContactForm
         }
     , mdl : Material.Model

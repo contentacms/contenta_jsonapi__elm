@@ -28,31 +28,52 @@ update msg model =
             in
                 ( { model | pages = pages_ }, getArticles model.flags )
 
-        GetRecipe string ->
-            let
-                pages =
-                    model.pages
-
-                pages_ =
-                    { pages
-                        | recipe = RemoteData.Loading
-                    }
-            in
-                ( { model | pages = pages_ }, getRecipe model.flags string )
-
         RecipeLoaded remoteResponse ->
             let
                 pages =
                     model.pages
 
-                pages_ =
-                    { pages
+                recipePage =
+                    pages.recipe
+
+                recipePage_ =
+                    { recipePage
                         | recipe =
                             RemoteData.andThen (\res -> resultToWebData <| decodeRecipe model.flags res) remoteResponse
                     }
+
+                pages_ =
+                    { pages | recipe = recipePage_ }
             in
                 { model | pages = pages_ }
                     ! []
+
+        RecipeRecipesLoaded remoteResponse ->
+            -- @todo: Nested data models aren't ideal.
+            let
+                pages =
+                    model.pages
+
+                recipePage =
+                    pages.recipe
+
+                recipePage_ =
+                    { recipePage
+                        | recipes =
+                            RemoteData.map
+                                (\resources ->
+                                    List.map
+                                        (decodeRecipe model.flags)
+                                        resources
+                                        |> removeErrorFromList
+                                )
+                                remoteResponse
+                    }
+
+                pages_ =
+                    { pages | recipe = recipePage_ }
+            in
+                { model | pages = pages_ } ! []
 
         ArticlesLoaded remoteResponse ->
             let
@@ -95,8 +116,20 @@ update msg model =
                         )
 
                 RecipeDetailPage string ->
-                    { model | currentPage = page }
-                        |> update (GetRecipe string)
+                    let
+                        pages =
+                            model.pages
+
+                        recipePage =
+                            pages.recipe
+
+                        recipePage_ =
+                            { recipe = RemoteData.Loading, recipes = RemoteData.Loading }
+
+                        pages_ =
+                            { pages | recipe = recipePage_ }
+                    in
+                        ( { model | currentPage = page, pages = pages_ }, Cmd.batch [ getRecipe model.flags string, getRecipeRecipes model.flags ] )
 
                 RecipesPerCategoryList ->
                     { model | currentPage = page }

@@ -28,7 +28,10 @@ initialModel =
             }
         , articles = RemoteData.NotAsked
         , recipes = Dict.empty
-        , recipe = RemoteData.NotAsked
+        , recipe =
+            { recipe = RemoteData.NotAsked
+            , recipes = RemoteData.NotAsked
+            }
         , contact =
             { name = ""
             , email = ""
