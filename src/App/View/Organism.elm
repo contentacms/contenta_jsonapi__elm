@@ -103,7 +103,7 @@ viewFooter model =
 viewMdlHeader : List (Html Msg)
 viewMdlHeader =
     [ Layout.row []
-        [ Layout.title [] [ text "Contenta Elm" ]
+        [ Layout.link [ Layout.href "https://contentacms.org" ] [ img [ src "dist/assets/contenta-lg.png", alt "Contenta Logo" ] [] ]
         , Layout.spacer
         , Layout.navigation []
             [ Layout.link [ Layout.href "#", Options.onClick (SetActivePage Home) ] [ text "Home" ]
