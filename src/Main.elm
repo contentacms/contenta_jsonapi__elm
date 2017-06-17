@@ -45,7 +45,7 @@ main =
     RouteUrl.program
         { delta2url = delta2url
         , location2messages = location2messages
-        , init = update (SetActivePage ContactPage) initialModel
+        , init = update (SetActivePage Home) initialModel
         , update = update
         , subscriptions = \_ -> Sub.none
         , view = view
