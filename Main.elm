@@ -10,6 +10,7 @@ import Html
 import RouteUrl
 import RemoteData exposing (RemoteData)
 import Dict
+import Material
 
 
 initialModel : Model
@@ -36,6 +37,7 @@ initialModel =
             , message = ""
             }
         }
+    , mdl = Material.model
     }
 
 

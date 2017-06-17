@@ -5,6 +5,7 @@ import Json.Encode
 import Json.Decode exposing (..)
 import JsonApi.Resources
 import JsonApi
+import JsonApi.Encode
 import JsonApi.Http
 import Http
 import RemoteData
@@ -287,5 +288,7 @@ sendContactForm form =
                     , ( "telephone", Json.Encode.string form.telephone )
                     , ( "message", Json.Encode.string form.message )
                     ]
+                |> JsonApi.Encode.clientResource
     in
-        Http.post "http://example.com/hat-categories.json" (Http.jsonBody body) (list string)
+        Http.send (\result -> ContactPostResult) <|
+            Http.post "http://example.com/hat-categories.json" (Http.jsonBody body) (list string)

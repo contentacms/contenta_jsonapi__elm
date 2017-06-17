@@ -4,30 +4,68 @@ import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (src, type_, value)
 import Html.Events exposing (onInput, onSubmit, onClick)
+import Material.Textfield as Textfield
+import Material.Options as Options
+import Material.Button as Button
 
 
-view : ContactForm -> Html Msg
+view : Model -> Html Msg
 view model =
     div []
-        [ label []
-            [ text "Your name"
-            , input [ type_ "textfield", value model.name, onInput <| ContactM << SetName ] []
+        [ div []
+            [ Textfield.render Mdl
+                [ 0 ]
+                model.mdl
+                [ Textfield.label "Name", Options.onInput <| ContactM << SetName ]
+                []
             ]
-        , label []
-            [ text "Your email address"
-            , input [ type_ "textfield", value model.email, onInput <| ContactM << SetEmail ] []
+        , div []
+            [ Textfield.render Mdl
+                [ 1 ]
+                model.mdl
+                [ Textfield.label "Email address"
+                , Options.onInput <| ContactM << SetEmail
+                ]
+                []
             ]
-        , label []
-            [ text "Telephone"
-            , input [ type_ "textfield", value model.telephone, onInput <| ContactM << SetTelephone ] []
+        , div []
+            [ Textfield.render Mdl
+                [ 2 ]
+                model.mdl
+                [ Textfield.label "Telephone"
+                , Options.onInput <| ContactM << SetTelephone
+                ]
+                []
             ]
-        , label []
-            [ text "Subject"
-            , input [ type_ "textfield", value model.subject, onInput <| ContactM << SetSubject ] []
+        , div []
+            [ Textfield.render Mdl
+                [ 3 ]
+                model.mdl
+                [ Textfield.label "Subject"
+                , Options.onInput <| ContactM << SetSubject
+                ]
+                []
             ]
-        , label []
-            [ text "Message"
-            , textarea [ onInput <| ContactM << SetMessage ] [ text model.message ]
+        , div []
+            [ Textfield.render Mdl
+                [ 4 ]
+                model.mdl
+                [ Textfield.label "Message"
+                , Textfield.floatingLabel
+                , Textfield.textarea
+                , Textfield.rows 6
+                , Options.onInput <| ContactM << SetMessage
+                ]
+                []
             ]
-        , button [ onClick <| ContactM SubmitForm ] [ text "Submit" ]
+        , div []
+            [ Button.render Mdl
+                [ 5 ]
+                model.mdl
+                [ Button.raised
+                , Button.colored
+                , Options.onClick <| ContactM SubmitForm
+                ]
+                [ text "Submit" ]
+            ]
         ]

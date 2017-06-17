@@ -86,7 +86,7 @@ viewFooter model =
             Footer.right []
                 [ Footer.html <|
                     ML.ul []
-                        [ ML.li [] [ text "Get in touch" ]
+                        [ ML.li [] [ a [ href "#", onClick (SetActivePage ContactPage) ] [ text "Get in touch" ] ]
                         , ML.li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About the Contenta ELM frontend" ] ]
                         ]
                 ]

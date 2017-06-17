@@ -5,6 +5,7 @@ import Http
 import JsonApi
 import RemoteData exposing (WebData)
 import Dict exposing (Dict)
+import Material
 
 
 type Msg
@@ -24,7 +25,10 @@ type Msg
     | ArticlesLoaded (WebData (List JsonApi.Resource))
       -- Contact
     | ContactM ContactMsg
+    | ContactPostResult
     | PostContactForm
+      -- MDL
+    | Mdl (Material.Msg Msg)
 
 
 type alias Recipe =
@@ -89,6 +93,7 @@ type alias Model =
         , recipe : WebData Recipe
         , contact : ContactForm
         }
+    , mdl : Material.Model
     }
 
 
@@ -99,6 +104,7 @@ type ContactMsg
     | SetSubject String
     | SetMessage String
     | SubmitForm
+
 
 type alias ContactForm =
     { name : String

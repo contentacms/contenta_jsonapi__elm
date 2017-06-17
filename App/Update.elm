@@ -10,6 +10,7 @@ import Http exposing (Error(..), Response)
 import Maybe
 import RemoteData exposing (RemoteData(..), fromResult)
 import Dict
+import Material
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -239,8 +240,9 @@ update msg model =
             in
                 { model | pages = pages_ } ! []
 
-        ContactM PostContactForm ->
+        PostContactForm ->
             ( model, sendContactForm model.pages.contact )
+
         ContactM msg ->
             let
                 pages =
@@ -255,6 +257,13 @@ update msg model =
                     }
             in
                 { model | pages = pages_ } ! []
+
+        {- Implement the contact post result -}
+        ContactPostResult ->
+            ( model, Cmd.none )
+
+        Mdl message ->
+            Material.update Mdl message model
 
 
 updateContact : ContactMsg -> ContactForm -> ContactForm
@@ -277,6 +286,7 @@ updateContact msg form =
 
         SubmitForm ->
             form
+
 
 joinListMaybe : List (Maybe a) -> Maybe (List a)
 joinListMaybe list =

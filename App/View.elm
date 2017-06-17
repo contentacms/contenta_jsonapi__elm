@@ -53,7 +53,7 @@ view model =
                         App.Pages.RecipesPerCategoryList.view model
 
                     ContactPage ->
-                        App.Pages.ContactPage.view model.pages.contact
+                        App.Pages.ContactPage.view model
                   )
                 , (viewFooter model)
                 ]
