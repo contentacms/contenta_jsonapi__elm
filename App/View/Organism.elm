@@ -84,6 +84,10 @@ viewFooter model =
         { left = Footer.left [] [ Footer.html <| text "Umami Publications example footer content. Integer psuere erat a ante venenatis dapibus ..." ]
         , right =
             Footer.right []
-                [ Footer.html <| ML.ul [] [ ML.li [] [ text "Get in touch" ], ML.li [] [ text "About the Contenta ELM frontend" ] ]
+                [ Footer.html <|
+                    ML.ul []
+                        [ ML.li [] [ text "Get in touch" ]
+                        , ML.li [] [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About the Contenta ELM frontend" ] ]
+                        ]
                 ]
         }
