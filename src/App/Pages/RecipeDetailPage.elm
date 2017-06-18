@@ -17,6 +17,12 @@ view model =
         [ viewRemoteData
             recipeDetail
             model.pages.recipe.recipe
-        , sectionTitle "More recipes"
-        , viewRemoteData (\recipes -> grid4 <| List.map recipeCard recipes) model.pages.recipe.recipes
+        , viewRemoteData
+            (\recipes ->
+                div []
+                    [ sectionTitle "More recipes"
+                    , grid4 <| List.map recipeCard recipes
+                    ]
+            )
+            model.pages.recipe.recipes
         ]

@@ -43,6 +43,7 @@ recipeCard recipe =
 
 articleCard : Article -> Html Msg
 articleCard article =
+    {- Todo Use a MDL card -}
     div []
         [ image <| Maybe.withDefault "http://placekitten.com/g/200/300" article.image
         , cardTags [ "No article tags yet?" ]
