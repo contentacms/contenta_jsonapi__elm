@@ -20,6 +20,9 @@
 <body>
 <div id="root"></div>
 <script src="elm.js"></script>
-<script>Elm.Main.embed(document.getElementById("root"));</script>
+<script>Elm.Main.embed(document.getElementById("root"), {
+  apiBaseUrl: "http://dev-contentacms.pantheonsite.io/api",
+  baseUrl: "http://dev-contentacms.pantheonsite.io"
+});</script>
 </body>
 </html>
