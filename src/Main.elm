@@ -13,12 +13,9 @@ import Dict
 import Material
 
 
-initialModel : Model
-initialModel =
-    { flags =
-        { baseUrl = "http://localhost:8888"
-        , apiBaseUrl = "http://localhost:8888/api"
-        }
+init : Flags -> Model
+init flags =
+    { flags = flags
     , currentPage = Home
     , pages =
         { home =
@@ -45,10 +42,13 @@ initialModel =
 
 
 main =
-    RouteUrl.program
+    RouteUrl.programWithFlags
         { delta2url = delta2url
         , location2messages = location2messages
-        , init = update (SetActivePage Home) initialModel
+        , init =
+            \flags ->
+                init flags
+                    |> update (SetActivePage Home)
         , update = update
         , subscriptions = \_ -> Sub.none
         , view = view

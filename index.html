@@ -20,6 +20,9 @@
 <body>
 <div id="root"></div>
 <script src="dist/elm-dev.js"></script>
-<script>Elm.Main.embed(document.getElementById("root"));</script>
+<script>Elm.Main.embed(document.getElementById("root"), {
+  baseUrl: "http://localhost:8888",
+  apiBaseUrl: "http://localhost:8888/api"
+});</script>
 </body>
 </html>
