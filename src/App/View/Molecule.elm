@@ -12,19 +12,32 @@ import Material.Card as Card
 import Material.Icons.Device as IconsDevice
 import Material.Icons.Action as IconsAction
 import Material.Icons.Editor as IconsEditor
-import Material.Options as Options
+import Material.Options as Options exposing (css)
 import Material.Typography as Typography
 import Material.Elevation as Elevation
-import Color
+import Material.Card as Card
+import Material.Color as Color
 import Svg
 
 
 recipeCard : Recipe -> Html Msg
 recipeCard recipe =
-    div [ onClick <| SetActivePage <| RecipeDetailPage recipe.id ]
-        [ imageInCard <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image
-        , h3 [] [ a [ onClick <| SetActivePage <| RecipeDetailPage recipe.id, href "#" ] [ cardTitle recipe.title ] ]
-        , cardTags <| List.map (.name) recipe.tags
+    Card.view
+        [ Options.onClick <| SetActivePage <| RecipeDetailPage recipe.id
+        , css "background" ("url('" ++ (Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image) ++ "') center / cover")
+        , css "width" "100%"
+        , css "min-height" "256px"
+        ]
+        [ Card.text [ Card.expand ] []
+          -- Filler
+        , Card.title
+            [ css "background" "rgba(0,0,0,0.5)"
+            ]
+            [ Card.head [ Color.text Color.white ]
+                [ text recipe.title
+                ]
+            , Card.subhead [ Color.text Color.white ] <| List.map (\tag -> span [] [ text tag.name ]) recipe.tags
+            ]
         ]
 
 
