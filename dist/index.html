@@ -20,9 +20,23 @@
 <body>
 <div id="root"></div>
 <script src="elm.js"></script>
-<script>Elm.Main.embed(document.getElementById("root"), {
-  apiBaseUrl: "https://dev-contentacms.pantheonsite.io/api",
-  baseUrl: "https://dev-contentacms.pantheonsite.io"
-});</script>
+<script>
+  var host = window.location.hostname;
+  var flags = {};
+  if (host === 'contenta-elm.firebaseapp.com') {
+    flags = {
+      apiBaseUrl: "https://dev-contentacms.pantheonsite.io/api",
+      baseUrl: "https://dev-contentacms.pantheonsite.io"
+    };
+  }
+  else {
+    flags = {
+      baseUrl: "http://localhost:8888",
+      apiBaseUrl: "http://localhost:8888/api"
+    };
+  }
+
+  Elm.Main.embed(document.getElementById("root"), flags);
+</script>
 </body>
 </html>

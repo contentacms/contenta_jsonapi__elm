@@ -102,14 +102,14 @@ viewFooter model =
 viewMdlHeader : List (Html Msg)
 viewMdlHeader =
     [ Layout.row []
-        [ Layout.link [ Layout.href "http://www.contentacms.org/" ] [ img [ height 36, src "dist/assets/contenta-lg.png", alt "Contenta Logo" ] [] ]
+        [ Layout.link [ Layout.href "http://www.contentacms.org/" ] [ img [ height 36, src "assets/contenta-lg.png", alt "Contenta Logo" ] [] ]
         , Layout.spacer
         , Layout.navigation []
             [ Layout.link [ Layout.href "#", Options.onClick (SetActivePage Home) ] [ text "Home" ]
             , Layout.link [ Layout.href "#", Options.onClick (SetActivePage ArticleList) ] [ text "Features" ]
             , Layout.link [ Layout.href "#", Options.onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ]
             , Layout.link [ Layout.href "#", Options.onClick (SetActivePage AboutUs) ] [ text "About us" ]
-            , Layout.link [ Layout.href "https://github.com/contentacms/contenta_jsonapi__elm" ] [ img [ height 36, src "dist/assets/github.png", alt "Github logo" ] [], text "  github" ]
+            , Layout.link [ Layout.href "https://github.com/contentacms/contenta_jsonapi__elm" ] [ img [ height 36, src "assets/github.png", alt "Github logo" ] [], text "  github" ]
             ]
         ]
     ]
