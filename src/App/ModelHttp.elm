@@ -70,20 +70,8 @@ getRecipePerCategory flags category =
                 (flags.apiBaseUrl
                     ++ "/recipes"
                     ++ "?"
-                    ++ "include=image,image.field_image,tags"
-                    --                    ++ "&fields[image]=image&fields[file--file]=url,uuid,tags"
-                    --                    ++ "&fields[recipes]="
-                    --                    ++ "title,"
-                    --                    ++ "difficulty,"
-                    --                    ++ "ingredients,"
-                    --                    ++ "totalTime,"
-                    --                    ++ "preparationTime,"
-                    --                    ++ "instructions,"
-                    --                    ++ "image,"
-                    --                    ++ "tags,"
-                    --                    ++ "&fields[tags]=internalId,name"
-                    ++
-                        "&page[offset]=0"
+                    ++ recipeFields
+                    ++ "&page[offset]=0"
                     ++ "&page[limit]=4"
                     ++ "&filter[category.name][value]="
                     ++ category
@@ -91,6 +79,29 @@ getRecipePerCategory flags category =
     in
         RemoteData.sendRequest request
             |> Cmd.map (RecipesPerCategoryLoaded category)
+
+
+recipeFields =
+    "include=field_image,field_image.field_image,field_image.field_image.file--file,tags"
+        ++ "&fields[recipes]="
+        ++ "title,"
+        ++ "difficulty,"
+        ++ "ingredients,"
+        ++ "totalTime,"
+        ++ "preparationTime,"
+        ++ "instructions,"
+        ++ "image,"
+        ++ "tags,"
+        ++ imageFields
+        ++ tagFields
+
+
+imageFields =
+    "&fields[image]=image&fields[file--file]=url,uuid"
+
+
+tagFields =
+    "&fields[tags]=internalId,name"
 
 
 getPromotedRecipes : Flags -> Cmd Msg
@@ -101,18 +112,7 @@ getPromotedRecipes flags =
                 (flags.apiBaseUrl
                     ++ "/recipes"
                     ++ "?"
-                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file,tags"
-                    ++ "&fields[image]=image&fields[file--file]=url,uuid"
-                    ++ "&fields[recipes]="
-                    ++ "title,"
-                    ++ "difficulty,"
-                    ++ "ingredients,"
-                    ++ "totalTime,"
-                    ++ "preparationTime,"
-                    ++ "instructions,"
-                    ++ "image,"
-                    ++ "tags,"
-                    ++ "&fields[tags]=internalId,name"
+                    ++ recipeFields
                     ++ "&filter[promote][value]=1"
                     ++ "&page[limit]=3"
                 )
@@ -154,18 +154,7 @@ getHomepageRecipes flags =
                 (flags.apiBaseUrl
                     ++ "/recipes"
                     ++ "?"
-                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file,tags"
-                    ++ "&fields[image]=image&fields[file--file]=url,uuid"
-                    ++ "&fields[recipes]="
-                    ++ "title,"
-                    ++ "difficulty,"
-                    ++ "ingredients,"
-                    ++ "totalTime,"
-                    ++ "preparationTime,"
-                    ++ "instructions,"
-                    ++ "image,"
-                    ++ "tags,"
-                    ++ "&fields[tags]=internalId,name"
+                    ++ recipeFields
                     ++ "&filter[promote][value]=1"
                     ++ "&page[offset]=3"
                     ++ "&page[limit]=4"
@@ -184,18 +173,7 @@ getRecipe flags id =
                     ++ "/recipes/"
                     ++ id
                     ++ "?"
-                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file,tags,field_image.owner,field_image.field_image.owner"
-                    ++ "&fields[image]=image&fields[file--file]=url,uuid"
-                    ++ "&fields[recipes]="
-                    ++ "title,"
-                    ++ "difficulty,"
-                    ++ "ingredients,"
-                    ++ "totalTime,"
-                    ++ "preparationTime,"
-                    ++ "instructions,"
-                    ++ "image,"
-                    ++ "tags,"
-                    ++ "&fields[tags]=internalId,name"
+                    ++ recipeFields
                 )
     in
         RemoteData.sendRequest request
@@ -210,18 +188,7 @@ getRecipeRecipes flags =
                 (flags.apiBaseUrl
                     ++ "/recipes"
                     ++ "?"
-                    ++ "include=field_image,field_image.field_image,field_image.field_image.file--file,tags"
-                    ++ "&fields[image]=image&fields[file--file]=url,uuid"
-                    ++ "&fields[recipes]="
-                    ++ "title,"
-                    ++ "difficulty,"
-                    ++ "ingredients,"
-                    ++ "totalTime,"
-                    ++ "preparationTime,"
-                    ++ "instructions,"
-                    ++ "image,"
-                    ++ "tags,"
-                    ++ "&fields[tags]=internalId,name"
+                    ++ recipeFields
                     ++ "&filter[promote][value]=1"
                     ++ "&page[offset]=3"
                     ++ "&page[limit]=4"
