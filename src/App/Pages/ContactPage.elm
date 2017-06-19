@@ -4,6 +4,7 @@ import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (src, type_, value)
 import Html.Events exposing (onInput, onSubmit, onClick)
+import App.View.Atom exposing (pageTitle)
 import Material.Textfield as Textfield
 import Material.Options as Options
 import Material.Button as Button
@@ -12,7 +13,8 @@ import Material.Button as Button
 view : Model -> Html Msg
 view model =
     div []
-        [ div []
+        [ pageTitle "Get in touch"
+        , div []
             [ Textfield.render Mdl
                 [ 0 ]
                 model.mdl
