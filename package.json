@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "elm": "^0.18.0",
-    "elm-live": "^2.7.4"
+    "elm-live": "^2.7.4",
+    "prepack": "^0.2.3"
   },
   "scripts": {
     "app-dev": "elm-live src/Main.elm --output=dist/elm.js --pushstate --open --debug --dir=dist",

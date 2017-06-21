@@ -36,7 +36,7 @@ recipeCard recipe =
             [ Card.head [ Color.text Color.white ]
                 [ text recipe.title
                 ]
-            , Card.subhead [ Color.text Color.white ] <| List.map (\tag -> span [] [ text tag.name ]) recipe.tags
+            , Card.subhead [ Color.text Color.white,  Options.cs "recipe__tags" ] <| List.map (\tag -> span [] [ text tag.name ]) recipe.tags
             ]
         ]
 
