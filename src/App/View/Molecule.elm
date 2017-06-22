@@ -7,6 +7,7 @@ import Html.Events exposing (onClick)
 import App.View.Components exposing (..)
 import App.View.Atom exposing (..)
 import App.View.Grid exposing (grid2__2)
+import App.PageType exposing (Page(..))
 import Material.Card as Card
 import Material.Icons.Device as IconsDevice
 import Material.Icons.Action as IconsAction

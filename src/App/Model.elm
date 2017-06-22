@@ -1,5 +1,6 @@
 module App.Model exposing (..)
 
+import App.PageType exposing (..)
 import Http
 import JsonApi
 import RemoteData exposing (WebData)
@@ -76,19 +77,6 @@ type alias Flags =
     { baseUrl : String
     , apiBaseUrl : String
     }
-
-
-type alias RecipeId =
-    String
-
-
-type Page
-    = Home
-    | AboutUs
-    | RecipesPerCategoryList
-    | ArticleList
-    | RecipeDetailPage String
-    | ContactPage
 
 
 type PageModel

@@ -10,6 +10,7 @@ import App.View.Molecule exposing (..)
 import App.View.Grid exposing (grid4, grid2x2, grid1__2, grid1__1, grid1__)
 import Material.List as ML
 import Material.Options as Options
+import App.PageType exposing (..)
 import List
 import List.Extra
 

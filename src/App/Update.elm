@@ -1,6 +1,7 @@
 module App.Update exposing (..)
 
 import App.Model exposing (..)
+import App.PageType exposing (..)
 import App.ModelHttp exposing (..)
 import JsonApi.Resources
 import Result.Extra
