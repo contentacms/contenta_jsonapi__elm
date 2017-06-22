@@ -15,7 +15,6 @@ import Material
 init : Flags -> Model
 init flags =
     { flags = flags
-    , currentPage = Home
     , pages =
         HomeModel
             { promotedArticles = RemoteData.NotAsked

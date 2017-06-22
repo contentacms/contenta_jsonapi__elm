@@ -55,7 +55,7 @@ view model =
                 ArticleListModel articles ->
                     App.Pages.Articles.view model articles
 
-                RecipeDetailPageModel { recipe, recipes } ->
+                RecipeDetailPageModel _ { recipe, recipes } ->
                     App.Pages.RecipeDetailPage.view model recipe recipes
 
                 RecipesPerCategoryListModel recipes ->

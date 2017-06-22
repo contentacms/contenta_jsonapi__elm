@@ -8,23 +8,23 @@ import UrlParser exposing (Parser, map, parseHash, s, oneOf, (</>), int, string)
 
 delta2url : Model -> Model -> Maybe UrlChange
 delta2url previous current =
-    case current.currentPage of
-        Home ->
+    case current.pages of
+        HomeModel _ ->
             Just <| UrlChange NewEntry "/"
 
-        AboutUs ->
+        AboutUsModel ->
             Just <| UrlChange NewEntry "/about-us"
 
-        ArticleList ->
+        ArticleListModel _ ->
             Just <| UrlChange NewEntry "/features"
 
-        RecipesPerCategoryList ->
+        RecipesPerCategoryListModel _ ->
             Just <| UrlChange NewEntry "/recipes"
 
-        RecipeDetailPage recipeId ->
+        RecipeDetailPageModel recipeId _ ->
             Just <| UrlChange NewEntry ("/recipes/" ++ recipeId)
 
-        ContactPage ->
+        ContactPageModel _ ->
           Just <| UrlChange NewEntry "/contact"
 
 

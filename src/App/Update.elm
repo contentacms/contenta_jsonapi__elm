@@ -20,10 +20,11 @@ update msg model =
 
         RecipeLoaded remoteResponse ->
             case model.pages of
-                RecipeDetailPageModel { recipe, recipes } ->
+                RecipeDetailPageModel recipeId { recipe, recipes } ->
                     ( { model
                         | pages =
                             RecipeDetailPageModel
+                                recipeId
                                 { recipe = RemoteData.andThen (\res -> resultToWebData <| decodeRecipe model.flags res) remoteResponse
                                 , recipes = recipes
                                 }
@@ -36,10 +37,11 @@ update msg model =
 
         RecipeRecipesLoaded remoteResponse ->
             case model.pages of
-                RecipeDetailPageModel { recipe, recipes } ->
+                RecipeDetailPageModel recipeId { recipe, recipes } ->
                     ( { model
                         | pages =
                             RecipeDetailPageModel
+                                recipeId
                                 { recipe = recipe
                                 , recipes =
                                     RemoteData.map
@@ -83,8 +85,7 @@ update msg model =
             case page of
                 Home ->
                     ( { model
-                        | currentPage = page
-                        , pages =
+                        | pages =
                             HomeModel
                                 { promotedArticles = RemoteData.Loading
                                 , promotedRecipes = RemoteData.Loading
@@ -94,33 +95,32 @@ update msg model =
                     , Cmd.batch [ getPromotedRecipes model.flags, getPromotedArticles model.flags, getHomepageRecipes model.flags ]
                     )
 
-                RecipeDetailPage string ->
+                RecipeDetailPage recipeId ->
                     ( { model
-                        | currentPage = page
-                        , pages =
+                        | pages =
                             RecipeDetailPageModel
+                                recipeId
                                 { recipe = RemoteData.Loading
                                 , recipes = RemoteData.Loading
                                 }
                       }
-                    , Cmd.batch [ getRecipe model.flags string, getRecipeRecipes model.flags ]
+                    , Cmd.batch [ getRecipe model.flags recipeId, getRecipeRecipes model.flags ]
                     )
 
                 RecipesPerCategoryList ->
-                    { model | currentPage = page }
+                    { model | pages = RecipesPerCategoryListModel Dict.empty }
                         |> update GetRecipesPerCategories
 
                 ArticleList ->
-                    ({ model | currentPage = page, pages = ArticleListModel RemoteData.Loading })
+                    ({ model | pages = ArticleListModel RemoteData.Loading })
                         |> update GetArticles
 
                 AboutUs ->
-                    ( { model | currentPage = page, pages = AboutUsModel }, Cmd.none )
+                    ( { model | pages = AboutUsModel }, Cmd.none )
 
                 ContactPage ->
                     ( { model
-                        | currentPage = page
-                        , pages =
+                        | pages =
                             ContactPageModel
                                 { name = ""
                                 , email = ""

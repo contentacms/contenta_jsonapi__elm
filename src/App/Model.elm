@@ -90,6 +90,7 @@ type Page
     | RecipeDetailPage String
     | ContactPage
 
+
 type PageModel
     = HomeModel
         { promotedArticles : WebData (List Article)
@@ -99,13 +100,12 @@ type PageModel
     | AboutUsModel
     | RecipesPerCategoryListModel (Dict String (WebData (List Recipe)))
     | ArticleListModel (WebData (List Article))
-    | RecipeDetailPageModel { recipe : WebData Recipe, recipes : WebData (List Recipe) }
+    | RecipeDetailPageModel RecipeId { recipe : WebData Recipe, recipes : WebData (List Recipe) }
     | ContactPageModel ContactForm
 
 
 type alias Model =
-    { currentPage : Page
-    , flags : Flags
+    { flags : Flags
     , pages : PageModel
     , mdl : Material.Model
     }
