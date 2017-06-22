@@ -7,7 +7,6 @@ import Html.Events exposing (onClick)
 import App.View.Atom exposing (..)
 import App.View.Molecule exposing (..)
 import App.View.Grid exposing (grid4, grid1__1)
-import App.PageType exposing (..)
 import Material.List as ML
 import Material.Footer as Footer
 import Material.Layout as Layout

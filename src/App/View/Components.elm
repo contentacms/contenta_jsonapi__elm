@@ -4,7 +4,6 @@ import App.Model exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onWithOptions)
 import Json.Decode
-import App.PageType exposing (Page(..))
 import Html.Attributes exposing (..)
 import RemoteData exposing (WebData, RemoteData(..))
 import Material.Spinner

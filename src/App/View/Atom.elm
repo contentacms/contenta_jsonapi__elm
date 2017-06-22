@@ -4,7 +4,6 @@ import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import App.PageType exposing (..)
 import Color
 import Svg
 import Material.Chip as Chip

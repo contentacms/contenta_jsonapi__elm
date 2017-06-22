@@ -2,7 +2,6 @@ module Main exposing (..)
 
 import App.Model exposing (..)
 import App.ModelHttp exposing (..)
-import App.PageType exposing (..)
 import App.Router exposing (..)
 import App.View exposing (..)
 import App.Update exposing (..)
