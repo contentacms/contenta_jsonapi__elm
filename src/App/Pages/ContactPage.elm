@@ -10,8 +10,8 @@ import Material.Options as Options
 import Material.Button as Button
 
 
-view : Model -> Html Msg
-view model =
+view : Model -> ContactForm -> Html Msg
+view model contact =
     div []
         [ pageTitle "Get in touch"
         , div []

@@ -77,6 +77,7 @@ type alias Flags =
     , apiBaseUrl : String
     }
 
+
 type alias RecipeId =
     String
 
@@ -89,21 +90,23 @@ type Page
     | RecipeDetailPage String
     | ContactPage
 
+type PageModel
+    = HomeModel
+        { promotedArticles : WebData (List Article)
+        , promotedRecipes : WebData (List Recipe)
+        , recipes : WebData (List Recipe)
+        }
+    | AboutUsModel
+    | RecipesPerCategoryListModel (Dict String (WebData (List Recipe)))
+    | ArticleListModel (WebData (List Article))
+    | RecipeDetailPageModel { recipe : WebData Recipe, recipes : WebData (List Recipe) }
+    | ContactPageModel ContactForm
+
 
 type alias Model =
     { currentPage : Page
     , flags : Flags
-    , pages :
-        { home :
-            { promotedArticles : WebData (List Article)
-            , promotedRecipes : WebData (List Recipe)
-            , recipes : WebData (List Recipe)
-            }
-        , articles : WebData (List Article)
-        , recipes : Dict String (WebData (List Recipe))
-        , recipe : { recipe : WebData Recipe, recipes : WebData (List Recipe) }
-        , contact : ContactForm
-        }
+    , pages : PageModel
     , mdl : Material.Model
     }
 

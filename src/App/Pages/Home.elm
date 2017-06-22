@@ -14,22 +14,22 @@ import List
 import List.Extra
 
 
-view : Model -> Html Msg
-view model =
+view : Model -> WebData (List Article) -> WebData (List Recipe) -> WebData (List Recipe) -> Html Msg
+view model promotedArticles promotedRecipes recipes =
     div []
-        [ viewPromotedContent model
+        [ viewPromotedContent promotedArticles promotedRecipes
         , viewCurrentMonthIssue model
         , viewCookMenu model
-        , viewRecipes model
+        , viewRecipes recipes
         ]
 
 
-viewPromotedContent : Model -> Html Msg
-viewPromotedContent model =
+viewPromotedContent : WebData (List Article) -> WebData (List Recipe) -> Html Msg
+viewPromotedContent promotedArticles promotedRecipes =
     --    let
     let
         mergedPromotedList =
-            RemoteData.append model.pages.home.promotedArticles model.pages.home.promotedRecipes
+            RemoteData.append promotedArticles promotedRecipes
                 |> RemoteData.map (uncurry (\articles recipes -> List.append (List.map ArticleRef articles) (List.map RecipeRef recipes)))
 
         --        mergedPromotedList =
@@ -101,12 +101,12 @@ viewCookMenu model =
         ]
 
 
-viewRecipes : Model -> Html Msg
-viewRecipes model =
+viewRecipes : WebData (List Recipe) -> Html Msg
+viewRecipes recipes =
     div []
         [ h2 [] [ text "Recipes" ]
         , h3 [] [ text "Explore recipes across every type of occasion, ingredient and skill level" ]
         , viewRemoteData
             (\data -> grid2x2 <| List.map recipeCard data)
-            model.pages.home.recipes
+            recipes
         ]

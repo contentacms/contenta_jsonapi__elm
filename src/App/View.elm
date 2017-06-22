@@ -45,24 +45,24 @@ view model =
         , tabs = ( [], [] )
         , main =
             [ (viewHeader model)
-            , (case model.currentPage of
-                Home ->
-                    App.Pages.Home.view model
+            , (case model.pages of
+                HomeModel { promotedArticles, promotedRecipes, recipes } ->
+                    App.Pages.Home.view model promotedArticles promotedRecipes recipes
 
-                AboutUs ->
+                AboutUsModel ->
                     App.Pages.AboutUs.view model
 
-                ArticleList ->
-                    App.Pages.Articles.view model
+                ArticleListModel articles ->
+                    App.Pages.Articles.view model articles
 
-                RecipeDetailPage id ->
-                    App.Pages.RecipeDetailPage.view model
+                RecipeDetailPageModel { recipe, recipes } ->
+                    App.Pages.RecipeDetailPage.view model recipe recipes
 
-                RecipesPerCategoryList ->
-                    App.Pages.RecipesPerCategoryList.view model
+                RecipesPerCategoryListModel recipes ->
+                    App.Pages.RecipesPerCategoryList.view model recipes
 
-                ContactPage ->
-                    App.Pages.ContactPage.view model
+                ContactPageModel contact ->
+                    App.Pages.ContactPage.view model contact
               )
             , (viewFooter model)
             ]

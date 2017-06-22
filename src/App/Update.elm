@@ -16,206 +16,219 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GetArticles ->
-            let
-                pages =
-                    model.pages
-
-                pages_ =
-                    { pages
-                        | articles = RemoteData.Loading
-                    }
-            in
-                ( { model | pages = pages_ }, getArticles model.flags )
+            ( { model | pages = ArticleListModel RemoteData.Loading }, getArticles model.flags )
 
         RecipeLoaded remoteResponse ->
-            let
-                pages =
-                    model.pages
+            case model.pages of
+                RecipeDetailPageModel { recipe, recipes } ->
+                    ( { model
+                        | pages =
+                            RecipeDetailPageModel
+                                { recipe = RemoteData.andThen (\res -> resultToWebData <| decodeRecipe model.flags res) remoteResponse
+                                , recipes = recipes
+                                }
+                      }
+                    , Cmd.none
+                    )
 
-                recipePage =
-                    pages.recipe
-
-                recipePage_ =
-                    { recipePage
-                        | recipe =
-                            RemoteData.andThen (\res -> resultToWebData <| decodeRecipe model.flags res) remoteResponse
-                    }
-
-                pages_ =
-                    { pages | recipe = recipePage_ }
-            in
-                { model | pages = pages_ }
-                    ! []
+                _ ->
+                    Debug.crash "This should never happen"
 
         RecipeRecipesLoaded remoteResponse ->
-            -- @todo: Nested data models aren't ideal.
-            let
-                pages =
-                    model.pages
+            case model.pages of
+                RecipeDetailPageModel { recipe, recipes } ->
+                    ( { model
+                        | pages =
+                            RecipeDetailPageModel
+                                { recipe = recipe
+                                , recipes =
+                                    RemoteData.map
+                                        (\resources ->
+                                            List.map
+                                                (decodeRecipe model.flags)
+                                                resources
+                                                |> removeErrorFromList
+                                        )
+                                        remoteResponse
+                                }
+                      }
+                    , Cmd.none
+                    )
 
-                recipePage =
-                    pages.recipe
-
-                recipePage_ =
-                    { recipePage
-                        | recipes =
-                            RemoteData.map
-                                (\resources ->
-                                    List.map
-                                        (decodeRecipe model.flags)
-                                        resources
-                                        |> removeErrorFromList
-                                )
-                                remoteResponse
-                    }
-
-                pages_ =
-                    { pages | recipe = recipePage_ }
-            in
-                { model | pages = pages_ } ! []
+                _ ->
+                    Debug.crash "This should never happen"
 
         ArticlesLoaded remoteResponse ->
-            let
-                pages =
-                    model.pages
+            case model.pages of
+                ArticleListModel articles ->
+                    ( { model
+                        | pages =
+                            ArticleListModel <|
+                                RemoteData.map
+                                    (\resources ->
+                                        List.map
+                                            (decodeArticle model.flags)
+                                            resources
+                                            |> removeErrorFromList
+                                    )
+                                    remoteResponse
+                      }
+                    , Cmd.none
+                    )
 
-                pages_ =
-                    { pages
-                        | articles =
-                            RemoteData.map
-                                (\resources ->
-                                    List.map
-                                        (decodeArticle model.flags)
-                                        resources
-                                        |> removeErrorFromList
-                                )
-                                remoteResponse
-                    }
-            in
-                { model | pages = pages_ } ! []
+                _ ->
+                    Debug.crash "This should never happen"
 
         SetActivePage page ->
             case page of
                 Home ->
-                    let
-                        pagesModel =
-                            model.pages
-
-                        newPagesModel =
-                            { pagesModel
-                                | home =
-                                    { promotedArticles = RemoteData.Loading
-                                    , promotedRecipes = RemoteData.Loading
-                                    , recipes = RemoteData.Loading
-                                    }
-                            }
-                    in
-                        ( { model | currentPage = page, pages = newPagesModel }
-                        , Cmd.batch [ getPromotedRecipes model.flags, getPromotedArticles model.flags, getHomepageRecipes model.flags ]
-                        )
+                    ( { model
+                        | currentPage = page
+                        , pages =
+                            HomeModel
+                                { promotedArticles = RemoteData.Loading
+                                , promotedRecipes = RemoteData.Loading
+                                , recipes = RemoteData.Loading
+                                }
+                      }
+                    , Cmd.batch [ getPromotedRecipes model.flags, getPromotedArticles model.flags, getHomepageRecipes model.flags ]
+                    )
 
                 RecipeDetailPage string ->
-                    let
-                        pages =
-                            model.pages
-
-                        recipePage =
-                            pages.recipe
-
-                        recipePage_ =
-                            { recipe = RemoteData.Loading, recipes = RemoteData.Loading }
-
-                        pages_ =
-                            { pages | recipe = recipePage_ }
-                    in
-                        ( { model | currentPage = page, pages = pages_ }, Cmd.batch [ getRecipe model.flags string, getRecipeRecipes model.flags ] )
+                    ( { model
+                        | currentPage = page
+                        , pages =
+                            RecipeDetailPageModel
+                                { recipe = RemoteData.Loading
+                                , recipes = RemoteData.Loading
+                                }
+                      }
+                    , Cmd.batch [ getRecipe model.flags string, getRecipeRecipes model.flags ]
+                    )
 
                 RecipesPerCategoryList ->
                     { model | currentPage = page }
                         |> update GetRecipesPerCategories
 
                 ArticleList ->
-                    let
-                        pages =
-                            model.pages
+                    ({ model | currentPage = page, pages = ArticleListModel RemoteData.Loading })
+                        |> update GetArticles
 
-                        pages_ =
-                            { pages
-                                | articles = RemoteData.Loading
-                            }
-                    in
-                        { model | currentPage = page, pages = pages_ }
-                            |> update GetArticles
+                AboutUs ->
+                    ( { model | currentPage = page, pages = AboutUsModel }, Cmd.none )
 
-                _ ->
-                    { model | currentPage = page } ! []
+                ContactPage ->
+                    ( { model
+                        | currentPage = page
+                        , pages =
+                            ContactPageModel
+                                { name = ""
+                                , email = ""
+                                , telephone = ""
+                                , subject = ""
+                                , message = ""
+                                }
+                      }
+                    , Cmd.none
+                    )
 
         PromotedArticlesLoaded remoteResponse ->
-            -- @todo: Nested data models aren't ideal.
-            let
-                pages =
-                    model.pages
+            case model.pages of
+                HomeModel { promotedArticles, promotedRecipes, recipes } ->
+                    ( { model
+                        | pages =
+                            HomeModel
+                                { promotedArticles =
+                                    RemoteData.map
+                                        (\resources ->
+                                            List.map
+                                                (decodeArticle model.flags)
+                                                resources
+                                                |> removeErrorFromList
+                                        )
+                                        remoteResponse
+                                , promotedRecipes = promotedRecipes
+                                , recipes = recipes
+                                }
+                      }
+                    , Cmd.none
+                    )
 
-                homePageModel =
-                    pages.home
-
-                newHomePageModel =
-                    { homePageModel
-                        | promotedArticles =
-                            RemoteData.map
-                                (\resources ->
-                                    List.map
-                                        (decodeArticle model.flags)
-                                        resources
-                                        |> removeErrorFromList
-                                )
-                                remoteResponse
-                    }
-
-                newPages =
-                    { pages | home = newHomePageModel }
-            in
-                { model | pages = newPages } ! []
+                _ ->
+                    Debug.crash "This should not happen"
 
         PromotedRecipesLoaded remoteResponse ->
-            -- @todo: Nested data models aren't ideal.
-            let
-                pages =
-                    model.pages
+            case model.pages of
+                HomeModel { promotedArticles, promotedRecipes, recipes } ->
+                    ( { model
+                        | pages =
+                            HomeModel
+                                { promotedArticles = promotedArticles
+                                , promotedRecipes =
+                                    RemoteData.map
+                                        (\resources ->
+                                            List.map
+                                                (decodeRecipe model.flags)
+                                                resources
+                                                |> removeErrorFromList
+                                        )
+                                        remoteResponse
+                                , recipes = recipes
+                                }
+                      }
+                    , Cmd.none
+                    )
 
-                homePageModel =
-                    pages.home
-
-                newHomePageModel =
-                    { homePageModel
-                        | promotedRecipes =
-                            RemoteData.map
-                                (\resources ->
-                                    List.map
-                                        (decodeRecipe model.flags)
-                                        resources
-                                        |> removeErrorFromList
-                                )
-                                remoteResponse
-                    }
-
-                newPages =
-                    { pages | home = newHomePageModel }
-            in
-                { model | pages = newPages } ! []
+                _ ->
+                    Debug.crash "This should not happen"
 
         HomepageRecipesLoaded remoteResponse ->
-            -- @todo: Nested data models aren't ideal.
-            let
-                pages =
-                    model.pages
+            case model.pages of
+                HomeModel { promotedArticles, promotedRecipes, recipes } ->
+                    ( { model
+                        | pages =
+                            HomeModel
+                                { promotedArticles = promotedArticles
+                                , promotedRecipes = promotedRecipes
+                                , recipes =
+                                    RemoteData.map
+                                        (\resources ->
+                                            List.map
+                                                (decodeRecipe model.flags)
+                                                resources
+                                                |> removeErrorFromList
+                                        )
+                                        remoteResponse
+                                }
+                      }
+                    , Cmd.none
+                    )
 
-                homePageModel =
-                    pages.home
+                _ ->
+                    Debug.crash "This should not happen"
 
-                newHomePageModel =
-                    { homePageModel
-                        | recipes =
+        GetRecipesPerCategories ->
+            ( { model
+                | pages =
+                    RecipesPerCategoryListModel <|
+                        Dict.fromList
+                            [ ( "Main course", RemoteData.Loading )
+                            , ( "Snack", RemoteData.Loading )
+                            , ( "Dessert", RemoteData.Loading )
+                            ]
+              }
+            , Cmd.batch
+                [ getRecipePerCategory model.flags "Main course"
+                , getRecipePerCategory model.flags "Snack"
+                , getRecipePerCategory model.flags "Dessert"
+                ]
+            )
+
+        RecipesPerCategoryLoaded category remoteResponse ->
+            case model.pages of
+                RecipesPerCategoryListModel recipes ->
+                    let
+                        additionalRecipes =
                             RemoteData.map
                                 (\resources ->
                                     List.map
@@ -224,77 +237,33 @@ update msg model =
                                         |> removeErrorFromList
                                 )
                                 remoteResponse
-                    }
-
-                newPages =
-                    { pages | home = newHomePageModel }
-            in
-                { model | pages = newPages } ! []
-
-        GetRecipesPerCategories ->
-            let
-                pages =
-                    model.pages
-
-                pages_ =
-                    { pages
-                        | recipes =
-                            Dict.fromList
-                                [ ( "Main course", RemoteData.Loading )
-                                , ( "Snack", RemoteData.Loading )
-                                , ( "Dessert", RemoteData.Loading )
-                                ]
-                    }
-            in
-                ( { model | pages = pages_ }
-                , Cmd.batch
-                    [ getRecipePerCategory model.flags "Main course"
-                    , getRecipePerCategory model.flags "Snack"
-                    , getRecipePerCategory model.flags "Dessert"
-                    ]
-                )
-
-        RecipesPerCategoryLoaded category remoteResponse ->
-            -- @todo: Nested data models aren't ideal.
-            let
-                additionalRecipes =
-                    RemoteData.map
-                        (\resources ->
-                            List.map
-                                (decodeRecipe model.flags)
-                                resources
-                                |> removeErrorFromList
+                    in
+                        ( { model
+                            | pages =
+                                RecipesPerCategoryListModel <|
+                                    Dict.insert category additionalRecipes recipes
+                          }
+                        , Cmd.none
                         )
-                        remoteResponse
 
-                pages =
-                    model.pages
-
-                pages_ =
-                    { pages
-                        | recipes =
-                            Dict.insert category additionalRecipes pages.recipes
-                    }
-            in
-                { model | pages = pages_ } ! []
+                _ ->
+                    Debug.crash "this should not happen"
 
         PostContactForm ->
-            ( model, sendContactForm model.pages.contact )
+            case model.pages of
+                ContactPageModel contact ->
+                    ( model, sendContactForm contact )
+
+                _ ->
+                    Debug.crash "this should not happen"
 
         ContactM msg ->
-            let
-                pages =
-                    model.pages
+            case model.pages of
+                ContactPageModel contact ->
+                    ( { model | pages = ContactPageModel <| updateContact msg contact }, Cmd.none )
 
-                contact =
-                    pages.contact
-
-                pages_ =
-                    { pages
-                        | contact = updateContact msg contact
-                    }
-            in
-                { model | pages = pages_ } ! []
+                _ ->
+                    Debug.crash "this should not happen"
 
         {- Implement the contact post result -}
         ContactPostResult ->

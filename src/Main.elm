@@ -17,25 +17,11 @@ init flags =
     { flags = flags
     , currentPage = Home
     , pages =
-        { home =
+        HomeModel
             { promotedArticles = RemoteData.NotAsked
             , promotedRecipes = RemoteData.NotAsked
             , recipes = RemoteData.NotAsked
             }
-        , articles = RemoteData.NotAsked
-        , recipes = Dict.empty
-        , recipe =
-            { recipe = RemoteData.NotAsked
-            , recipes = RemoteData.NotAsked
-            }
-        , contact =
-            { name = ""
-            , email = ""
-            , telephone = ""
-            , subject = ""
-            , message = ""
-            }
-        }
     , mdl = Material.model
     }
 
