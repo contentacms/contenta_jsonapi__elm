@@ -1,4 +1,4 @@
-module App.Pages.ContactPage exposing (view)
+module App.Pages.ContactPage exposing (view, init)
 
 import App.Model exposing (..)
 import Html exposing (..)
@@ -8,6 +8,16 @@ import App.View.Atom exposing (pageTitle)
 import Material.Textfield as Textfield
 import Material.Options as Options
 import Material.Button as Button
+
+
+init : ContactForm
+init =
+    { name = ""
+    , email = ""
+    , telephone = ""
+    , subject = ""
+    , message = ""
+    }
 
 
 view : Model -> ContactForm -> Html Msg

@@ -79,22 +79,19 @@ type alias Flags =
     }
 
 
-type PageModel
-    = HomeModel
+type alias Model =
+    { flags : Flags
+    , currentPage : Page
+    , pageHome :
         { promotedArticles : WebData (List Article)
         , promotedRecipes : WebData (List Recipe)
         , recipes : WebData (List Recipe)
         }
-    | AboutUsModel
-    | RecipesPerCategoryListModel (Dict String (WebData (List Recipe)))
-    | ArticleListModel (WebData (List Article))
-    | RecipeDetailPageModel RecipeId { recipe : WebData Recipe, recipes : WebData (List Recipe) }
-    | ContactPageModel ContactForm
-
-
-type alias Model =
-    { flags : Flags
-    , pages : PageModel
+    , pageAboutUs : {}
+    , pageRecipes : Dict String (WebData (List Recipe))
+    , pageArticles : WebData (List Article)
+    , pageRecipeDetail : { recipe : WebData Recipe, recipes : WebData (List Recipe) }
+    , pageContact : ContactForm
     , mdl : Material.Model
     }
 

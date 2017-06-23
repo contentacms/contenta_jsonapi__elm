@@ -6,22 +6,29 @@ import App.PageType exposing (..)
 import App.Router exposing (..)
 import App.View exposing (..)
 import App.Update exposing (..)
+import App.Pages.ContactPage
 import Html
 import RouteUrl
 import RemoteData exposing (RemoteData)
 import Dict
+import String
 import Material
 
 
 init : Flags -> Model
 init flags =
     { flags = flags
-    , pages =
-        HomeModel
-            { promotedArticles = RemoteData.NotAsked
-            , promotedRecipes = RemoteData.NotAsked
-            , recipes = RemoteData.NotAsked
-            }
+    , currentPage = Home
+    , pageHome =
+        { promotedArticles = RemoteData.NotAsked
+        , promotedRecipes = RemoteData.NotAsked
+        , recipes = RemoteData.NotAsked
+        }
+    , pageAboutUs = {}
+    , pageRecipes = Dict.empty
+    , pageArticles = RemoteData.NotAsked
+    , pageRecipeDetail = { recipe = RemoteData.NotAsked, recipes = RemoteData.NotAsked }
+    , pageContact = App.Pages.ContactPage.init
     , mdl = Material.model
     }
 

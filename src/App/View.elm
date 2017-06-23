@@ -46,24 +46,24 @@ view model =
         , tabs = ( [], [] )
         , main =
             [ (viewHeader model)
-            , (case model.pages of
-                HomeModel { promotedArticles, promotedRecipes, recipes } ->
-                    App.Pages.Home.view model promotedArticles promotedRecipes recipes
+            , (case model.currentPage of
+                Home ->
+                    App.Pages.Home.view model model.pageHome.promotedArticles model.pageHome.promotedRecipes model.pageHome.recipes
 
-                AboutUsModel ->
+                AboutUs ->
                     App.Pages.AboutUs.view model
 
-                ArticleListModel articles ->
-                    App.Pages.Articles.view model articles
+                ArticleList ->
+                    App.Pages.Articles.view model model.pageArticles
 
-                RecipeDetailPageModel _ { recipe, recipes } ->
-                    App.Pages.RecipeDetailPage.view model recipe recipes
+                RecipeDetailPage _ ->
+                    App.Pages.RecipeDetailPage.view model model.pageRecipeDetail.recipe model.pageRecipeDetail.recipes
 
-                RecipesPerCategoryListModel recipes ->
-                    App.Pages.RecipesPerCategoryList.view model recipes
+                RecipesPerCategoryList ->
+                    App.Pages.RecipesPerCategoryList.view model model.pageRecipes
 
-                ContactPageModel contact ->
-                    App.Pages.ContactPage.view model contact
+                ContactPage ->
+                    App.Pages.ContactPage.view model model.pageContact
               )
             , (viewFooter model)
             ]
