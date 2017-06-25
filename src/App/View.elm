@@ -48,16 +48,16 @@ view model =
             [ (viewHeader model)
             , (case model.currentPage of
                 Home ->
-                    App.Pages.Home.view model model.pageHome.promotedArticles model.pageHome.promotedRecipes model.pageHome.recipes
+                    App.Pages.Home.view model model.pageHome
 
                 AboutUs ->
-                    App.Pages.AboutUs.view model
+                    App.Pages.AboutUs.view model model.pageAboutUs
 
                 ArticleList ->
                     App.Pages.Articles.view model model.pageArticles
 
                 RecipeDetailPage _ ->
-                    App.Pages.RecipeDetailPage.view model model.pageRecipeDetail.recipe model.pageRecipeDetail.recipes
+                    App.Pages.RecipeDetailPage.view model model.pageRecipeDetail
 
                 RecipesPerCategoryList ->
                     App.Pages.RecipesPerCategoryList.view model model.pageRecipes

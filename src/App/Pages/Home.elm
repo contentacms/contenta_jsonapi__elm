@@ -15,13 +15,13 @@ import List
 import List.Extra
 
 
-view : Model -> WebData (List Article) -> WebData (List Recipe) -> WebData (List Recipe) -> Html Msg
-view model promotedArticles promotedRecipes recipes =
+view : Model -> PageHomeModel -> Html Msg
+view model pageModel =
     div []
-        [ viewPromotedContent promotedArticles promotedRecipes
+        [ viewPromotedContent pageModel.promotedArticles pageModel.promotedRecipes
         , viewCurrentMonthIssue model
         , viewCookMenu model
-        , viewRecipes recipes
+        , viewRecipes pageModel.recipes
         ]
 
 

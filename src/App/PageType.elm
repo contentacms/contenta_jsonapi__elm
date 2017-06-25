@@ -12,3 +12,4 @@ type Page
     | ArticleList
     | RecipeDetailPage String
     | ContactPage
+

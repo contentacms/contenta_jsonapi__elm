@@ -8,13 +8,13 @@ import Dict exposing (Dict)
 import App.View.Organism exposing (..)
 
 
-view : Model -> Dict String (WebData (List Recipe)) -> Html Msg
-view model recipesDict =
+view : Model -> PageRecipesModel -> Html Msg
+view model pageModel =
     div []
         [ recipesFeaturedHeader
         , div
             []
-            (Dict.toList recipesDict
+            (Dict.toList pageModel
                 |> List.map
                     (\( category, recipes ) ->
                         viewRemoteData (recipesPerCategory category) recipes

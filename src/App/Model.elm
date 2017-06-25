@@ -82,18 +82,37 @@ type alias Flags =
 type alias Model =
     { flags : Flags
     , currentPage : Page
-    , pageHome :
-        { promotedArticles : WebData (List Article)
-        , promotedRecipes : WebData (List Recipe)
-        , recipes : WebData (List Recipe)
-        }
-    , pageAboutUs : {}
-    , pageRecipes : Dict String (WebData (List Recipe))
-    , pageArticles : WebData (List Article)
-    , pageRecipeDetail : { recipe : WebData Recipe, recipes : WebData (List Recipe) }
+    , pageHome : PageHomeModel
+    , pageAboutUs : PageAboutUsModel
+    , pageRecipes : PageRecipesModel
+    , pageArticles : PageArticlesModel
+    , pageRecipeDetail : PageRecipeDetailModel
     , pageContact : ContactForm
     , mdl : Material.Model
     }
+
+
+type alias PageHomeModel =
+    { promotedArticles : WebData (List Article)
+    , promotedRecipes : WebData (List Recipe)
+    , recipes : WebData (List Recipe)
+    }
+
+
+type alias PageAboutUsModel =
+    {}
+
+
+type alias PageRecipesModel =
+    Dict String (WebData (List Recipe))
+
+
+type alias PageArticlesModel =
+    WebData (List Article)
+
+
+type alias PageRecipeDetailModel =
+    { recipe : WebData Recipe, recipes : WebData (List Recipe) }
 
 
 type ContactMsg

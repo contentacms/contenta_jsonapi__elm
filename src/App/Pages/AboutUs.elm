@@ -5,8 +5,8 @@ import Html exposing (..)
 import Html.Attributes exposing (src, href)
 
 
-view : Model -> Html Msg
-view model =
+view : Model -> PageAboutUsModel -> Html Msg
+view model pageModel =
     div []
         [ h2 [] [ a [ href "http://www.contentacms.org/" ] [ text "Contenta" ] ]
         , text "Contenta is an API-First Drupal distribution. It's all about the content"

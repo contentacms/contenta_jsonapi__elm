@@ -7,8 +7,8 @@ import RemoteData exposing (WebData, RemoteData(..))
 import App.View.Components exposing (viewRemoteData)
 
 
-view : Model -> WebData (List Article) -> Html Msg
-view model articles =
+view : Model -> PageArticlesModel -> Html Msg
+view model pageModel =
     viewRemoteData
         (\data ->
             case data of
@@ -18,7 +18,7 @@ view model articles =
                 list ->
                     div [] <| List.map viewArticle list
         )
-        articles
+        pageModel
 
 
 viewArticle : Article -> Html Msg

@@ -11,12 +11,12 @@ import App.View.Template exposing (..)
 import App.View.Grid exposing (grid4)
 
 
-view : Model -> WebData Recipe -> WebData (List Recipe) -> Html Msg
-view model recipe recipes =
+view : Model -> PageRecipeDetailModel -> Html Msg
+view model pageModel =
     div []
         [ viewRemoteData
             recipeDetail
-            recipe
+            pageModel.recipe
         , viewRemoteData
             (\recipes ->
                 div []
@@ -24,5 +24,5 @@ view model recipe recipes =
                     , grid4 <| List.map recipeCard recipes
                     ]
             )
-            recipes
+            pageModel.recipes
         ]
