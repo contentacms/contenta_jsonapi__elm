@@ -102,9 +102,10 @@ type alias PageHomeModel =
 type alias PageAboutUsModel =
     {}
 
+type alias CategoryName = String
 
 type alias PageRecipesModel =
-    Dict String (WebData (List Recipe))
+    Dict CategoryName (WebData (List Recipe))
 
 
 type alias PageArticlesModel =
