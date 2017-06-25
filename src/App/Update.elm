@@ -9,7 +9,7 @@ import List exposing (filter)
 import Http exposing (Error(..), Response)
 import Maybe
 import RemoteData exposing (RemoteData(..), fromResult)
-import Dict
+import DictList
 import Material
 
 
@@ -88,7 +88,7 @@ update msg model =
                     )
 
                 RecipesPerCategoryList ->
-                    ({ model | currentPage = RecipesPerCategoryList, pageRecipes = Dict.empty })
+                    ({ model | currentPage = RecipesPerCategoryList, pageRecipes = DictList.empty })
                         |> update GetRecipesPerCategories
 
                 ArticleList ->
@@ -172,7 +172,7 @@ update msg model =
         GetRecipesPerCategories ->
             ( { model
                 | pageRecipes =
-                    Dict.fromList
+                    DictList.fromList
                         [ ( "Main course", RemoteData.Loading )
                         , ( "Snack", RemoteData.Loading )
                         , ( "Dessert", RemoteData.Loading )
@@ -199,7 +199,7 @@ update msg model =
             in
                 ( { model
                     | pageRecipes =
-                        Dict.insert category additionalRecipes model.pageRecipes
+                        DictList.insert category additionalRecipes model.pageRecipes
                   }
                 , Cmd.none
                 )

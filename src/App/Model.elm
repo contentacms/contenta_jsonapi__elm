@@ -6,6 +6,7 @@ import JsonApi
 import RemoteData exposing (WebData)
 import Dict exposing (Dict)
 import Material
+import DictList exposing (DictList)
 
 
 type Msg
@@ -102,10 +103,13 @@ type alias PageHomeModel =
 type alias PageAboutUsModel =
     {}
 
-type alias CategoryName = String
+
+type alias CategoryName =
+    String
+
 
 type alias PageRecipesModel =
-    Dict CategoryName (WebData (List Recipe))
+    DictList CategoryName (WebData (List Recipe))
 
 
 type alias PageArticlesModel =

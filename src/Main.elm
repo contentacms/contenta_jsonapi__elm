@@ -10,7 +10,7 @@ import App.Pages.ContactPage
 import Html
 import RouteUrl
 import RemoteData exposing (RemoteData)
-import Dict
+import DictList
 import String
 import Material
 
@@ -25,7 +25,7 @@ init flags =
         , recipes = RemoteData.NotAsked
         }
     , pageAboutUs = {}
-    , pageRecipes = Dict.empty
+    , pageRecipes = DictList.empty
     , pageArticles = RemoteData.NotAsked
     , pageRecipeDetail = { recipe = RemoteData.NotAsked, recipes = RemoteData.NotAsked }
     , pageContact = App.Pages.ContactPage.init
