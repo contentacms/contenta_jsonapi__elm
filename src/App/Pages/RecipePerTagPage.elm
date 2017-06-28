@@ -5,10 +5,20 @@ import Html exposing (..)
 import Html.Attributes exposing (src)
 import Html.Events exposing (onClick)
 import RemoteData exposing (WebData, RemoteData, RemoteData(..))
-import App.View.Components exposing (viewRemoteData)
+import App.View.Atom exposing (viewRemoteDataWithTitle)
+import App.View.Molecule exposing (recipeCard)
+import App.View.Grid exposing (grid4)
 import App.View.Organism exposing (..)
 
 
 view : Model -> PageRecipesPerTagModel -> Html Msg
-view model pageModel =
-    viewRemoteData (uncurry recipesPerCategory) pageModel
+view model ( tag, recipes ) =
+    viewRemoteDataWithTitle
+        (\recipes ->
+            grid4 <|
+                List.map
+                    recipeCard
+                    recipes
+        )
+        recipes
+        tag

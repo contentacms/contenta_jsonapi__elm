@@ -115,7 +115,7 @@ update msg model =
                 RecipesPerTagPage tag ->
                     ( { model
                         | currentPage = RecipesPerTagPage tag
-                        , pageRecipesPerTag = RemoteData.Loading
+                        , pageRecipesPerTag = ( tag, RemoteData.Loading )
                       }
                     , getRecipesPerTag model.flags tag
                     )
@@ -228,7 +228,7 @@ update msg model =
                         )
                         remoteResponse
             in
-                ( { model | pageRecipesPerTag = RemoteData.map (\recipes_ -> ( tag, recipes_ )) recipes }, Cmd.none )
+                ( { model | pageRecipesPerTag = ( tag, recipes ) }, Cmd.none )
 
         PostContactForm ->
             ( model, sendContactForm model.pageContact )

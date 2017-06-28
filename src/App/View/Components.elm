@@ -1,4 +1,4 @@
-module App.View.Components exposing (viewRemoteData, onClickPreventDefault)
+module App.View.Components exposing (onClickPreventDefault)
 
 import App.Model exposing (..)
 import Html exposing (..)
@@ -8,24 +8,9 @@ import App.PageType exposing (Page(..))
 import Html.Attributes exposing (..)
 import RemoteData exposing (WebData, RemoteData(..))
 import Material.Spinner
+import Material.Progress as Progress
 import Material.Layout as Layout
 import Material.Options as Options
-
-
-viewRemoteData : (a -> Html msg) -> WebData a -> Html msg
-viewRemoteData innerView webdata =
-    case webdata of
-        NotAsked ->
-            text "Initialisting"
-
-        Loading ->
-            Material.Spinner.spinner []
-
-        Failure err ->
-            text ("Error: " ++ toString err)
-
-        Success a ->
-            innerView a
 
 
 viewTags : List Term -> Html Msg

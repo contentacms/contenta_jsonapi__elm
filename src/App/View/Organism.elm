@@ -18,7 +18,7 @@ recipesPerCategory : String -> List Recipe -> Html Msg
 recipesPerCategory title recipes =
     if ((List.length recipes) > 0) then
         div []
-            [ recipeCategoryTitle title
+            [ pageTitle title
             , grid4 <|
                 List.map
                     recipeCard

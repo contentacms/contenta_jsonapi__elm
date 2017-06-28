@@ -12,6 +12,8 @@ import Material.Grid as Grid
 import Material.Typography as Typography
 import Material.Options as Options
 import App.View.Components exposing (onClickPreventDefault)
+import RemoteData exposing (WebData, RemoteData(..))
+import Material.Progress as Progress
 
 
 image url =
@@ -42,7 +44,7 @@ siteTitle title =
         [ text title ]
 
 
-pageTitle : String -> Html Msg
+pageTitle : String -> Html msg
 pageTitle title =
     Options.styled h2
         [ Typography.display3 ]
@@ -94,11 +96,6 @@ moreLink =
     div [] [ text "more" ]
 
 
-recipeCategoryTitle : String -> Html msg
-recipeCategoryTitle title =
-    h2 [] [ text title ]
-
-
 recipeDetailItem : Html Msg -> String -> String -> Html Msg
 recipeDetailItem icon title itemText =
     div []
@@ -113,3 +110,38 @@ recipeDetailItem icon title itemText =
 recipeLink : Recipe -> List (Html Msg) -> Html Msg
 recipeLink recipe children =
     a [ onClick <| SetActivePage <| RecipeDetailPage recipe.id ] children
+
+
+viewRemoteData : (a -> Html msg) -> WebData a -> Html msg
+viewRemoteData innerView webdata =
+    case webdata of
+        NotAsked ->
+            text "Initialisting"
+
+        Loading ->
+            Progress.indeterminate
+
+        Failure err ->
+            text ("Error: " ++ toString err)
+
+        Success a ->
+            innerView a
+
+
+viewRemoteDataWithTitle : (a -> Html msg) -> WebData a -> String -> Html msg
+viewRemoteDataWithTitle innerView webdata title =
+    div []
+        [ pageTitle title
+        , case webdata of
+            NotAsked ->
+                text "Initialisting"
+
+            Loading ->
+                Progress.indeterminate
+
+            Failure err ->
+                text ("Error: " ++ toString err)
+
+            Success a ->
+                innerView a
+        ]

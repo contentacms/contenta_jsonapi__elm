@@ -120,7 +120,7 @@ type alias PageArticlesModel =
 
 
 type alias PageRecipesPerTagModel =
-    WebData (String, List Recipe)
+    (String, WebData (List Recipe))
 
 
 type alias PageRecipeDetailModel =

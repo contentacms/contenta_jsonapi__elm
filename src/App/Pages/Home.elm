@@ -5,7 +5,7 @@ import Html exposing (..)
 import Html.Attributes exposing (src)
 import Html.Events exposing (onClick)
 import RemoteData exposing (WebData, RemoteData, RemoteData(..))
-import App.View.Components exposing (..)
+import App.View.Atom exposing (viewRemoteData)
 import App.View.Molecule exposing (..)
 import App.View.Grid exposing (grid4, grid2x2, grid1__2, grid1__1, grid1__)
 import Material.List as ML
