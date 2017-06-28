@@ -241,7 +241,9 @@ update msg model =
                         | recipes =
                             Dict.fromList
                                 [ ( "Main course", RemoteData.Loading )
+                                , ( "Starter", RemoteData.Loading )
                                 , ( "Snack", RemoteData.Loading )
+                                , ( "Salad", RemoteData.Loading )
                                 , ( "Dessert", RemoteData.Loading )
                                 ]
                     }
@@ -249,7 +251,9 @@ update msg model =
                 ( { model | pages = pages_ }
                 , Cmd.batch
                     [ getRecipePerCategory model.flags "Main course"
+                    , getRecipePerCategory model.flags "Starter"
                     , getRecipePerCategory model.flags "Snack"
+                    , getRecipePerCategory model.flags "Salad"
                     , getRecipePerCategory model.flags "Dessert"
                     ]
                 )
