@@ -13,4 +13,3 @@ type Page
     | RecipeDetailPage String
     | ContactPage
     | RecipesPerTagPage String
-

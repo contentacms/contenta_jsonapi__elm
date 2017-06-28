@@ -24,7 +24,7 @@ type Msg
       -- # Features / Articles page
     | GetArticles
     | ArticlesLoaded (WebData (List JsonApi.Resource))
-    -- # Recipes per tag
+      -- # Recipes per tag
     | RecipesPerTagLoaded String (WebData (List JsonApi.Resource))
       -- Contact
     | ContactM ContactMsg
@@ -120,7 +120,7 @@ type alias PageArticlesModel =
 
 
 type alias PageRecipesPerTagModel =
-    (String, WebData (List Recipe))
+    ( String, WebData (List Recipe) )
 
 
 type alias PageRecipeDetailModel =
