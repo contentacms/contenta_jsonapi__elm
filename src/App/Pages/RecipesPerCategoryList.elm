@@ -3,7 +3,7 @@ module App.Pages.RecipesPerCategoryList exposing (view)
 import App.Model exposing (..)
 import Html exposing (..)
 import RemoteData exposing (RemoteData(..), WebData)
-import App.View.Atom exposing (viewRemoteData)
+import App.View.Atom exposing (viewRemoteData, viewRemoteDataWithTitle)
 import DictList exposing (DictList)
 import App.View.Organism exposing (..)
 
@@ -17,7 +17,7 @@ view model pageModel =
             (DictList.toList pageModel
                 |> List.map
                     (\( category, recipes ) ->
-                        viewRemoteData (recipesPerCategory category) recipes
+                        viewRemoteDataWithTitle (recipesPerCategory) recipes category
                     )
             )
         , recipeMoreArticlesTeaser

@@ -14,12 +14,11 @@ import Material.Layout as Layout
 import Material.Options as Options
 
 
-recipesPerCategory : String -> List Recipe -> Html Msg
-recipesPerCategory title recipes =
+recipesPerCategory : List Recipe -> Html Msg
+recipesPerCategory recipes =
     if ((List.length recipes) > 0) then
         div []
-            [ pageTitle title
-            , grid4 <|
+            [ grid4 <|
                 List.map
                     recipeCard
                     recipes
