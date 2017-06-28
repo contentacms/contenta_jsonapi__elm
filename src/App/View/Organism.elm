@@ -24,7 +24,7 @@ recipesPerCategory recipes =
                     recipes
             ]
     else
-        div [] []
+        div [] [ text "No recipes found" ]
 
 
 articleCardList : List Article -> Html Msg
