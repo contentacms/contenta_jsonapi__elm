@@ -24,6 +24,7 @@ recipeCard : Recipe -> Html Msg
 recipeCard recipe =
     Card.view
         [ Options.onClick <| SetActivePage <| RecipeDetailPage recipe.id
+        , Elevation.e2
         , css "background" ("url('" ++ (Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image) ++ "') center / cover")
         , css "width" "100%"
         , css "min-height" "256px"

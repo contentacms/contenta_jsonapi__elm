@@ -49,6 +49,6 @@ onClickPreventDefault msg =
     onWithOptions
         "click"
         { preventDefault = True
-        , stopPropagation = False
+        , stopPropagation = True
         }
         (Json.Decode.succeed msg)

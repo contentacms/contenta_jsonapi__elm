@@ -79,12 +79,12 @@ viewHeader model =
         div
             []
             [ siteTitle "Umami, food magazine"
-            , ML.ul []
-                [ ML.li liStyle [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
-                , ML.li liStyle [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
-                , ML.li liStyle [ a [ href "#", onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ] ]
-                , ML.li liStyle [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
-                ]
+              --            , ML.ul []
+              --                [ ML.li liStyle [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
+              --                , ML.li liStyle [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
+              --                , ML.li liStyle [ a [ href "#", onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ] ]
+              --                , ML.li liStyle [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
+              --                ]
             ]
 
 
