@@ -28,6 +28,9 @@ delta2url previous current =
         ContactPage ->
             Just <| UrlChange NewEntry "/contact"
 
+        RecipesPerTagPage tag ->
+            Just <| UrlChange NewEntry ("/recipes/tag/" ++ tag)
+
 
 location2messages : Location -> List Msg
 location2messages location =
@@ -48,4 +51,5 @@ parseUrl =
         , map (SetActivePage RecipesPerCategoryList) (s "recipes")
         , map (SetActivePage ContactPage) (s "contact")
         , map (\recipeId -> SetActivePage <| RecipeDetailPage (toString recipeId)) (s "item" </> string)
+        , map (\tag -> SetActivePage <| RecipesPerTagPage (toString tag)) (s "item" </> string)
         ]

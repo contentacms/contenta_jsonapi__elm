@@ -112,6 +112,14 @@ update msg model =
                     , Cmd.none
                     )
 
+                RecipesPerTagPage tag ->
+                    ( { model
+                        | currentPage = RecipesPerTagPage tag
+                        , pageRecipesPerTag = RemoteData.Loading
+                      }
+                    , getRecipesPerTag model.flags tag
+                    )
+
         PromotedArticlesLoaded remoteResponse ->
             ( { model
                 | pageHome =
@@ -175,16 +183,16 @@ update msg model =
                     DictList.fromList
                         [ ( "Main course", RemoteData.Loading )
                         , ( "Starter", RemoteData.Loading )
-                                , ( "Snack", RemoteData.Loading )
+                        , ( "Snack", RemoteData.Loading )
                         , ( "Salad", RemoteData.Loading )
-                                , ( "Dessert", RemoteData.Loading )
+                        , ( "Dessert", RemoteData.Loading )
                         ]
               }
             , Cmd.batch
                 [ getRecipePerCategory model.flags "Main course"
                 , getRecipePerCategory model.flags "Starter"
-                    , getRecipePerCategory model.flags "Snack"
-                    , getRecipePerCategory model.flags "Salad"
+                , getRecipePerCategory model.flags "Snack"
+                , getRecipePerCategory model.flags "Salad"
                 , getRecipePerCategory model.flags "Dessert"
                 ]
             )
@@ -207,6 +215,20 @@ update msg model =
                   }
                 , Cmd.none
                 )
+
+        RecipesPerTagLoaded tag remoteResponse ->
+            let
+                recipes =
+                    RemoteData.map
+                        (\resources ->
+                            List.map
+                                (decodeRecipe model.flags)
+                                resources
+                                |> removeErrorFromList
+                        )
+                        remoteResponse
+            in
+                ( { model | pageRecipesPerTag = RemoteData.map (\recipes_ -> ( tag, recipes_ )) recipes }, Cmd.none )
 
         PostContactForm ->
             ( model, sendContactForm model.pageContact )

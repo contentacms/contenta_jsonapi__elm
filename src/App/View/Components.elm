@@ -41,7 +41,7 @@ viewTags terms =
 
 viewTag : Term -> Html Msg
 viewTag term =
-    text term.name
+    a [ onClickPreventDefault (SetActivePage <| RecipesPerTagPage term.name) ] [ text term.name ]
 
 
 onClickPreventDefault : msg -> Attribute msg

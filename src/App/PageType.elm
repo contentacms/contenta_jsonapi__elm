@@ -12,4 +12,5 @@ type Page
     | ArticleList
     | RecipeDetailPage String
     | ContactPage
+    | RecipesPerTagPage String
 

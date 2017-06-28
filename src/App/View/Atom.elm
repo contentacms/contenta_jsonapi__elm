@@ -11,6 +11,7 @@ import Material.Chip as Chip
 import Material.Grid as Grid
 import Material.Typography as Typography
 import Material.Options as Options
+import App.View.Components exposing (onClickPreventDefault)
 
 
 image url =
@@ -72,13 +73,13 @@ cardTags tags =
             tags
 
 
-cardTagsInline : List String -> Html msg
+cardTagsInline : List String -> Html Msg
 cardTagsInline tags =
     span [] <|
         List.map
             (\tag ->
                 Chip.span []
-                    [ Chip.content [] [ text tag ]
+                    [ Chip.content [] [ a [ onClickPreventDefault (SetActivePage <| RecipesPerTagPage tag) ] [ text tag ] ]
                     ]
             )
             tags

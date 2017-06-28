@@ -198,6 +198,24 @@ getRecipeRecipes flags =
             |> Cmd.map RecipeRecipesLoaded
 
 
+getRecipesPerTag : Flags -> String -> Cmd Msg
+getRecipesPerTag flags tag =
+    let
+        request =
+            JsonApi.Http.getPrimaryResourceCollection
+                (flags.apiBaseUrl
+                    ++ "/recipes"
+                    ++ "?"
+                    ++ recipeFields
+                    ++ "&filter[tags.name][value]="
+                    ++ tag
+                    ++ "&page[limit]=20"
+                )
+    in
+        RemoteData.sendRequest request
+            |> Cmd.map (RecipesPerTagLoaded tag)
+
+
 fileDecoder : Decoder File
 fileDecoder =
     map File
