@@ -15,13 +15,16 @@ import Material.Options as Options
 
 recipesPerCategory : String -> List Recipe -> Html Msg
 recipesPerCategory title recipes =
-    div []
-        [ recipeCategoryTitle title
-        , grid4 <|
-            List.map
-                recipeCard
-                recipes
-        ]
+    if ((List.length recipes) > 0) then
+        div []
+            [ recipeCategoryTitle title
+            , grid4 <|
+                List.map
+                    recipeCard
+                    recipes
+            ]
+    else
+        div [] []
 
 
 articleCardList : List Article -> Html Msg
