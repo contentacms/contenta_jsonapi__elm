@@ -10,6 +10,16 @@ This implementation of the frontend is implemented using [Elm](http://elm-lang.o
 * If you are a PHP/JS developer join the contenta slack channel, and you can contribute to all kind of projects, and maybe even learn elm along the way?
 * If you are an experienced Elm developer, please for example give recommendations in best practices. Some of the code is certainly not ideal yet.
 
+## Dependencies
+
+* [Yarn package manager](https://yarnpkg.com)
+* [Elm](http://elm-lang.org)
+
+## Installation
+
+* Install the dependencies with yarn: ```yarn install```
+* Install the Elm packages: ```elm package install```
+
 ## Development
 
 * For development run ```yarn app-dev```. This opens a live reloading browser on ```localhost:8000```
