@@ -6,19 +6,20 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import App.View.Atom exposing (..)
 import App.View.Molecule exposing (..)
-import App.View.Grid exposing (grid4, grid1__1)
+import App.View.Grid exposing (grid4, grid4WithStyle, grid1__1)
 import App.PageType exposing (..)
 import Material.List as ML
 import Material.Footer as Footer
 import Material.Layout as Layout
 import Material.Options as Options
+import Material.Elevation as Elevation
 
 
 recipesPerCategory : List Recipe -> Html Msg
 recipesPerCategory recipes =
     if ((List.length recipes) > 0) then
         div []
-            [ grid4 <|
+            [ grid4WithStyle [ Elevation.e0 ] <|
                 List.map
                     recipeCard
                     recipes
@@ -78,12 +79,12 @@ viewHeader model =
         div
             []
             [ siteTitle "Umami, food magazine"
-              --            , ML.ul []
-              --                [ ML.li liStyle [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
-              --                , ML.li liStyle [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
-              --                , ML.li liStyle [ a [ href "#", onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ] ]
-              --                , ML.li liStyle [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
-              --                ]
+            , ML.ul []
+                [ ML.li liStyle [ a [ href "#", onClick (SetActivePage Home) ] [ text "Home" ] ]
+                , ML.li liStyle [ a [ href "#", onClick (SetActivePage ArticleList) ] [ text "Features" ] ]
+                , ML.li liStyle [ a [ href "#", onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ] ]
+                , ML.li liStyle [ a [ href "#", onClick (SetActivePage AboutUs) ] [ text "About us" ] ]
+                ]
             ]
 
 
@@ -104,14 +105,15 @@ viewFooter model =
 viewMdlHeader : List (Html Msg)
 viewMdlHeader =
     [ Layout.row []
-        [ Layout.spacer
+        [ Layout.title [] [ text "Umami, food magazine" ]
+        , Layout.spacer
         , Layout.navigation []
             [ Layout.link [ Layout.href "#", Options.onClick (SetActivePage Home) ] [ text "Home" ]
             , Layout.link [ Layout.href "#", Options.onClick (SetActivePage ArticleList) ] [ text "Features" ]
             , Layout.link [ Layout.href "#", Options.onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ]
             , Layout.link [ Layout.href "#", Options.onClick (SetActivePage AboutUs) ] [ text "About us" ]
             , Layout.link [ Layout.href "http://www.contentacms.org/" ] [ img [ height 36, src "assets/contenta-lg.png", alt "Contenta Logo" ] [] ]
-            , Layout.link [ Layout.href "https://github.com/contentacms/contenta_jsonapi__elm" ] [ img [ height 36, src "assets/github.png", alt "Github logo" ] [], text "  github" ]
+            , Layout.link [ Layout.href "https://github.com/contentacms/contenta_jsonapi__elm" ] [ img [ height 36, src "assets/github.png", alt "Github logo" ] [] ]
             ]
         ]
     ]

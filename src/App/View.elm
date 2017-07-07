@@ -46,8 +46,8 @@ view model =
         , drawer = viewDrawer
         , tabs = ( [], [] )
         , main =
-            [ (viewHeader model)
-            , (case model.currentPage of
+            [ {- (viewHeader model) -}
+              (case model.currentPage of
                 Home ->
                     App.Pages.Home.view model model.pageHome
 

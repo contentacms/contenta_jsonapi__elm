@@ -26,6 +26,7 @@ recipeCard recipe =
         [ Options.onClick <| SetActivePage <| RecipeDetailPage recipe.id
         , Elevation.e2
         , css "background" ("url('" ++ (Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image) ++ "') center / cover")
+        , css "max-width" "100%"
         , css "width" "100%"
         , css "min-height" "256px"
         ]

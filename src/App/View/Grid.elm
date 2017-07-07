@@ -1,13 +1,19 @@
-module App.View.Grid exposing (grid4, grid2x2, grid1__2, grid1__1, grid1__, grid2__2)
+module App.View.Grid exposing (..)
 
 import App.Model exposing (..)
 import Html exposing (..)
 import Material.Grid as Grid
+import Material.Options as Options
 
 
 grid4 : List (Html Msg) -> Html Msg
-grid4 elements =
-    Grid.grid [] <|
+grid4 =
+    grid4WithStyle []
+
+
+grid4WithStyle : List (Options.Style Msg) -> List (Html Msg) -> Html Msg
+grid4WithStyle style elements =
+    Grid.grid style <|
         List.map (\elem -> Grid.cell [ Grid.size Grid.All 3 ] [ elem ]) elements
 
 
