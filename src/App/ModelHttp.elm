@@ -81,6 +81,7 @@ getRecipePerCategory flags category =
             |> Cmd.map (RecipesPerCategoryLoaded category)
 
 
+recipeFields : String
 recipeFields =
     "include=field_image,field_image.field_image,field_image.field_image.file--file,tags"
         ++ "&fields[recipes]="
@@ -96,10 +97,12 @@ recipeFields =
         ++ tagFields
 
 
+imageFields : String
 imageFields =
     "&fields[image]=image&fields[file--file]=url,uuid"
 
 
+tagFields : String
 tagFields =
     "&fields[tags]=internalId,name"
 
@@ -255,7 +258,6 @@ decodeRecipe flags resource =
                         )
                     )
                 |> Result.withDefault []
-                |> Debug.log "tags"
     in
         JsonApi.Resources.attributes (recipeDecoderWithValues id (Result.map .url file_image) tags) resource
 

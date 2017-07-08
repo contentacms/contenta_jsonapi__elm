@@ -17,7 +17,7 @@ import Material.Elevation as Elevation
 
 recipesPerCategory : List Recipe -> Html Msg
 recipesPerCategory recipes =
-    if ((List.length recipes) > 0) then
+    if (List.length recipes) > 0 then
         div []
             [ grid4WithStyle [ Elevation.e0 ] <|
                 List.map

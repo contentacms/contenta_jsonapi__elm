@@ -1,10 +1,8 @@
 module App.Model exposing (..)
 
 import App.PageType exposing (..)
-import Http
 import JsonApi
 import RemoteData exposing (WebData)
-import Dict exposing (Dict)
 import Material
 import DictList exposing (DictList)
 
@@ -124,7 +122,9 @@ type alias PageRecipesPerTagModel =
 
 
 type alias PageRecipeDetailModel =
-    { recipe : WebData Recipe, recipes : WebData (List Recipe) }
+    { recipe : WebData Recipe
+    , recipes : WebData (List Recipe)
+    }
 
 
 type ContactMsg

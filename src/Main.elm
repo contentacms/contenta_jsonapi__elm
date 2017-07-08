@@ -28,7 +28,7 @@ init flags =
     , pageRecipes = DictList.empty
     , pageArticles = RemoteData.NotAsked
     , pageRecipeDetail = { recipe = RemoteData.NotAsked, recipes = RemoteData.NotAsked }
-    , pageRecipesPerTag = ("", RemoteData.NotAsked)
+    , pageRecipesPerTag = ( "", RemoteData.NotAsked )
     , pageContact = App.Pages.ContactPage.init
     , mdl = Material.model
     }
