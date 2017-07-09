@@ -44,7 +44,8 @@ recipeDetailHeader recipe =
         (div
             []
             [ recipesDetailMetadata recipe
-            , text "Todo fetch description"
+              {--@todo no description yet --}
+            , text ""
             ]
         )
 

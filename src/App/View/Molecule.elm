@@ -6,7 +6,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import App.View.Components exposing (..)
 import App.View.Atom exposing (..)
-import App.View.Grid exposing (grid2__2)
+import App.View.Grid exposing (grid2__2, grid2__2_center)
 import App.PageType exposing (Page(..))
 import Material.Card as Card
 import Material.Icons.Device as IconsDevice
@@ -87,7 +87,7 @@ moreFeaturedArticlesBlock articles =
 
 recipesDetailMetadata : Recipe -> Html Msg
 recipesDetailMetadata recipe =
-    grid2__2
+    grid2__2_center
         (recipeDetailItem (mIcon IconsDevice.access_time) "Preperation time" <| (toString recipe.prepTime) ++ " minutes")
         (recipeDetailItem (mIcon IconsDevice.access_time) "Cooking time" <| (toString recipe.totalTime) ++ " minutes")
         (recipeDetailItem (mIcon IconsEditor.format_list_numbered) "Serves" "todo 4")
@@ -96,7 +96,7 @@ recipesDetailMetadata recipe =
 
 recipeIngredients : Recipe -> Html Msg
 recipeIngredients recipe =
-    Options.div [ Elevation.e2 ]
+    Options.div [ Elevation.e2, Typography.body1 ]
         [ blockTitle "Ingredients for this recipe"
         , ul [] <| List.map (\ingredient -> li [] [ text ingredient ]) recipe.ingredients
         ]
@@ -104,7 +104,8 @@ recipeIngredients recipe =
 
 recipeMethod : Recipe -> Html Msg
 recipeMethod recipe =
-    div []
+    Options.styled div
+        [ Typography.body1 ]
         [ blockTitle "Method"
         , ol [] <| List.map (\string -> li [] [ text string ]) <| String.split ", " recipe.recipeInstruction
         ]
@@ -113,7 +114,7 @@ recipeMethod recipe =
 recipeAuthorLine : Recipe -> Html Msg
 recipeAuthorLine recipe =
     div []
-        [ text <| "by" ++ "TODO: Fetch name"
+        [ Maybe.withDefault (text "") <| Maybe.map (\owner -> text owner.name) recipe.owner
         , Options.div []
             [ Maybe.withDefault (text "") <| Maybe.map (.name >> List.singleton >> cardTagsInline) recipe.category
             , cardTagsInline <| List.map (.name) recipe.tags

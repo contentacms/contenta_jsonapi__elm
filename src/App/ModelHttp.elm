@@ -20,8 +20,8 @@ type alias ImageResult =
     Result String String
 
 
-recipeDecoderWithValues : String -> ImageResult -> List Term -> Maybe Term -> Decoder Recipe
-recipeDecoderWithValues id image tags category =
+recipeDecoderWithValues : String -> ImageResult -> List Term -> Maybe Term -> Maybe Owner -> Decoder Recipe
+recipeDecoderWithValues id image tags category owner =
     decode Recipe
         |> hardcoded id
         |> required "title" string
@@ -33,6 +33,7 @@ recipeDecoderWithValues id image tags category =
         |> hardcoded (Result.toMaybe image)
         |> hardcoded category
         |> hardcoded tags
+        |> hardcoded owner
 
 
 articleDecoderWithIdAndImage : String -> ImageResult -> Decoder Article
@@ -85,7 +86,7 @@ getRecipePerCategory flags category =
 
 recipeFields : String
 recipeFields =
-    "include=field_image,field_image.field_image,field_image.field_image.file--file,tags,category"
+    "include=field_image,field_image.field_image,field_image.field_image.file--file,tags,category,owner"
         ++ "&fields[recipes]="
         ++ "title,"
         ++ "difficulty,"
@@ -97,6 +98,7 @@ recipeFields =
         ++ "tags,"
         ++ imageFields
         ++ tagFields
+        ++ ownerFields
 
 
 imageFields : String
@@ -108,6 +110,11 @@ tagFields : String
 tagFields =
     "&fields[tags]=internalId,name"
         ++ "&fields[category]=internalId,name"
+
+
+ownerFields : String
+ownerFields =
+    "&fields[owner]=internalId,name"
 
 
 getPromotedRecipes : Flags -> Cmd Msg
@@ -235,6 +242,13 @@ termDecoder =
         (field "name" string)
 
 
+ownerDecoder : Decoder Owner
+ownerDecoder =
+    map2 Term
+        (field "internalId" int)
+        (field "name" string)
+
+
 mediaDecoder : Decoder Media
 mediaDecoder =
     map Media
@@ -266,8 +280,13 @@ decodeRecipe flags resource =
             JsonApi.Resources.relatedResource "category" resource
                 |> Result.andThen (JsonApi.Resources.attributes termDecoder)
                 |> Result.toMaybe
+
+        owner =
+            JsonApi.Resources.relatedResource "owner" resource
+                |> Result.andThen (JsonApi.Resources.attributes ownerDecoder)
+                |> Result.toMaybe
     in
-        JsonApi.Resources.attributes (recipeDecoderWithValues id (Result.map .url file_image) tags category) resource
+        JsonApi.Resources.attributes (recipeDecoderWithValues id (Result.map .url file_image) tags category owner) resource
 
 
 resultToWebData : Result String a -> RemoteData.WebData a

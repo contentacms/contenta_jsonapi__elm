@@ -33,6 +33,16 @@ grid2__2 el1 el2 el3 el4 =
         ]
 
 
+grid2__2_center : Html Msg -> Html Msg -> Html Msg -> Html Msg -> Html Msg
+grid2__2_center el1 el2 el3 el4 =
+    Grid.grid []
+        [ Grid.cell [ Grid.size Grid.All 6, Options.css "text-align" "center" ] [ el1 ]
+        , Grid.cell [ Grid.size Grid.All 6, Options.css "text-align" "center" ] [ el2 ]
+        , Grid.cell [ Grid.size Grid.All 6, Options.css "text-align" "center" ] [ el3 ]
+        , Grid.cell [ Grid.size Grid.All 6, Options.css "text-align" "center" ] [ el4 ]
+        ]
+
+
 grid1__2 : Html Msg -> Html Msg -> Html Msg -> Html Msg
 grid1__2 el1 el2 el3 =
     Grid.grid []

@@ -43,6 +43,7 @@ type alias Recipe =
     , image : Maybe String
     , category : Maybe Term
     , tags : List Term
+    , owner : Maybe Owner
     }
 
 
@@ -60,6 +61,12 @@ type alias Article =
 
 
 type alias Term =
+    { id : Int
+    , name : String
+    }
+
+
+type alias Owner =
     { id : Int
     , name : String
     }
