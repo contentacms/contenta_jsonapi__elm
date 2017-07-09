@@ -86,7 +86,7 @@ viewCurrentMonthIssue model =
 viewCookMenu : Model -> Html Msg
 viewCookMenu model =
     grid4
-        [ div []
+        [ div [ onClick <| SetActivePage <| RecipesPerCategoryPage "Dinner" ]
             [ h3 [] [ text "Dinners to impress" ]
             , h4 [] [ text "List recipes" ]
             ]

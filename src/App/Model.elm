@@ -98,6 +98,7 @@ type alias Model =
     , pageArticles : PageArticlesModel
     , pageRecipeDetail : PageRecipeDetailModel
     , pageRecipesPerTag : PageRecipesPerTagModel
+    , pageRecipesPerCategory : PageRecipesPerCategoryModel
     , pageContact : ContactForm
     , mdl : Material.Model
     }
@@ -127,6 +128,9 @@ type alias PageArticlesModel =
 
 
 type alias PageRecipesPerTagModel =
+    ( String, WebData (List Recipe) )
+
+type alias PageRecipesPerCategoryModel =
     ( String, WebData (List Recipe) )
 
 

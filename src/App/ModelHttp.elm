@@ -65,8 +65,8 @@ getArticles flags =
             |> Cmd.map ArticlesLoaded
 
 
-getRecipePerCategory : Flags -> String -> Cmd Msg
-getRecipePerCategory flags category =
+getRecipesPerCategory : Flags -> String -> Cmd Msg
+getRecipesPerCategory flags category =
     let
         request =
             JsonApi.Http.getPrimaryResourceCollection

@@ -9,6 +9,7 @@ import App.Pages.RecipeDetailPage
 import App.Pages.RecipesPerCategoryList
 import App.Pages.ContactPage
 import App.Pages.RecipePerTagPage
+import App.Pages.RecipesPerCategory
 import Html exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
@@ -59,6 +60,9 @@ view model =
 
                 RecipesPerCategoryList ->
                     App.Pages.RecipesPerCategoryList.view model model.pageRecipes
+
+                RecipesPerCategoryPage category ->
+                    App.Pages.RecipesPerCategory.view model model.pageRecipesPerCategory
 
                 ContactPage ->
                     App.Pages.ContactPage.view model model.pageContact

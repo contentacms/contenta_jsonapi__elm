@@ -31,6 +31,9 @@ delta2url previous current =
         RecipesPerTagPage tag ->
             Just <| UrlChange NewEntry ("/recipes/tag/" ++ tag)
 
+        RecipesPerCategoryPage tag ->
+            Just <| UrlChange NewEntry ("/recipes/category/" ++ tag)
+
 
 location2messages : Location -> List Msg
 location2messages location =
@@ -50,6 +53,7 @@ parseUrl =
         , map (SetActivePage ArticleList) (s "features")
         , map (SetActivePage RecipesPerCategoryList) (s "recipes")
         , map (SetActivePage ContactPage) (s "contact")
-        , map (\recipeId -> SetActivePage <| RecipeDetailPage (toString recipeId)) (s "item" </> string)
-        , map (\tag -> SetActivePage <| RecipesPerTagPage (toString tag)) (s "item" </> string)
+        , map (\recipeId -> SetActivePage <| RecipeDetailPage (toString recipeId)) (s "recipe" </> string)
+        , map (\tag -> SetActivePage <| RecipesPerTagPage (toString tag)) (s "recipes/tag" </> string)
+        , map (\category -> SetActivePage <| RecipesPerCategoryPage (toString category)) (s "recipes/category" </> string)
         ]

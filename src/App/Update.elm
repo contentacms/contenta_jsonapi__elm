@@ -131,6 +131,14 @@ update msg model =
                     , getRecipesPerTag model.flags tag
                     )
 
+                RecipesPerCategoryPage category ->
+                    ( { model
+                        | currentPage = RecipesPerCategoryPage category
+                        , pageRecipesPerCategory = ( category, RemoteData.Loading )
+                      }
+                    , getRecipesPerCategory model.flags category
+                    )
+
         PromotedArticlesLoaded remoteResponse ->
             ( { model
                 | pageHome =
@@ -200,11 +208,11 @@ update msg model =
                         ]
               }
             , Cmd.batch
-                [ getRecipePerCategory model.flags "Main course"
-                , getRecipePerCategory model.flags "Starter"
-                , getRecipePerCategory model.flags "Snack"
-                , getRecipePerCategory model.flags "Salad"
-                , getRecipePerCategory model.flags "Dessert"
+                [ getRecipesPerCategory model.flags "Main course"
+                , getRecipesPerCategory model.flags "Starter"
+                , getRecipesPerCategory model.flags "Snack"
+                , getRecipesPerCategory model.flags "Salad"
+                , getRecipesPerCategory model.flags "Dessert"
                 ]
             )
 
@@ -220,12 +228,20 @@ update msg model =
                         )
                         remoteResponse
             in
-                ( { model
-                    | pageRecipes =
-                        DictList.insert category additionalRecipes model.pageRecipes
-                  }
-                , Cmd.none
-                )
+                case model.currentPage of
+                    RecipesPerCategoryList ->
+                        ( { model
+                            | pageRecipes =
+                                DictList.insert category additionalRecipes model.pageRecipes
+                          }
+                        , Cmd.none
+                        )
+
+                    RecipesPerCategoryPage _ ->
+                        ( { model | pageRecipesPerTag = ( category, additionalRecipes ) }, Cmd.none )
+
+                    _ ->
+                        ( model, Cmd.none )
 
         RecipesPerTagLoaded tag remoteResponse ->
             let
