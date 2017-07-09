@@ -21,4 +21,4 @@ view model ( minutes, recipes ) =
                     recipes
         )
         recipes
-        (toString minutes)
+        ("Quicker than " ++ (toString minutes) ++ " minutes")

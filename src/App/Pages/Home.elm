@@ -7,9 +7,10 @@ import Html.Events exposing (onClick)
 import RemoteData exposing (WebData, RemoteData, RemoteData(..))
 import App.View.Atom exposing (viewRemoteData)
 import App.View.Molecule exposing (..)
-import App.View.Grid exposing (grid4, grid2x2, grid1__2, grid1__1, grid1__)
+import App.View.Grid exposing (grid4, grid2x2, grid1__2, grid1__1, grid1__, grid4WithStyle)
 import Material.List as ML
 import Material.Options as Options
+import Material.Elevation as Elevation
 import App.PageType exposing (..)
 import List
 import List.Extra
@@ -85,7 +86,7 @@ viewCurrentMonthIssue model =
 
 viewCookMenu : Model -> Html Msg
 viewCookMenu model =
-    grid4
+    grid4WithStyle [ Elevation.e3 ]
         [ div [ onClick <| SetActivePage <| RecipesPerCategoryPage "Main course" ]
             [ h3 [] [ text "Dinners to impress" ]
             , h4 [] [ text "List recipes" ]
@@ -107,7 +108,8 @@ viewCookMenu model =
 
 viewRecipes : WebData (List Recipe) -> Html Msg
 viewRecipes recipes =
-    div []
+    Options.styled div
+        [ Elevation.e3 ]
         [ h2 [] [ text "Recipes" ]
         , h3 [] [ text "Explore recipes across every type of occasion, ingredient and skill level" ]
         , viewRemoteData
