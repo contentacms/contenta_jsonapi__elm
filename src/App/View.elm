@@ -15,6 +15,7 @@ import Html.Attributes exposing (..)
 import App.View.Organism exposing (viewHeader, viewFooter)
 import App.View.Organism exposing (..)
 import Material.Layout as Layout
+import Material.Options as Options
 import List
 import List.Extra
 import Material as M
@@ -38,16 +39,9 @@ withMaterial html =
 
 view : Model -> Html Msg
 view model =
-    Layout.render Mdl
-        model.mdl
-        [ Layout.fixedHeader
-        ]
-        { header = viewMdlHeader
-        , drawer = viewDrawer
-        , tabs = ( viewTabs, [] )
-        , main =
-            [ {- (viewHeader model) -}
-              (case model.currentPage of
+    let
+        main =
+            (case model.currentPage of
                 Home ->
                     App.Pages.Home.view model model.pageHome
 
@@ -68,8 +62,23 @@ view model =
 
                 ContactPage ->
                     App.Pages.ContactPage.view model model.pageContact
-              )
-            , (viewFooter model)
+            )
+    in
+        Layout.render Mdl
+            model.mdl
+            [ Layout.fixedHeader
             ]
-        }
-        |> withMaterial
+            { header = viewMdlHeader
+            , drawer = viewDrawer
+            , tabs = ( viewTabs, [] )
+            , main =
+                [ {- (viewHeader model) -}
+                  div
+                    [ style [ ( "max-width", "1024px" ), ( "margin", "0 auto" ) ]
+                    ]
+                    [ main
+                    , (viewFooter model)
+                    ]
+                ]
+            }
+            |> withMaterial

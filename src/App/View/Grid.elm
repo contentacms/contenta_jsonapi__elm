@@ -46,17 +46,17 @@ grid2__2_center el1 el2 el3 el4 =
 grid1__2 : Html Msg -> Html Msg -> Html Msg -> Html Msg
 grid1__2 el1 el2 el3 =
     Grid.grid []
-        [ Grid.cell [ Grid.size Grid.All 6 ] [ el1 ]
-        , Grid.cell [ Grid.size Grid.All 3 ] [ el2 ]
-        , Grid.cell [ Grid.size Grid.All 3 ] [ el3 ]
+        [ Grid.cell [ Grid.size Grid.All 6, Grid.stretch ] [ el1 ]
+        , Grid.cell [ Grid.size Grid.All 3, Grid.stretch ] [ el2 ]
+        , Grid.cell [ Grid.size Grid.All 3, Grid.stretch ] [ el3 ]
         ]
 
 
 grid1__1 : Html Msg -> Html Msg -> Html Msg
 grid1__1 el1 el2 =
     Grid.grid []
-        [ Grid.cell [ Grid.size Grid.All 6 ] [ el1 ]
-        , Grid.cell [ Grid.size Grid.All 6 ] [ el2 ]
+        [ Grid.cell [ Grid.size Grid.All 6, Grid.stretch ] [ el1 ]
+        , Grid.cell [ Grid.size Grid.All 6, Grid.stretch ] [ el2 ]
         ]
 
 

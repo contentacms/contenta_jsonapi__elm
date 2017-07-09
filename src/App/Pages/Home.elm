@@ -45,18 +45,18 @@ viewPromotedContent promotedArticles promotedRecipes =
                         div [] []
 
                     1 ->
-                        grid1__ (Maybe.withDefault emptyDiv <| Maybe.map viewSinglePromotedContent <| List.head data)
+                        grid1__ (Maybe.withDefault emptyDiv <| Maybe.map (viewSinglePromotedContent 0) <| List.head data)
 
                     2 ->
                         grid1__1
-                            (Maybe.withDefault emptyDiv <| Maybe.map viewSinglePromotedContent <| List.Extra.getAt 0 data)
-                            (Maybe.withDefault emptyDiv <| Maybe.map viewSinglePromotedContent <| List.Extra.getAt 1 data)
+                            (Maybe.withDefault emptyDiv <| Maybe.map (viewSinglePromotedContent 0) <| List.Extra.getAt 0 data)
+                            (Maybe.withDefault emptyDiv <| Maybe.map (viewSinglePromotedContent 1) <| List.Extra.getAt 1 data)
 
                     3 ->
                         grid1__2
-                            (Maybe.withDefault emptyDiv <| Maybe.map viewSinglePromotedContent <| List.Extra.getAt 0 data)
-                            (Maybe.withDefault emptyDiv <| Maybe.map viewSinglePromotedContent <| List.Extra.getAt 1 data)
-                            (Maybe.withDefault emptyDiv <| Maybe.map viewSinglePromotedContent <| List.Extra.getAt 2 data)
+                            (Maybe.withDefault emptyDiv <| Maybe.map (viewSinglePromotedContent 0) <| List.Extra.getAt 0 data)
+                            (Maybe.withDefault emptyDiv <| Maybe.map (viewSinglePromotedContent 1) <| List.Extra.getAt 1 data)
+                            (Maybe.withDefault emptyDiv <| Maybe.map (viewSinglePromotedContent 2) <| List.Extra.getAt 2 data)
 
                     _ ->
                         div [] [ text "this code should not be triggered!!!" ]
@@ -65,14 +65,17 @@ viewPromotedContent promotedArticles promotedRecipes =
             RemoteData.map (List.take 3) mergedPromotedList
 
 
-viewSinglePromotedContent : ArticleOrRecipe -> Html Msg
-viewSinglePromotedContent articleOrRecipe =
+viewSinglePromotedContent : Int -> ArticleOrRecipe -> Html Msg
+viewSinglePromotedContent index articleOrRecipe =
     case articleOrRecipe of
         ArticleRef article ->
             articleCard article
 
         RecipeRef recipe ->
-            recipeCard recipe
+            if index == 0 then
+                recipeCardWithReverse True recipe
+            else
+                recipeCard recipe
 
 
 viewCurrentMonthIssue : Model -> Html Msg

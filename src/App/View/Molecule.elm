@@ -22,32 +22,47 @@ import Material.Button as Button
 import Svg
 
 
-recipeCard : Recipe -> Html Msg
-recipeCard recipe =
-    Card.view
-        [ Options.onClick <| SetActivePage <| RecipeDetailPage recipe.id
-        , css "width" "100%"
-        , Elevation.e2
-        ]
-        [ Card.media []
-            [ img [ src <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image, style [ ( "width", "100%" ) ] ] []
-            ]
-        , Card.title
-            [ css "padding" "0"
-              -- Clear default padding to encompass scrim
-            ]
-            [ Card.head
-                [ css "padding" "16px"
+recipeCardWithReverse : Bool -> Recipe -> Html Msg
+recipeCardWithReverse reverse recipe =
+    let
+        image =
+            Card.media []
+                [ img [ src <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image, style [ ( "width", "100%" ) ] ] []
                 ]
-                [ h3 [] [ text recipe.title ] ]
+
+        nonImage =
+            [ Card.title
+                [ css "padding" "0"
+                  -- Clear default padding to encompass scrim
+                ]
+                [ Card.head
+                    [ css "padding" "16px"
+                    ]
+                    [ h3 [] [ text recipe.title ] ]
+                ]
+            , Card.text []
+                [ text "Non-alcoholic syrup used for both its tart and sweet flavour as well as its deep red color." ]
+            , Card.actions
+                [ Card.border, Options.cs "recipe__tags" ]
+              <|
+                List.map (\tag -> a [ onClickPreventDefault (SetActivePage <| RecipesPerTagPage tag.name), href <| "/recipes/tag/" ++ tag.name ] [ text tag.name ]) recipe.tags
             ]
-        , Card.text []
-            [ text "Non-alcoholic syrup used for both its tart and sweet flavour as well as its deep red color." ]
-        , Card.actions
-            [ Card.border, Options.cs "recipe__tags" ]
-          <|
-            List.map (\tag -> a [ onClickPreventDefault (SetActivePage <| RecipesPerTagPage tag.name), href <| "/recipes/tag/" ++ tag.name ] [ text tag.name ]) recipe.tags
-        ]
+    in
+        Card.view
+            [ Options.onClick <| SetActivePage <| RecipeDetailPage recipe.id
+            , css "width" "100%"
+            , Elevation.e2
+            ]
+        <|
+            if reverse then
+                List.append nonImage [ image ]
+            else
+                List.append [ image ] nonImage
+
+
+recipeCard : Recipe -> Html Msg
+recipeCard =
+    recipeCardWithReverse False
 
 
 articleCard : Article -> Html Msg
