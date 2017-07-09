@@ -2,6 +2,7 @@ module App.ModelHttp exposing (..)
 
 import App.Model exposing (..)
 import App.Difficulty exposing (..)
+import App.Utils exposing (removeErrorFromList)
 import Json.Encode
 import Json.Decode exposing (field, string, int, list, succeed, Decoder, map4, at, map, map2)
 import JsonApi.Resources
@@ -329,6 +330,17 @@ decodeRecipe flags resource =
                 |> Result.toMaybe
     in
         JsonApi.Resources.attributes (recipeDecoderWithValues id (Result.map .url file_image) tags category owner) resource
+
+
+decodeRecipes : Flags -> RemoteData.WebData (List JsonApi.Resource) -> RemoteData.WebData (List Recipe)
+decodeRecipes flags =
+    RemoteData.map
+        (\resources ->
+            List.map
+                (decodeRecipe flags)
+                resources
+                |> removeErrorFromList
+        )
 
 
 resultToWebData : Result String a -> RemoteData.WebData a

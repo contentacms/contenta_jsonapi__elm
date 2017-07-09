@@ -1,6 +1,7 @@
 module App.Update exposing (..)
 
 import App.Model exposing (..)
+import App.Utils exposing (removeErrorFromList)
 import App.PageType exposing (..)
 import App.ModelHttp exposing (..)
 import JsonApi.Resources
@@ -177,15 +178,7 @@ update msg model =
         PromotedRecipesLoaded remoteResponse ->
             ( { model
                 | pageHome =
-                    { promotedRecipes =
-                        RemoteData.map
-                            (\resources ->
-                                List.map
-                                    (decodeRecipe model.flags)
-                                    resources
-                                    |> removeErrorFromList
-                            )
-                            remoteResponse
+                    { promotedRecipes = decodeRecipes model.flags remoteResponse
                     , promotedArticles = model.pageHome.promotedArticles
                     , recipes = model.pageHome.recipes
                     }
@@ -198,15 +191,7 @@ update msg model =
                 | pageHome =
                     { promotedRecipes = model.pageHome.promotedRecipes
                     , promotedArticles = model.pageHome.promotedArticles
-                    , recipes =
-                        RemoteData.map
-                            (\resources ->
-                                List.map
-                                    (decodeRecipe model.flags)
-                                    resources
-                                    |> removeErrorFromList
-                            )
-                            remoteResponse
+                    , recipes = decodeRecipes model.flags remoteResponse
                     }
               }
             , Cmd.none
@@ -235,14 +220,7 @@ update msg model =
         RecipesPerCategoryLoaded category remoteResponse ->
             let
                 additionalRecipes =
-                    RemoteData.map
-                        (\resources ->
-                            List.map
-                                (decodeRecipe model.flags)
-                                resources
-                                |> removeErrorFromList
-                        )
-                        remoteResponse
+                    decodeRecipes model.flags remoteResponse
             in
                 case model.currentPage of
                     RecipesPerCategoryList ->
@@ -262,42 +240,21 @@ update msg model =
         RecipesPerTagLoaded tag remoteResponse ->
             let
                 recipes =
-                    RemoteData.map
-                        (\resources ->
-                            List.map
-                                (decodeRecipe model.flags)
-                                resources
-                                |> removeErrorFromList
-                        )
-                        remoteResponse
+                    decodeRecipes model.flags remoteResponse
             in
                 ( { model | pageRecipesPerTag = ( tag, recipes ) }, Cmd.none )
 
         RecipesPerDifficultyLoaded difficulty remoteResponse ->
             let
                 recipes =
-                    RemoteData.map
-                        (\resources ->
-                            List.map
-                                (decodeRecipe model.flags)
-                                resources
-                                |> removeErrorFromList
-                        )
-                        remoteResponse
+                    decodeRecipes model.flags remoteResponse
             in
                 ( { model | pageRecipesPerDifficulty = ( difficulty, recipes ) }, Cmd.none )
 
         RecipesShorterThanLoaded minutes remoteResponse ->
             let
                 recipes =
-                    RemoteData.map
-                        (\resources ->
-                            List.map
-                                (decodeRecipe model.flags)
-                                resources
-                                |> removeErrorFromList
-                        )
-                        remoteResponse
+                    decodeRecipes model.flags remoteResponse
             in
                 ( { model | pageRecipesShorterThan = ( minutes, recipes ) }, Cmd.none )
 
@@ -349,19 +306,6 @@ joinListMaybe list =
 
             _ ->
                 Just filteredList
-
-
-removeErrorFromList : List (Result a b) -> List b
-removeErrorFromList list =
-    case (List.reverse list) of
-        (Ok a) :: xs ->
-            a :: removeErrorFromList xs
-
-        (Err b) :: xs ->
-            removeErrorFromList xs
-
-        [] ->
-            []
 
 
 updateError : String -> Http.Error -> Model -> ( Model, Cmd Msg )
