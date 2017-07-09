@@ -41,6 +41,7 @@ type alias Recipe =
     , prepTime : Int
     , recipeInstruction : String
     , image : Maybe String
+    , category : Maybe Term
     , tags : List Term
     }
 

@@ -29,7 +29,7 @@ withMaterial html =
         -}
         [ node "style"
             [ type_ "text/css" ]
-            [ Html.text "@import url(\"/css/material.blue_grey-red.min.css\")" ]
+            [ Html.text "@import url(\"/css/material.light_green-amber.min.css\")" ]
           {- This fixes a problem with materalized and the debugger -}
         , node "style" [] [ text ".elm-overlay { z-index: 999;" ]
         , html
@@ -44,7 +44,7 @@ view model =
         ]
         { header = viewMdlHeader
         , drawer = viewDrawer
-        , tabs = ( [], [] )
+        , tabs = ( viewTabs, [] )
         , main =
             [ {- (viewHeader model) -}
               (case model.currentPage of

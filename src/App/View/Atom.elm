@@ -80,9 +80,8 @@ cardTagsInline tags =
     span [] <|
         List.map
             (\tag ->
-                Chip.span []
-                    [ Chip.content [] [ a [ onClickPreventDefault (SetActivePage <| RecipesPerTagPage tag) ] [ text tag ] ]
-                    ]
+                Chip.button []
+                    [ Chip.content [] [ span [ onClickPreventDefault (SetActivePage <| RecipesPerTagPage tag) ] [ text tag ] ] ]
             )
             tags
 

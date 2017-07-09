@@ -102,18 +102,20 @@ viewFooter model =
         }
 
 
+viewTabs : List (Html Msg)
+viewTabs =
+    []
+
+
 viewMdlHeader : List (Html Msg)
 viewMdlHeader =
     [ Layout.row []
-        [ Layout.title [] [ text "Umami, food magazine" ]
+        [ Layout.title [ Options.onClick (SetActivePage Home), Options.css "cursor" "pointer" ] [ text "Umami, food magazine" ]
         , Layout.spacer
         , Layout.navigation []
-            [ Layout.link [ Layout.href "#", Options.onClick (SetActivePage Home) ] [ text "Home" ]
-            , Layout.link [ Layout.href "#", Options.onClick (SetActivePage ArticleList) ] [ text "Features" ]
-            , Layout.link [ Layout.href "#", Options.onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ]
-            , Layout.link [ Layout.href "#", Options.onClick (SetActivePage AboutUs) ] [ text "About us" ]
-            , Layout.link [ Layout.href "http://www.contentacms.org/" ] [ img [ height 36, src "assets/contenta-lg.png", alt "Contenta Logo" ] [] ]
+            [ Layout.link [ Layout.href "http://www.contentacms.org/" ] [ img [ height 36, src "assets/contenta-lg.png", alt "Contenta Logo" ] [] ]
             , Layout.link [ Layout.href "https://github.com/contentacms/contenta_jsonapi__elm" ] [ img [ height 36, src "assets/github.png", alt "Github logo" ] [] ]
+            , Layout.link [ Layout.href "http://elm-lang.org" ] [ img [ height 36, src "assets/elm_logo_transparent.svg", alt "Elm logo" ] [] ]
             ]
         ]
     ]
@@ -121,7 +123,7 @@ viewMdlHeader =
 
 viewDrawer : List (Html Msg)
 viewDrawer =
-    [ Layout.title [] [ text "Umami, food magazine" ]
+    [ Layout.title [] [ text "Umami" ]
     , Layout.navigation []
         [ Layout.link [ Layout.href "#", Options.onClick (SetActivePage Home) ] [ text "Home" ]
         , Layout.link [ Layout.href "#", Options.onClick (SetActivePage ArticleList) ] [ text "Features" ]

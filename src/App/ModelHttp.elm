@@ -2,7 +2,7 @@ module App.ModelHttp exposing (..)
 
 import App.Model exposing (..)
 import Json.Encode
-import Json.Decode exposing (..)
+import Json.Decode exposing (field, string, int, list, succeed, Decoder, map4, at, map, map2)
 import JsonApi.Resources
 import JsonApi
 import JsonApi.Encode
@@ -11,6 +11,7 @@ import Http
 import RemoteData
 import Result.Extra
 import Json.Decode.Extra
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)
 import Result exposing (Result(..))
 import Dict
 
@@ -19,18 +20,19 @@ type alias ImageResult =
     Result String String
 
 
-recipeDecoderWithValues : String -> ImageResult -> List Term -> Decoder Recipe
-recipeDecoderWithValues id image tags =
-    map8 Recipe
-        (succeed id)
-        (field "title" string)
-        (field "difficulty" string)
-        (field "ingredients" (list string))
-        (field "totalTime" int)
-        (field "preparationTime" int)
-        (field "instructions" string)
-        (succeed <| Result.toMaybe image)
-        |> Json.Decode.Extra.andMap (succeed tags)
+recipeDecoderWithValues : String -> ImageResult -> List Term -> Maybe Term -> Decoder Recipe
+recipeDecoderWithValues id image tags category =
+    decode Recipe
+        |> hardcoded id
+        |> required "title" string
+        |> required "difficulty" string
+        |> required "ingredients" (list string)
+        |> required "totalTime" int
+        |> required "preparationTime" int
+        |> required "instructions" string
+        |> hardcoded (Result.toMaybe image)
+        |> hardcoded category
+        |> hardcoded tags
 
 
 articleDecoderWithIdAndImage : String -> ImageResult -> Decoder Article
@@ -83,7 +85,7 @@ getRecipePerCategory flags category =
 
 recipeFields : String
 recipeFields =
-    "include=field_image,field_image.field_image,field_image.field_image.file--file,tags"
+    "include=field_image,field_image.field_image,field_image.field_image.file--file,tags,category"
         ++ "&fields[recipes]="
         ++ "title,"
         ++ "difficulty,"
@@ -105,6 +107,7 @@ imageFields =
 tagFields : String
 tagFields =
     "&fields[tags]=internalId,name"
+        ++ "&fields[category]=internalId,name"
 
 
 getPromotedRecipes : Flags -> Cmd Msg
@@ -258,8 +261,13 @@ decodeRecipe flags resource =
                         )
                     )
                 |> Result.withDefault []
+
+        category =
+            JsonApi.Resources.relatedResource "category" resource
+                |> Result.andThen (JsonApi.Resources.attributes termDecoder)
+                |> Result.toMaybe
     in
-        JsonApi.Resources.attributes (recipeDecoderWithValues id (Result.map .url file_image) tags) resource
+        JsonApi.Resources.attributes (recipeDecoderWithValues id (Result.map .url file_image) tags category) resource
 
 
 resultToWebData : Result String a -> RemoteData.WebData a

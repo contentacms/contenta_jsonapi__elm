@@ -16,6 +16,7 @@ import Material.Options as Options exposing (css)
 import Material.Typography as Typography
 import Material.Elevation as Elevation
 import Material.Card as Card
+import Material.Grid as Grid
 import Material.Color as Color
 import Material.Button as Button
 import Svg
@@ -113,8 +114,16 @@ recipeAuthorLine : Recipe -> Html Msg
 recipeAuthorLine recipe =
     div []
         [ text <| "by" ++ "TODO: Fetch name"
-        , div []
-            [ Options.span [ Typography.caption ] [ text "(tag)" ]
-            , Options.span [] [ cardTagsInline <| List.map (.name) recipe.tags ]
+        , Options.div []
+            [ Maybe.withDefault (text "") <| Maybe.map (.name >> List.singleton >> cardTagsInline) recipe.category
+            , cardTagsInline <| List.map (.name) recipe.tags
             ]
+        ]
+
+
+recipeTitleLine : Recipe -> Html Msg
+recipeTitleLine recipe =
+    Grid.grid []
+        [ Grid.cell [ Grid.size Grid.All 10 ] [ pageTitle recipe.title ]
+        , Grid.cell [ Grid.size Grid.All 2, Grid.align Grid.Bottom ] [ recipeAuthorLine recipe ]
         ]

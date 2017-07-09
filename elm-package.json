@@ -13,6 +13,7 @@
     "exposed-modules": [],
     "dependencies": {
         "Gizra/elm-dictlist": "2.0.0 <= v < 3.0.0",
+        "NoRedInk/elm-decode-pipeline": "3.0.0 <= v < 4.0.0",
         "debois/elm-mdl": "8.1.0 <= v < 9.0.0",
         "elm-community/json-extra": "2.1.0 <= v < 3.0.0",
         "elm-community/list-extra": "5.0.0 <= v < 6.0.0",
