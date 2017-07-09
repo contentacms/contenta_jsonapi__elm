@@ -1,6 +1,7 @@
 module App.ModelHttp exposing (..)
 
 import App.Model exposing (..)
+import App.Difficulty exposing (..)
 import Json.Encode
 import Json.Decode exposing (field, string, int, list, succeed, Decoder, map4, at, map, map2)
 import JsonApi.Resources
@@ -84,7 +85,7 @@ getRecipesPerCategory flags category =
             |> Cmd.map (RecipesPerCategoryLoaded category)
 
 
-getRecipesPerDifficulty : Flags -> String -> Cmd Msg
+getRecipesPerDifficulty : Flags -> Difficulty -> Cmd Msg
 getRecipesPerDifficulty flags difficulty =
     let
         request =
@@ -96,7 +97,7 @@ getRecipesPerDifficulty flags difficulty =
                     ++ "&page[offset]=0"
                     ++ "&page[limit]=4"
                     ++ "&filter[difficulty][value]="
-                    ++ difficulty
+                    ++ (difficultyToString difficulty)
                 )
     in
         RemoteData.sendRequest request

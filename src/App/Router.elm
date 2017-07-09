@@ -1,6 +1,7 @@
 module App.Router exposing (delta2url, location2messages)
 
 import App.Model exposing (..)
+import App.Difficulty exposing (stringToDifficulty, difficultyToString)
 import RouteUrl exposing (HistoryEntry(..), UrlChange)
 import App.PageType exposing (..)
 import Navigation exposing (Location)
@@ -35,7 +36,7 @@ delta2url previous current =
             Just <| UrlChange NewEntry ("/recipes/category/" ++ tag)
 
         RecipesPerDifficultyPage difficulty ->
-            Just <| UrlChange NewEntry ("/recipes/difficulty/" ++ difficulty)
+            Just <| UrlChange NewEntry ("/recipes/difficulty/" ++ (difficultyToString difficulty))
 
         RecipesShorterThanNMinutesPage minutes ->
             Just <| UrlChange NewEntry ("/recipes/shorter-than/" ++ (toString minutes))
@@ -62,6 +63,11 @@ parseUrl =
         , map (\recipeId -> SetActivePage <| RecipeDetailPage recipeId) (s "recipe" </> string)
         , map (\tag -> SetActivePage <| RecipesPerTagPage tag) (s "recipes/tag" </> string)
         , map (\category -> SetActivePage <| RecipesPerCategoryPage category) (s "recipes/category" </> string)
-        , map (\difficulty -> SetActivePage <| RecipesPerDifficultyPage difficulty) (s "recipes/difficulty" </> string)
+        , map
+            (\string ->
+                Maybe.map (SetActivePage << RecipesPerDifficultyPage) (stringToDifficulty string)
+                    |> Maybe.withDefault (SetActivePage Home)
+            )
+            (s "recipes/difficulty" </> string)
         , map (\minutes -> SetActivePage <| RecipesShorterThanNMinutesPage minutes) (s "recipes/shorter-than" </> int)
         ]

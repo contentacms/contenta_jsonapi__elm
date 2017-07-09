@@ -1,5 +1,7 @@
 module App.PageType exposing (..)
 
+import App.Difficulty exposing (..)
+
 
 type alias RecipeId =
     String
@@ -15,5 +17,5 @@ type Page
     | RecipesPerTagPage String
       {--Ensure it actually works --}
     | RecipesPerCategoryPage String
-    | RecipesPerDifficultyPage String
+    | RecipesPerDifficultyPage Difficulty
     | RecipesShorterThanNMinutesPage Int

@@ -1,6 +1,7 @@
 module App.Model exposing (..)
 
 import App.PageType exposing (..)
+import App.Difficulty exposing (..)
 import JsonApi
 import RemoteData exposing (WebData)
 import Material
@@ -25,7 +26,7 @@ type Msg
       -- # Recipes per tag
     | RecipesPerTagLoaded String (WebData (List JsonApi.Resource))
       -- # Recipes per difficulty
-    | RecipesPerDifficultyLoaded String (WebData (List JsonApi.Resource))
+    | RecipesPerDifficultyLoaded Difficulty (WebData (List JsonApi.Resource))
       -- # Recipes shorter than a certain time
     | RecipesShorterThanLoaded Int (WebData (List JsonApi.Resource))
       -- Contact
@@ -142,7 +143,7 @@ type alias PageRecipesPerCategoryModel =
 
 
 type alias PageRecipesPerDifficultyModel =
-    ( String, WebData (List Recipe) )
+    ( Difficulty, WebData (List Recipe) )
 
 
 type alias PageRecipesShorterThanModel =
@@ -153,12 +154,6 @@ type alias PageRecipeDetailModel =
     { recipe : WebData Recipe
     , recipes : WebData (List Recipe)
     }
-
-
-type Difficulty
-    = Easy
-    | Medium
-    | Hard
 
 
 type ContactMsg

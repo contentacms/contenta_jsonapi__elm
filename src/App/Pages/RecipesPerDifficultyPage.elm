@@ -1,6 +1,7 @@
 module App.Pages.RecipesPerDifficultyPage exposing (view)
 
 import App.Model exposing (..)
+import App.Difficulty exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (src)
 import Html.Events exposing (onClick)
@@ -18,14 +19,11 @@ view model ( difficulty, recipes ) =
         recipes
     <|
         case difficulty of
-            "easy" ->
+            Easy ->
                 "Easy"
 
-            "middle" ->
+            Medium ->
                 "Middle"
 
-            "hard" ->
+            Hard ->
                 "Hard"
-
-            _ ->
-                difficulty

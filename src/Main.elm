@@ -1,6 +1,7 @@
 module Main exposing (..)
 
 import App.Model exposing (..)
+import App.Difficulty exposing (..)
 import App.ModelHttp exposing (..)
 import App.PageType exposing (..)
 import App.Router exposing (..)
@@ -30,7 +31,7 @@ init flags =
     , pageRecipeDetail = { recipe = RemoteData.NotAsked, recipes = RemoteData.NotAsked }
     , pageRecipesPerTag = ( "", RemoteData.NotAsked )
     , pageRecipesPerCategory = ( "", RemoteData.NotAsked )
-    , pageRecipesPerDifficulty = ( "", RemoteData.NotAsked )
+    , pageRecipesPerDifficulty = ( Easy, RemoteData.NotAsked )
     , pageRecipesShorterThan = ( 0, RemoteData.NotAsked )
     , pageContact = App.Pages.ContactPage.init
     , mdl = Material.model

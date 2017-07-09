@@ -1,6 +1,7 @@
 module App.Pages.Home exposing (view)
 
 import App.Model exposing (..)
+import App.Difficulty exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (src)
 import Html.Events exposing (onClick)
@@ -91,7 +92,7 @@ viewCookMenu model =
             [ h3 [] [ text "Dinners to impress" ]
             , h4 [] [ text "List recipes" ]
             ]
-        , div [ onClick <| SetActivePage <| RecipesPerDifficultyPage "easy" ]
+        , div [ onClick <| SetActivePage <| RecipesPerDifficultyPage Easy ]
             [ h3 [] [ text "Learn to cook" ]
             , h4 [] [ text "Recipes for beginner" ]
             ]
