@@ -139,6 +139,14 @@ update msg model =
                     , getRecipesPerCategory model.flags category
                     )
 
+                RecipesPerDifficultyPage difficulty ->
+                    ( { model
+                        | currentPage = RecipesPerDifficultyPage difficulty
+                        , pageRecipesPerDifficulty = ( difficulty, RemoteData.Loading )
+                      }
+                    , getRecipesPerDifficulty model.flags difficulty
+                    )
+
         PromotedArticlesLoaded remoteResponse ->
             ( { model
                 | pageHome =
@@ -238,7 +246,7 @@ update msg model =
                         )
 
                     RecipesPerCategoryPage _ ->
-                        ( { model | pageRecipesPerTag = ( category, additionalRecipes ) }, Cmd.none )
+                        ( { model | pageRecipesPerCategory = ( category, additionalRecipes ) }, Cmd.none )
 
                     _ ->
                         ( model, Cmd.none )
@@ -256,6 +264,20 @@ update msg model =
                         remoteResponse
             in
                 ( { model | pageRecipesPerTag = ( tag, recipes ) }, Cmd.none )
+
+        RecipesPerDifficultyLoaded difficulty remoteResponse ->
+            let
+                recipes =
+                    RemoteData.map
+                        (\resources ->
+                            List.map
+                                (decodeRecipe model.flags)
+                                resources
+                                |> removeErrorFromList
+                        )
+                        remoteResponse
+            in
+                ( { model | pageRecipesPerDifficulty = ( difficulty, recipes ) }, Cmd.none )
 
         PostContactForm ->
             ( model, sendContactForm model.pageContact )

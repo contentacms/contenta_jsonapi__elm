@@ -1,4 +1,4 @@
-module App.Pages.RecipesPerCategory exposing (view)
+module App.Pages.RecipesPerCategoryPage exposing (view)
 
 import App.Model exposing (..)
 import Html exposing (..)

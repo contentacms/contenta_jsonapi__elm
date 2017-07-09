@@ -13,4 +13,6 @@ type Page
     | RecipeDetailPage String
     | ContactPage
     | RecipesPerTagPage String
+      {--Ensure it actually works --}
     | RecipesPerCategoryPage String
+    | RecipesPerDifficultyPage String

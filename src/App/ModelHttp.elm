@@ -84,6 +84,25 @@ getRecipesPerCategory flags category =
             |> Cmd.map (RecipesPerCategoryLoaded category)
 
 
+getRecipesPerDifficulty : Flags -> String -> Cmd Msg
+getRecipesPerDifficulty flags difficulty =
+    let
+        request =
+            JsonApi.Http.getPrimaryResourceCollection
+                (flags.apiBaseUrl
+                    ++ "/recipes"
+                    ++ "?"
+                    ++ recipeFields
+                    ++ "&page[offset]=0"
+                    ++ "&page[limit]=4"
+                    ++ "&filter[difficulty][value]="
+                    ++ difficulty
+                )
+    in
+        RemoteData.sendRequest request
+            |> Cmd.map (RecipesPerDifficultyLoaded difficulty)
+
+
 recipeFields : String
 recipeFields =
     "include=field_image,field_image.field_image,field_image.field_image.file--file,tags,category,owner"
