@@ -31,6 +31,7 @@ init flags =
     , pageRecipesPerTag = ( "", RemoteData.NotAsked )
     , pageRecipesPerCategory = ( "", RemoteData.NotAsked )
     , pageRecipesPerDifficulty = ( "", RemoteData.NotAsked )
+    , pageRecipesShorterThan = ( 0, RemoteData.NotAsked )
     , pageContact = App.Pages.ContactPage.init
     , mdl = Material.model
     }

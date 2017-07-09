@@ -98,7 +98,7 @@ viewCookMenu model =
             [ h3 [] [ text "Backed up" ]
             , h4 [] [ text "Delicious cake and bakes" ]
             ]
-        , div []
+        , div [ onClick <| SetActivePage <| RecipesShorterThanNMinutesPage 20 ]
             [ h3 [] [ text "Quick and Easy" ]
             , h4 [] [ text "20 minutes or less" ]
             ]

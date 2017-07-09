@@ -26,6 +26,8 @@ type Msg
     | RecipesPerTagLoaded String (WebData (List JsonApi.Resource))
       -- # Recipes per difficulty
     | RecipesPerDifficultyLoaded String (WebData (List JsonApi.Resource))
+      -- # Recipes shorter than a certain time
+    | RecipesShorterThanLoaded Int (WebData (List JsonApi.Resource))
       -- Contact
     | ContactM ContactMsg
     | ContactPostResult
@@ -102,6 +104,7 @@ type alias Model =
     , pageRecipesPerTag : PageRecipesPerTagModel
     , pageRecipesPerCategory : PageRecipesPerCategoryModel
     , pageRecipesPerDifficulty : PageRecipesPerDifficultyModel
+    , pageRecipesShorterThan : PageRecipesShorterThanModel
     , pageContact : ContactForm
     , mdl : Material.Model
     }
@@ -140,6 +143,10 @@ type alias PageRecipesPerCategoryModel =
 
 type alias PageRecipesPerDifficultyModel =
     ( String, WebData (List Recipe) )
+
+
+type alias PageRecipesShorterThanModel =
+    ( Int, WebData (List Recipe) )
 
 
 type alias PageRecipeDetailModel =

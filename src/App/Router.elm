@@ -37,6 +37,9 @@ delta2url previous current =
         RecipesPerDifficultyPage difficulty ->
             Just <| UrlChange NewEntry ("/recipes/difficulty/" ++ difficulty)
 
+        RecipesShorterThanNMinutesPage minutes ->
+            Just <| UrlChange NewEntry ("/recipes/shorter-than/" ++ (toString minutes))
+
 
 location2messages : Location -> List Msg
 location2messages location =
@@ -60,4 +63,5 @@ parseUrl =
         , map (\tag -> SetActivePage <| RecipesPerTagPage (toString tag)) (s "recipes/tag" </> string)
         , map (\category -> SetActivePage <| RecipesPerCategoryPage (toString category)) (s "recipes/category" </> string)
         , map (\difficulty -> SetActivePage <| RecipesPerDifficultyPage (toString difficulty)) (s "recipes/difficulty" </> string)
+        , map (\minutes -> SetActivePage <| RecipesShorterThanNMinutesPage minutes) (s "recipes/shorter-than" </> int)
         ]

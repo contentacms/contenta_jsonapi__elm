@@ -103,6 +103,28 @@ getRecipesPerDifficulty flags difficulty =
             |> Cmd.map (RecipesPerDifficultyLoaded difficulty)
 
 
+getRecipesShorterThan : Flags -> Int -> Cmd Msg
+getRecipesShorterThan flags minutes =
+    let
+        request =
+            JsonApi.Http.getPrimaryResourceCollection
+                (flags.apiBaseUrl
+                    ++ "/recipes"
+                    ++ "?"
+                    ++ recipeFields
+                    ++ "&page[offset]=0"
+                    ++ "&page[limit]=4"
+                    ++ "&filter[totalTime][condition][path]=totalTime"
+                    ++ "&filter[totalTime][condition][value]="
+                    ++ (toString minutes)
+                    ++ "&filter[totalTime][condition][operator]="
+                    ++ (Http.encodeUri "<")
+                )
+    in
+        RemoteData.sendRequest request
+            |> Cmd.map (RecipesShorterThanLoaded minutes)
+
+
 recipeFields : String
 recipeFields =
     "include=field_image,field_image.field_image,field_image.field_image.file--file,tags,category,owner"

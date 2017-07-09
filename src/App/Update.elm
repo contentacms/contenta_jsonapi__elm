@@ -147,6 +147,14 @@ update msg model =
                     , getRecipesPerDifficulty model.flags difficulty
                     )
 
+                RecipesShorterThanNMinutesPage minutes ->
+                    ( { model
+                        | currentPage = RecipesShorterThanNMinutesPage minutes
+                        , pageRecipesShorterThan = ( minutes, RemoteData.Loading )
+                      }
+                    , getRecipesShorterThan model.flags minutes
+                    )
+
         PromotedArticlesLoaded remoteResponse ->
             ( { model
                 | pageHome =
@@ -278,6 +286,20 @@ update msg model =
                         remoteResponse
             in
                 ( { model | pageRecipesPerDifficulty = ( difficulty, recipes ) }, Cmd.none )
+
+        RecipesShorterThanLoaded minutes remoteResponse ->
+            let
+                recipes =
+                    RemoteData.map
+                        (\resources ->
+                            List.map
+                                (decodeRecipe model.flags)
+                                resources
+                                |> removeErrorFromList
+                        )
+                        remoteResponse
+            in
+                ( { model | pageRecipesShorterThan = ( minutes, recipes ) }, Cmd.none )
 
         PostContactForm ->
             ( model, sendContactForm model.pageContact )

@@ -16,3 +16,4 @@ type Page
       {--Ensure it actually works --}
     | RecipesPerCategoryPage String
     | RecipesPerDifficultyPage String
+    | RecipesShorterThanNMinutesPage Int
