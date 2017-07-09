@@ -74,7 +74,7 @@ view model =
             , main =
                 [ {- (viewHeader model) -}
                   div
-                    [ style [ ( "max-width", "1024px" ), ( "margin", "0 auto" ) ]
+                    [ style [ ( "max-width", "1024px" ), ( "margin", "0 auto" ), ( "padding", "10px" ) ]
                     ]
                     [ main
                     , (viewFooter model)
