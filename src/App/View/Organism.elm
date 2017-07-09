@@ -126,9 +126,9 @@ viewDrawer : List (Html Msg)
 viewDrawer =
     [ Layout.title [] [ text "Umami" ]
     , Layout.navigation []
-        [ Layout.link [ Layout.href "#", Options.onClick (SetActivePage Home) ] [ text "Home" ]
-        , Layout.link [ Layout.href "#", Options.onClick (SetActivePage ArticleList) ] [ text "Features" ]
-        , Layout.link [ Layout.href "#", Options.onClick (SetActivePage RecipesPerCategoryList) ] [ text "Recipes" ]
-        , Layout.link [ Layout.href "#", Options.onClick (SetActivePage AboutUs) ] [ text "About us" ]
+        [ Layout.link [ Layout.href "#", Options.onClick (ClickDrawerLink Home) ] [ text "Home" ]
+        , Layout.link [ Layout.href "#", Options.onClick (ClickDrawerLink ArticleList) ] [ text "Features" ]
+        , Layout.link [ Layout.href "#", Options.onClick (ClickDrawerLink RecipesPerCategoryList) ] [ text "Recipes" ]
+        , Layout.link [ Layout.href "#", Options.onClick (ClickDrawerLink AboutUs) ] [ text "About us" ]
         ]
     ]

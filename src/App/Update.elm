@@ -11,6 +11,7 @@ import Maybe
 import RemoteData exposing (RemoteData(..), fromResult)
 import DictList
 import Material
+import Material.Layout
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -61,6 +62,16 @@ update msg model =
               }
             , Cmd.none
             )
+
+        ClickDrawerLink page ->
+            let
+                ( model0, cmd0 ) =
+                    update (Material.Layout.toggleDrawer Mdl) model
+
+                ( model1, cmd1 ) =
+                    update (SetActivePage page) model0
+            in
+                ( model1, Cmd.batch [ cmd0, cmd1 ] )
 
         SetActivePage page ->
             case page of

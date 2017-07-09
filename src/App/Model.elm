@@ -30,6 +30,7 @@ type Msg
     | PostContactForm
       -- MDL
     | Mdl (Material.Msg Msg)
+    | ClickDrawerLink Page
 
 
 type alias Recipe =
