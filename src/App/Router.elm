@@ -59,9 +59,9 @@ parseUrl =
         , map (SetActivePage ArticleList) (s "features")
         , map (SetActivePage RecipesPerCategoryList) (s "recipes")
         , map (SetActivePage ContactPage) (s "contact")
-        , map (\recipeId -> SetActivePage <| RecipeDetailPage (toString recipeId)) (s "recipe" </> string)
-        , map (\tag -> SetActivePage <| RecipesPerTagPage (toString tag)) (s "recipes/tag" </> string)
-        , map (\category -> SetActivePage <| RecipesPerCategoryPage (toString category)) (s "recipes/category" </> string)
-        , map (\difficulty -> SetActivePage <| RecipesPerDifficultyPage (toString difficulty)) (s "recipes/difficulty" </> string)
+        , map (\recipeId -> SetActivePage <| RecipeDetailPage recipeId) (s "recipe" </> string)
+        , map (\tag -> SetActivePage <| RecipesPerTagPage tag) (s "recipes/tag" </> string)
+        , map (\category -> SetActivePage <| RecipesPerCategoryPage category) (s "recipes/category" </> string)
+        , map (\difficulty -> SetActivePage <| RecipesPerDifficultyPage difficulty) (s "recipes/difficulty" </> string)
         , map (\minutes -> SetActivePage <| RecipesShorterThanNMinutesPage minutes) (s "recipes/shorter-than" </> int)
         ]
