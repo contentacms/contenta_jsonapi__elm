@@ -7,6 +7,6 @@
   "scripts": {
     "dev": "elm-live src/Main.elm --output=dist/elm.js --pushstate --open --debug --dir=dist",
     "build": "elm-make src/Main.elm --output=dist/elm.js",
-    "deploy": "yarn run app-build && firebase deploy"
+    "deploy": "yarn run build && firebase deploy"
   }
 }
