@@ -17,6 +17,7 @@ import Material.Typography as Typography
 import Material.Elevation as Elevation
 import Material.Card as Card
 import Material.Color as Color
+import Material.Button as Button
 import Svg
 
 
@@ -24,29 +25,27 @@ recipeCard : Recipe -> Html Msg
 recipeCard recipe =
     Card.view
         [ Options.onClick <| SetActivePage <| RecipeDetailPage recipe.id
-        , Elevation.e2
-        , css "background" ("url('" ++ (Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image) ++ "') center / cover")
-        , css "max-width" "100%"
         , css "width" "100%"
-        , css "min-height" "256px"
+        , Elevation.e2
         ]
-        [ Card.text [ Card.expand ] []
-          -- Filler
+        [ Card.media []
+            [ img [ src <| Maybe.withDefault "http://placekitten.com/g/200/300" recipe.image, style [ ( "width", "100%" ) ] ] []
+            ]
         , Card.title
-            [ css "background" "rgba(0,0,0,0.5)"
+            [ css "padding" "0"
+              -- Clear default padding to encompass scrim
             ]
-            [ Card.head [ Color.text Color.white ]
-                [ text recipe.title
+            [ Card.head
+                [ css "padding" "16px"
                 ]
-            , Card.subhead [ Color.text Color.white, Options.cs "recipe__tags" ] <|
-                List.map
-                    (\tag ->
-                        span []
-                            [ a [ onClickPreventDefault (SetActivePage <| RecipesPerTagPage tag.name) ] [ text tag.name ]
-                            ]
-                    )
-                    recipe.tags
+                [ h3 [] [ text recipe.title ] ]
             ]
+        , Card.text []
+            [ text "Non-alcoholic syrup used for both its tart and sweet flavour as well as its deep red color." ]
+        , Card.actions
+            [ Card.border, Options.cs "recipe__tags" ]
+          <|
+            List.map (\tag -> a [ onClickPreventDefault (SetActivePage <| RecipesPerTagPage tag.name), href <| "/recipes/tag/" ++ tag.name ] [ text tag.name ]) recipe.tags
         ]
 
 
