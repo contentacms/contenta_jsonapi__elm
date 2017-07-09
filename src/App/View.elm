@@ -29,7 +29,7 @@ withMaterial html =
         -}
         [ node "style"
             [ type_ "text/css" ]
-            [ Html.text "@import url(\"/css/material.blue_grey-blue.min.css\")" ]
+            [ Html.text "@import url(\"/css/material.blue_grey-red.min.css\")" ]
           {- This fixes a problem with materalized and the debugger -}
         , node "style" [] [ text ".elm-overlay { z-index: 999;" ]
         , html
