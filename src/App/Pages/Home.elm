@@ -94,7 +94,7 @@ viewCookMenu model =
             [ h3 [] [ text "Learn to cook" ]
             , h4 [] [ text "Recipes for beginner" ]
             ]
-        , div []
+        , div [ onClick <| SetActivePage <| RecipesPerCategoryPage "Dessert" ]
             [ h3 [] [ text "Backed up" ]
             , h4 [] [ text "Delicious cake and bakes" ]
             ]
