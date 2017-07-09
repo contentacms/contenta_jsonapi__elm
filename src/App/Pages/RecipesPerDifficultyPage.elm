@@ -12,13 +12,20 @@ import App.View.Organism exposing (..)
 
 
 view : Model -> PageRecipesPerDifficultyModel -> Html Msg
-view model ( tag, recipes ) =
+view model ( difficulty, recipes ) =
     viewRemoteDataWithTitle
-        (\recipes ->
-            grid4 <|
-                List.map
-                    recipeCard
-                    recipes
-        )
+        recipesGrid
         recipes
-        tag
+    <|
+        case difficulty of
+            "easy" ->
+                "Easy"
+
+            "middle" ->
+                "Middle"
+
+            "hard" ->
+                "Hard"
+
+            _ ->
+                difficulty

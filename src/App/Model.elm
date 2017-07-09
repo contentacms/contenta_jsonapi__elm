@@ -155,6 +155,12 @@ type alias PageRecipeDetailModel =
     }
 
 
+type Difficulty
+    = Easy
+    | Medium
+    | Hard
+
+
 type ContactMsg
     = SetName String
     | SetEmail String

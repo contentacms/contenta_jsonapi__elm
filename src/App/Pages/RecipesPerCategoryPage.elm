@@ -12,13 +12,8 @@ import App.View.Organism exposing (..)
 
 
 view : Model -> PageRecipesPerCategoryModel -> Html Msg
-view model ( tag, recipes ) =
+view model ( category, recipes ) =
     viewRemoteDataWithTitle
-        (\recipes ->
-            grid4 <|
-                List.map
-                    recipeCard
-                    recipes
-        )
+        recipesGrid
         recipes
-        tag
+        category

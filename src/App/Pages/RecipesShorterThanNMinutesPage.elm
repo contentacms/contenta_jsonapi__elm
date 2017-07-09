@@ -14,11 +14,6 @@ import App.View.Organism exposing (..)
 view : Model -> PageRecipesShorterThanModel -> Html Msg
 view model ( minutes, recipes ) =
     viewRemoteDataWithTitle
-        (\recipes ->
-            grid4 <|
-                List.map
-                    recipeCard
-                    recipes
-        )
+        recipesGrid
         recipes
         ("Quicker than " ++ (toString minutes) ++ " minutes")

@@ -28,6 +28,12 @@ recipesPerCategory recipes =
         div [] [ text "No recipes found" ]
 
 
+recipesGrid : List Recipe -> Html Msg
+recipesGrid =
+    grid4
+        << (List.map recipeCard)
+
+
 articleCardList : List Article -> Html Msg
 articleCardList articles =
     div [] <| List.map articleCard articles
