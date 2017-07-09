@@ -5,6 +5,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import App.View.Atom exposing (..)
+import App.View.Style exposing (cursorPointer)
 import App.View.Molecule exposing (..)
 import App.View.Grid exposing (grid4, grid4WithStyle, grid1__1)
 import App.PageType exposing (..)
@@ -117,7 +118,7 @@ viewTabs =
 viewMdlHeader : List (Html Msg)
 viewMdlHeader =
     [ Layout.row []
-        [ Layout.title [ Options.onClick (SetActivePage Home), Options.css "cursor" "pointer" ] [ text "Umami, food magazine" ]
+        [ Layout.title [ Options.onClick (SetActivePage Home), uncurry Options.css cursorPointer ] [ text "Umami, food magazine" ]
         , Layout.spacer
         , Layout.navigation []
             [ Layout.link [ Layout.href "http://www.contentacms.org/" ] [ img [ height 36, src "assets/contenta-lg.png", alt "Contenta Logo" ] [] ]

@@ -3,10 +3,11 @@ module App.Pages.Home exposing (view)
 import App.Model exposing (..)
 import App.Difficulty exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (src)
+import Html.Attributes exposing (src, style)
 import Html.Events exposing (onClick)
 import RemoteData exposing (WebData, RemoteData, RemoteData(..))
 import App.View.Atom exposing (viewRemoteData)
+import App.View.Style exposing (cursorPointer)
 import App.View.Molecule exposing (..)
 import App.View.Grid exposing (grid4, grid2x2, grid1__2, grid1__1, grid1__, grid4WithStyle)
 import Material.List as ML
@@ -88,19 +89,19 @@ viewCurrentMonthIssue model =
 viewCookMenu : Model -> Html Msg
 viewCookMenu model =
     grid4WithStyle [ Elevation.e3 ]
-        [ div [ onClick <| SetActivePage <| RecipesPerCategoryPage "Main course" ]
+        [ div [ onClick <| SetActivePage <| RecipesPerCategoryPage "Main course", style [ cursorPointer ] ]
             [ h3 [] [ text "Dinners to impress" ]
             , h4 [] [ text "List recipes" ]
             ]
-        , div [ onClick <| SetActivePage <| RecipesPerDifficultyPage Easy ]
+        , div [ onClick <| SetActivePage <| RecipesPerDifficultyPage Easy, style [ cursorPointer ] ]
             [ h3 [] [ text "Learn to cook" ]
             , h4 [] [ text "Recipes for beginner" ]
             ]
-        , div [ onClick <| SetActivePage <| RecipesPerCategoryPage "Dessert" ]
+        , div [ onClick <| SetActivePage <| RecipesPerCategoryPage "Dessert", style [ cursorPointer ] ]
             [ h3 [] [ text "Backed up" ]
             , h4 [] [ text "Delicious cake and bakes" ]
             ]
-        , div [ onClick <| SetActivePage <| RecipesShorterThanNMinutesPage 20 ]
+        , div [ onClick <| SetActivePage <| RecipesShorterThanNMinutesPage 20, style [ cursorPointer ] ]
             [ h3 [] [ text "Quick and Easy" ]
             , h4 [] [ text "20 minutes or less" ]
             ]

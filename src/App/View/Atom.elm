@@ -11,7 +11,8 @@ import Material.Chip as Chip
 import Material.Grid as Grid
 import Material.Typography as Typography
 import Material.Options as Options
-import App.View.Components exposing (onClickPreventDefault)
+import App.View.Components exposing (..)
+import App.View.Style exposing (cursorPointer)
 import RemoteData exposing (WebData, RemoteData(..))
 import Material.Progress as Progress
 
@@ -81,7 +82,7 @@ cardTagsInline tags =
         List.map
             (\tag ->
                 Chip.button []
-                    [ Chip.content [] [ span [ onClickPreventDefault (SetActivePage <| RecipesPerTagPage tag) ] [ text tag ] ] ]
+                    [ Chip.content [] [ span [ style [ cursorPointer ], onClickPreventDefault (SetActivePage <| RecipesPerTagPage tag) ] [ text tag ] ] ]
             )
             tags
 

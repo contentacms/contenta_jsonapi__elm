@@ -1,4 +1,4 @@
-module App.View.Components exposing (onClickPreventDefault)
+module App.View.Components exposing (..)
 
 import App.Model exposing (..)
 import Html exposing (..)
@@ -13,20 +13,7 @@ import Material.Layout as Layout
 import Material.Options as Options
 
 
-viewTags : List Term -> Html Msg
-viewTags terms =
-    ul []
-        (List.map
-            (\tag ->
-                li [] [ viewTag tag ]
-            )
-            terms
-        )
-
-
-viewTag : Term -> Html Msg
-viewTag term =
-    a [ onClickPreventDefault (SetActivePage <| RecipesPerTagPage term.name) ] [ text term.name ]
+{--This are all things which shouldn't belong here --}
 
 
 onClickPreventDefault : msg -> Attribute msg

@@ -4,7 +4,8 @@ import App.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import App.View.Components exposing (..)
+import App.View.Style exposing (cursorPointer)
+import App.View.Components exposing (onClickPreventDefault)
 import App.View.Atom exposing (..)
 import App.View.Grid exposing (grid2__2, grid2__2_center)
 import App.PageType exposing (Page(..))
@@ -51,6 +52,7 @@ recipeCardWithReverse reverse recipe =
         Card.view
             [ Options.onClick <| SetActivePage <| RecipeDetailPage recipe.id
             , css "width" "100%"
+            , uncurry css cursorPointer
             , Elevation.e2
             ]
         <|

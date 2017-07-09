@@ -13,7 +13,6 @@ import App.Pages.RecipesPerCategoryPage
 import App.Pages.RecipesPerDifficultyPage
 import App.Pages.RecipesShorterThanNMinutesPage
 import Html exposing (..)
-import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
 import App.View.Organism exposing (viewHeader, viewFooter)
 import App.View.Organism exposing (..)
@@ -68,6 +67,7 @@ view model =
 
                 RecipesPerDifficultyPage category ->
                     App.Pages.RecipesPerDifficultyPage.view model model.pageRecipesPerDifficulty
+
                 RecipesShorterThanNMinutesPage category ->
                     App.Pages.RecipesShorterThanNMinutesPage.view model model.pageRecipesShorterThan
 
